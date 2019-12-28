@@ -1,3 +1,3 @@
 # DmcKit
 
-A description of this package.
+Swift classes to work with DMC Controllers.

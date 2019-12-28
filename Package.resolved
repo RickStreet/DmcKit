@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "StringKit",
+        "repositoryURL": "https://github.com/RickStreet/StringKit.git",
+        "state": {
+          "branch": "master",
+          "revision": "8553b1b1e586fc7d2d1274923a179b772e254099",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

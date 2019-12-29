@@ -7,26 +7,27 @@
 //
 
 import Foundation
+import StringKit
 
-class Config {
+public class Config {
     var contents = "" // Used to store the file contents
-    var controllerName = ""
-    var baseName = ""
+    public var controllerName = ""
+    public var baseName = ""
     var lines = [String]()
     var linesIn = [String]()
     var sections = [Section]()
-    var inds = [Section]()
-    var mvs = [Section]()
-    var ffs = [Section]()
-    var cvs = [Section]()
-    var subs = [Section]()
-    var calcParams = [ConfigParam]()
-    var calcSection = Section()
-    var configSection = Section()
-    var generalSection = Section()
-    var gMults = [GMult]()
-    var modelName = ""
-    var configURL = URL.init(fileURLWithPath: "")
+    public var inds = [Section]()
+    public var mvs = [Section]()
+    public var ffs = [Section]()
+    public var cvs = [Section]()
+    public var subs = [Section]()
+    public var calcParams = [ConfigParam]()
+    public var calcSection = Section()
+    public var configSection = Section()
+    public var generalSection = Section()
+    public var gMults = [GMult]()
+    public var modelName = ""
+    public var configURL = URL.init(fileURLWithPath: "")
     var cvIndex = 0
     var mvIndex = 0
     var ffIndex = 0
@@ -34,9 +35,9 @@ class Config {
     var subIndex = 0
     var calcIndex = 0
     
-    var paramCount = 0
-    var sectionCount = 0
-    var calcCount = 0
+    public var paramCount = 0
+    public var sectionCount = 0
+    public var calcCount = 0
     
     func clear() {
         lines.removeAll()
@@ -56,7 +57,7 @@ class Config {
         
     }
     
-    func readCCF(url: URL) {
+    public func readCCF(url: URL) {
         clear()
         do {
             // Read the file contents

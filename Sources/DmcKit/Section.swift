@@ -10,20 +10,20 @@ import Foundation
 
 // IQ General Section Type
 @dynamicMemberLookup
-class Section {
-    var id = 0
-    var index = 0 
-    var name = ""
-    var longDescription = ""
-    var shortDescription = ""
-    var selected = false
+public class Section {
+    public var id = 0
+    public var index = 0
+    public var name = ""
+    public var longDescription = ""
+    public var shortDescription = ""
+    public var selected = false
     
-    var heading: String {
+    public var heading: String {
         return "\(index + 1).  \(name),  \(shortDescription)"
     }
     
     // used to get mult params for section
-    var params = [ConfigParam]() /* {
+    public var params = [ConfigParam]() /* {
         didSet {
             if let param = params.last {
                 properties.updateValue(param, forKey: param.name.lowercased())
@@ -32,14 +32,14 @@ class Section {
         }
     } */
     // dictionary used to add and update parameters/params
-    var properties = [String : ConfigParam]()
+    public var properties = [String : ConfigParam]()
     
     subscript(dynamicMember member: String) -> ConfigParam {
         let properties = self.properties
         return properties[member, default: ConfigParam(id: -1, name: "nil", keyWord: "nil", type: "nil", value: "nil")]
     }
     
-    func append(_ param: ConfigParam) {
+    public func append(_ param: ConfigParam) {
         let newParam = properties.updateValue(param, forKey: param.name.lowercased())
         if newParam == nil {
             params.append(param)

@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct Ranking {
-    var index = 0
-    var name = ""
-    var description = ""
-    var rankType = ""
-    var rank = 0
+public struct Ranking {
+    public var index = 0
+    public var name = ""
+    public var description = ""
+    public var rankType = ""
+    public var rank = 0
     
-    var sortVar: Int {
+    public var sortVar: Int {
         return rank * 1000000 + index
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 /**
- Ind structure
+ Ind class
  - Parameters:
  - no:   index of independent (Int)
  - name:   tag name (String)
@@ -17,16 +17,16 @@ import Foundation
  
  data from mdl file
  */
-class Ind {
-    var index: Int
-    var name: String
-    var shortDescription: String
-    var longDescription = ""
-    var units: String
-    var selected = false
-    var typicalMove = 0.0
+public class Ind {
+    public var index: Int
+    public var name: String
+    public var shortDescription: String
+    public var longDescription = ""
+    public var units: String
+    public var selected = false
+    public var typicalMove = 0.0
     
-    init(no: Int, name: String, shortDescription: String, units: String) {
+    public init(no: Int, name: String, shortDescription: String, units: String) {
         self.index = no
         self.name = name
         self.shortDescription = shortDescription

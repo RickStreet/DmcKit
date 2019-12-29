@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct GMult {
-    var indIndex = 0
-    var depIndex = 0
-    var value = 0.0
+public struct GMult {
+    public var indIndex = 0
+    public var depIndex = 0
+    public var value = 0.0
 }

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class ReportRanking {
+public class ReportRanking {
     let controller = SingletonDMController.sharedInstance
 
     let tabParagraphStyle = NSMutableParagraphStyle()
@@ -24,7 +24,7 @@ class ReportRanking {
 
 
     
-    func write() {
+    public func write() {
         let cvs = controller.config.cvs
         var rankings = [Ranking]()
 

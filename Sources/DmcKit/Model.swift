@@ -8,23 +8,23 @@
 
 import Foundation
 
-class Model {
-    var name = ""
-    var baseName = ""
-    var dpaName = ""
-    var noInds = 0
-    var noDeps = 0
-    var noCoefs = 0
-    var timeToSS = 0.0
-    var numberCoefLines = 0
-    var deps = [Dep]()
-    var inds = [Ind]()
-    var gains = [Gain]()
-    var curveSources = [CurveSource]()
+public class Model {
+    public var name = ""
+    public var baseName = ""
+    public var dpaName = ""
+    public var noInds = 0
+    public var noDeps = 0
+    public var noCoefs = 0
+    public var timeToSS = 0.0
+    public var numberCoefLines = 0
+    public var deps = [Dep]()
+    public var inds = [Ind]()
+    public var gains = [Gain]()
+    public var curveSources = [CurveSource]()
     var dpaContents = [String]()
     
-    var mdlURL = URL.init(fileURLWithPath: "")
-    var dpaURL = URL.init(fileURLWithPath: "")
+    public var mdlURL = URL.init(fileURLWithPath: "")
+    public var dpaURL = URL.init(fileURLWithPath: "")
     
     func clear() {
         deps.removeAll()
@@ -34,7 +34,7 @@ class Model {
         dpaContents.removeAll()
     }
     
-    func readMDL(url: URL) {
+    public func readMDL(url: URL) {
         clear()
         // check if mdl file exists
         let fm = FileManager.default
@@ -385,7 +385,7 @@ class Model {
             return line.left(8)
         }
     }
-    func depNo(name: String) -> Int {
+    public func depNo(name: String) -> Int {
         let dep = deps.filter{$0.name == name}
         if dep.count > 0 {
             return dep[0].index
@@ -394,7 +394,7 @@ class Model {
         }
     }
     
-    func indNo(name: String) -> Int {
+    public func indNo(name: String) -> Int {
         let ind = inds.filter{$0.name == name}
         if ind.count > 0 {
             return ind[0].index

@@ -8,36 +8,36 @@
 
 import Cocoa
 
-class CurveSource {
-    var type = ""
-    var indIndex = 0
-    var depIndex = 0
+public class CurveSource {
+    public var type = ""
+    public var indIndex = 0
+    public var depIndex = 0
     
-    var depSort: Int {
+    public var depSort: Int {
         return depIndex * 10000 + indIndex
     }
     
-    var indSort: Int {
+    public var indSort: Int {
         return indIndex * 10000 + depIndex
     }
     
-    var indName = ""
-    var depName = ""
-    var sourceInd = ""
-    var sourceDep = ""
-    var sourceCase = ""
-    var sourceCurve = ""
-    var convoluteIndName = ""
-    var convoluteCase = ""
-    var convoluteCurve = ""
-    var deadtime = 0.0
-    var tau = 0.0
-    var damp = 0.0
-    var gain = 0.0
+    public var indName = ""
+    public var depName = ""
+    public var sourceInd = ""
+    public var sourceDep = ""
+    public var sourceCase = ""
+    public var sourceCurve = ""
+    public var convoluteIndName = ""
+    public var convoluteCase = ""
+    public var convoluteCurve = ""
+    public var deadtime = 0.0
+    public var tau = 0.0
+    public var damp = 0.0
+    public var gain = 0.0
     
     var sources = [CurveSourceType]()
     
-    var description: NSMutableAttributedString {
+    public var description: NSMutableAttributedString {
         let description = NSMutableAttributedString()
         
         let normalParagraphStyle = NSMutableParagraphStyle()

@@ -8,13 +8,13 @@
 
 import Foundation
 
-class XForm {
-    var type = TransformType.none
-    var params = [String]()
-    var eqText = ""
-    var xFormPoints = [(x: Double, y: Double)]()
+public class XForm {
+    public var type = TransformType.none
+    public var params = [String]()
+    public var eqText = ""
+    public var xFormPoints = [(x: Double, y: Double)]()
     
-    func parse(_ string: String) {
+    public func parse(_ string: String) {
         params = string.components(separatedBy: " ")
         if params.count > 0 {
             switch params[0] {

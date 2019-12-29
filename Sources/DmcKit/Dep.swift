@@ -9,7 +9,7 @@
 import Foundation
 
 /**
- Dep structure
+ Dep class
  - Parameters:
  - no:   index of independent (Int)
  - name:   tag name (String)
@@ -18,17 +18,17 @@ import Foundation
  
  data from mdl file
  */
-class Dep {
-    var index: Int
-    var name: String
-    var shortDescription: String
-    var units: String
-    var ramp = 0
-    var selected = false
-    var longDescription = ""
-    var gainWindow = 0.0
+public class Dep {
+    public var index: Int
+    public var name: String
+    public var shortDescription: String
+    public var units: String
+    public var ramp = 0
+    public var selected = false
+    public var longDescription = ""
+    public var gainWindow = 0.0
     
-    init(no: Int, name: String, shortDescription: String, units: String, ramp: Int) {
+    public init(no: Int, name: String, shortDescription: String, units: String, ramp: Int) {
         self.index = no
         self.name = name
         self.shortDescription = shortDescription

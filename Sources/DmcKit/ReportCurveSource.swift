@@ -8,14 +8,14 @@
 
 import Cocoa
 
-class ReportCurveSource {
+public class ReportCurveSource {
     let controller = SingletonDMController.sharedInstance
     var curveSources = [CurveSource]()
     
     var sortByDep = true
 
     
-    func write() {
+    public func write() {
         
         curveSources = controller.model.curveSources
         

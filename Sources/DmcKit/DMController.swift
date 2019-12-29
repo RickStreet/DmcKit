@@ -8,19 +8,19 @@
 
 import Foundation
 
-class DMController {
-    var config = Config()
-    var model = Model()
+public class DMController {
+    public var config = Config()
+    public var model = Model()
     
-    var modelURL = URL.init(fileURLWithPath: "")
-    var configURL = URL.init(fileURLWithPath: "")
-    var loaded = false
+    public var modelURL = URL.init(fileURLWithPath: "")
+    public var configURL = URL.init(fileURLWithPath: "")
+    public var loaded = false
     
     var excelInstalled = false
     var excelURLs = [URL]()
     
     
-    func loadAll(url: URL) {
+    public func loadAll(url: URL) {
         configURL = url
         config.readCCF(url: url)
         modelURL = self.configURL.deletingLastPathComponent()

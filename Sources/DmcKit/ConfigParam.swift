@@ -21,20 +21,20 @@ import Foundation
  
  params from IQ file
  */
-class ConfigParam {
-    var id = 0       // Order in file
-    var index = 0    // Calc Index
+public class ConfigParam {
+    public var id = 0       // Order in file
+    public var index = 0    // Calc Index
     // var section = Section() // Section
-    var name = ""   // Param name
-    var keyWord = "" // Build, Constant, Write...
-    var type = ""   // Type: String, Double...
+    public var name = ""   // Param name
+    public var keyWord = "" // Build, Constant, Write...
+    public var type = ""   // Type: String, Double...
     // var value: String = ""  // Parm value
     // var pValue = ""
     // var firstTime = true
     var originalValue = ""
     var updatedValue: String?
     
-    var value = "" {
+    public var value = "" {
         didSet {
             if type == "R4" || type == "I4" {
                 value = value.replace(",", with: "")
@@ -42,7 +42,7 @@ class ConfigParam {
         }
     }
     
-    var doubleValue: Double {
+    public var doubleValue: Double {
         if let doubleValue = Double(value) {
             return doubleValue
         } else {
@@ -50,7 +50,7 @@ class ConfigParam {
         }
     }
     
-    var intValue: Int {
+    public var intValue: Int {
         let newValue = value.replace(".", with: "")
         if let intValue = Int(newValue) {
             return intValue
@@ -60,14 +60,14 @@ class ConfigParam {
     }
 
 
-    var entityDevice = ""
-    var entityUnit = ""
-    var dcsTag = ""
-    var entitySource = ""
-    var entityFormatCode = ""
+    public var entityDevice = ""
+    public var entityUnit = ""
+    public var dcsTag = ""
+    public var entitySource = ""
+    public var entityFormatCode = ""
     
     // ""::"DC6_OH_90.APC_CALC.PV":DBVL:
-    var entity: String = "" {  // Connection to DCS
+    public var entity: String = "" {  // Connection to DCS
         didSet {
             if entity == "" {
                 return
@@ -122,7 +122,7 @@ class ConfigParam {
         }
     }
     
-    var commentType = ""  // C = Comment  G = Get   P = Put
+    public var commentType = ""  // C = Comment  G = Get   P = Put
     
     /*
     var line: String {
@@ -130,7 +130,7 @@ class ConfigParam {
     }
     */
     
-    init(id: Int, name: String, keyWord: String, type: String, value: String, entity: String) {
+    public init(id: Int, name: String, keyWord: String, type: String, value: String, entity: String) {
         // self.section = section
         self.id = id
         self.name = name
@@ -140,7 +140,7 @@ class ConfigParam {
         self.entity = entity
     }
 
-    init(id: Int, name: String, keyWord: String, type: String, value: String) {
+    public init(id: Int, name: String, keyWord: String, type: String, value: String) {
         // self.section = section
         self.id = id
         self.name = name
@@ -151,7 +151,7 @@ class ConfigParam {
     }
 
     
-    init() {
+    public init() {
         // Empty ConfigParam
         
     }

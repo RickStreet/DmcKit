@@ -5,9 +5,9 @@
         "package": "StringKit",
         "repositoryURL": "https://github.com/RickStreet/StringKit.git",
         "state": {
-          "branch": "master",
-          "revision": "8553b1b1e586fc7d2d1274923a179b772e254099",
-          "version": null
+          "branch": null,
+          "revision": "b57d626b870f0fa863b0f0a60e70b39bd81db8bf",
+          "version": "1.0.5"
         }
       }
     ]

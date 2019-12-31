@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import StringKit
+// import StringKit
 
 public class Config {
     var contents = "" // Used to store the file contents

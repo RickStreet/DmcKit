@@ -406,7 +406,8 @@ public class Model {
     }
     
 
-    
+    public init() {}
+
 
 
 }

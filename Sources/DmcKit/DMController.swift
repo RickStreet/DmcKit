@@ -55,10 +55,7 @@ public class DMController {
         // print("Done integrating.")
     }
     
-    public init() {
-        self.init()
-        loaded = false
-    }
+    public init() {}
     
     /*
     func getSubControllerGains() {

@@ -306,5 +306,6 @@ public class Config {
          }
          */
     }
-    
+    public init() {}
+
 }

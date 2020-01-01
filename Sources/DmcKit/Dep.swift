@@ -35,5 +35,6 @@ public class Dep {
         self.units = units
         self.ramp = ramp
     }
+
 }
 

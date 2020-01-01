@@ -116,6 +116,7 @@ public class XForm {
         // }
         return
     }
-    
+    public init() {}
+
     
 }

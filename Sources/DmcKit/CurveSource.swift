@@ -102,5 +102,6 @@ public class CurveSource {
 
         return description
     }
+    public init() {}
 
 }

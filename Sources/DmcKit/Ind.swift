@@ -32,5 +32,6 @@ public class Ind {
         self.shortDescription = shortDescription
         self.units = units
     }
+
 }
 

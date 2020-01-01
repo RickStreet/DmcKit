@@ -18,4 +18,12 @@ public struct Ranking {
     public var sortVar: Int {
         return rank * 1000000 + index
     }
+    public init(index: Int, name: String, description: String, rankType: String, rank: Int) {
+        self.index =  index
+        self.name = name
+        self.description = description
+        self.rankType = rankType
+        self.rank = rank
+    }
+
 }

@@ -56,6 +56,7 @@ public class DMController {
     }
     
     public init() {
+        self.init()
         loaded = false
     }
     

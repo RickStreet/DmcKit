@@ -20,7 +20,7 @@ let forestGreen = NSColor(red: 0.0/255.0, green: 153.0/255.0, blue: 76.0/255.0, 
 let black = NSColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1.0)
 
 
-final class SingletonDMController {
+public final class SingletonDMController {
     static let sharedInstance = DMController()
     private init() {} //This prevents others from using the default '()' initializer for this class.
 }
@@ -29,7 +29,7 @@ final class SingletonDMController {
 // var dmcController = TheOneAndOnlyDmcController.sharedInstance
 
 
-func roundTo(value: Double, digits: Int) -> Double {
+public func roundTo(value: Double, digits: Int) -> Double {
     let sign: Double
     let order: Double
     let nDigits = Double(digits)

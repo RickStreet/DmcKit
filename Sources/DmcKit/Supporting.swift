@@ -19,12 +19,12 @@ let navy = NSColor(red: 4.0/255.0, green: 30.0/255.0, blue: 141.0/255.0, alpha: 
 let forestGreen = NSColor(red: 0.0/255.0, green: 153.0/255.0, blue: 76.0/255.0, alpha: 1.0)
 let black = NSColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1.0)
 
-
+/*
 public final class SingletonDMController {
     static let sharedInstance = DMController()
     private init() {} //This prevents others from using the default '()' initializer for this class.
 }
-
+*/
 
 // var dmcController = TheOneAndOnlyDmcController.sharedInstance
 

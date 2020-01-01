@@ -55,6 +55,10 @@ public class DMController {
         // print("Done integrating.")
     }
     
+    public init() {
+        
+    }
+    
     /*
     func getSubControllerGains() {
         excelURLs.removeAll()

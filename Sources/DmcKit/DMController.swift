@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import StringKit
 
 public class DMController {
     public var config = Config()

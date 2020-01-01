@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import StringKit
 
 // IQ General Section Type
 @dynamicMemberLookup

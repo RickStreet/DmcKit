@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import StringKit
 
 public class XForm {
     public var type = TransformType.none

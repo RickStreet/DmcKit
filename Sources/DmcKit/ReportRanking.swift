@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import StringKit
 
 public class ReportRanking {
     let controller = SingletonDMController.sharedInstance

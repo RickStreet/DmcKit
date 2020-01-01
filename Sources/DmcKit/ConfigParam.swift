@@ -3,10 +3,11 @@
 //  DMCTuner
 //
 //  Created by Rick Street on 8/7/17.
-//  Copyright © 2017 Rick Street. All rights reserved.
+//  Copyright © 2019 Rick Street. All rights reserved.
 //
 
 import Foundation
+import StringKit
 
 /**
  ConfigParam

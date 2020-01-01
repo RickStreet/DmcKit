@@ -56,7 +56,7 @@ public class DMController {
     }
     
     public init() {
-        
+        loaded = false
     }
     
     /*

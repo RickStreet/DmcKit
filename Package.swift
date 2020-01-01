@@ -25,9 +25,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "DmcKit",
-            dependencies: []),
+            dependencies: ["StringKit"]),
         .testTarget(
             name: "DmcKitTests",
-            dependencies: ["DmcKit"]),
+            dependencies: ["DmcKit", "StringKit"]),
     ]
 )

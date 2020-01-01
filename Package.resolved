@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "DialogKit",
+        "repositoryURL": "https://github.com/RickStreet/DialogKit.git",
+        "state": {
+          "branch": null,
+          "revision": "ed00d4f60083f48d8dfed6898bb4a6a1c829e0c4",
+          "version": "1.0.2"
+        }
+      },
+      {
         "package": "StringKit",
         "repositoryURL": "https://github.com/RickStreet/StringKit.git",
         "state": {

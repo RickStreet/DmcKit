@@ -8,14 +8,14 @@
 
 import Foundation
 
-enum GainAdjustType: String {
+public enum GainAdjustType: String {
     case none = "None"
     case set = "Set"
     case adjusted = "Adjust"
 }
 
 
-enum PredictionFilterType: String {
+public enum PredictionFilterType: String {
     case none = "None"
     case firstOrder = "First Order"
     case timeHorizen = "Moving Average"

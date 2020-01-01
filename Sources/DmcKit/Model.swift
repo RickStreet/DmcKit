@@ -8,6 +8,7 @@
 
 import Foundation
 import StringKit
+import DialogKit
 
 public class Model {
     public var name = ""

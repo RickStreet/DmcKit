@@ -22,7 +22,7 @@ public class Gain {
     public var indIndex: Int = 0
     public var originalGain: Double = 0
     public var adjustedGain: Double?
-    public var adjustType: GainAdjustType = .none
+    var adjustType: GainAdjustType = .none
     public var gain: Double {
         if let g = adjustedGain {
             return g

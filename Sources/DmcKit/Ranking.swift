@@ -26,6 +26,14 @@ public struct Ranking {
         self.rank = rank
     }
     
-    public init() {}
-
+    /*
+    public init() {
+        index = 0
+        name = ""
+        description = ""
+        rankType = ""
+        rank = 0
+    }
+    */
+    
 }

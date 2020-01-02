@@ -43,7 +43,7 @@ enum LPCriteria: String {
     case move = "M"
 }
 
-enum TransformType: String {
+public enum TransformType: String {
     case none = "None"
     case linear = "Linear Valve"
     case log = "Log"
@@ -55,7 +55,7 @@ enum TransformType: String {
     case shiftRatePower = "Shift-rate Power"
 }
 
-enum CurveSourceType {
+public enum CurveSourceType {
     case replace (ind: String, dep: String, sourceCase: String, sourceCurve: String)
     case unity
     case zero

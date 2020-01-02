@@ -10,7 +10,7 @@ import Foundation
 import StringKit
 
 public class XForm {
-    var type = TransformType.none
+    public var type = TransformType.none
     public var params = [String]()
     public var eqText = ""
     public var xFormPoints = [(x: Double, y: Double)]()

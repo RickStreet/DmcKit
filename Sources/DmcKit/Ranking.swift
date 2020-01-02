@@ -25,5 +25,7 @@ public struct Ranking {
         self.rankType = rankType
         self.rank = rank
     }
+    
+    public init() {}
 
 }

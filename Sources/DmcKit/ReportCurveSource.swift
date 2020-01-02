@@ -13,7 +13,7 @@ public class ReportCurveSource {
     public var controller = DMController()
     var curveSources = [CurveSource]()
     
-    var sortByDep = true
+    public var sortByDep = true
 
     
     public func write() {

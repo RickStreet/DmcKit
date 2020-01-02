@@ -35,7 +35,7 @@ public class Section {
     // dictionary used to add and update parameters/params
     public var properties = [String : ConfigParam]()
     
-    subscript(dynamicMember member: String) -> ConfigParam {
+    public subscript(dynamicMember member: String) -> ConfigParam {
         let properties = self.properties
         return properties[member, default: ConfigParam(id: -1, name: "nil", keyWord: "nil", type: "nil", value: "nil")]
     }

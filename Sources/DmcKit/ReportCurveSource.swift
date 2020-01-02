@@ -10,7 +10,7 @@ import Cocoa
 import StringKit
 
 public class ReportCurveSource {
-    let controller = SingletonDMController.sharedInstance
+    public var controller = DMController()
     var curveSources = [CurveSource]()
     
     var sortByDep = true

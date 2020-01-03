@@ -388,7 +388,7 @@ public class ReportCurveSource {
         
     }
     
-    
+    public init() {}
     
 }
 

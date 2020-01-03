@@ -313,11 +313,11 @@ public class Config {
     
     public func generateCCFContent () -> String {
         var contents = "CCF_Version 1\r\n"
-        contents += "[COMMENT]"
+        contents += "[COMMENT]\r\n"
         contents += getSectionCCFLines(configSection)
         contents += getSectionCCFLines(configSection)
-        contents += "[ET]"
-        contents += "[CSS]"
+        contents += "[ET]\r\n"
+        contents += "[CSS]\r\n"
         for ind in inds {
             contents += getSectionCCFLines(ind)
         }

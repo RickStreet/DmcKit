@@ -15,6 +15,7 @@ public class Section {
     public var id = 0
     public var index = 0
     public var name = ""
+    var sectionName = ""  // section header in ccf [xxx]
     public var longDescription = ""
     public var shortDescription = ""
     public var selected = false

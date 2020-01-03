@@ -293,7 +293,7 @@ public class ReportCurveSource {
            
     }
  
-    public func write() {
+    public func write(){
         getContents()
         let documentAttributes: [NSAttributedString.DocumentAttributeKey: Any] = [.documentType: NSAttributedString.DocumentType.rtf]
         

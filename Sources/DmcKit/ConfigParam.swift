@@ -125,11 +125,11 @@ public class ConfigParam {
     
     public var commentType = ""  // C = Comment  G = Get   P = Put
     
-    /*
+    
     var line: String {
         return cutLine("." + name + "~~~" + keyWord + "~~~" + type + "~~~" + value + "~~~" + entity)
     }
-    */
+    
     
     public init(id: Int, name: String, keyWord: String, type: String, value: String, entity: String) {
         // self.section = section

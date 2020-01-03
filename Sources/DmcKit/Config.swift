@@ -9,9 +9,11 @@
 import Foundation
 import StringKit
 
+
 public class Config {
     
     var contents = "" // Used to store the file contents
+    var url = URL(fileURLWithPath: "")
     public var controllerName = ""
     public var baseName = ""
     var lines = [String]()
@@ -156,7 +158,9 @@ public class Config {
                 section = Section()
                 section.id = sectionID
                 sectionID += 1
+                section.sectionName = line
                 // if line.hasPrefix("[") {
+                
                 let prefix = line.left(5)
                 switch prefix {
                 case "[IND:":
@@ -209,7 +213,7 @@ public class Config {
                 // configParam.value = params[3]
                 let configParam = ConfigParam(id: paramID, name: name, keyWord: params[1], type: params[2], value: params[3])
                 paramID += 1
-
+                
                 if params.count > 4 {
                     configParam.entity = params[4]
                 } else {
@@ -217,15 +221,15 @@ public class Config {
                 }
                 
                 /*
-                // ***********************************
-                if section.name == "66AI1043PVF" {
-                    print(params)
-                    if params[2] == "R4" {
-                        print(Double(params[3]) ?? "nil")
-                        print()
-                    }
-                }
-                */
+                 // ***********************************
+                 if section.name == "66AI1043PVF" {
+                 print(params)
+                 if params[2] == "R4" {
+                 print(Double(params[3]) ?? "nil")
+                 print()
+                 }
+                 }
+                 */
                 
                 
                 //if section.name == "CALC" {
@@ -284,11 +288,11 @@ public class Config {
                 ffs.append(ind)
             }
         }
-         /*
+        /*
          print()
          print("GMults:")
          for gmult in gMults {
-            print(gmult.indIndex, gmult.depIndex, gmult.value)
+         print(gmult.indIndex, gmult.depIndex, gmult.value)
          }
          print()
          */
@@ -306,6 +310,43 @@ public class Config {
          }
          */
     }
-    public init() {}
+    
+    public func generateCCFContent () -> String {
+        var contents = "CCF_Version 1\r\n"
+        contents += "[COMMENT]"
+        contents += getSectionCCFLines(configSection)
+        contents += getSectionCCFLines(configSection)
+        contents += "[ET]"
+        contents += "[CSS]"
+        for ind in inds {
+            contents += getSectionCCFLines(ind)
+        }
+        for dep in deps {
+            contents += getSectionCCFLines(dep)
+        }
+        for sub in subs {
+            contents += getSectionCCFLines(sub)
+        }
+        for param in calcParams {
+            contents += param.line
+        }
+        contents += getSectionCCFLines(calcSection)
+        
+        return contents
 
+    }
+    
+    func getSectionCCFLines(_ section: Section) -> String {
+        let params = section.params.sorted{$0.name < $1.name}
+        var contents = "\(section.sectionName)\r\n"
+        for param in params {
+            contents += param.line
+        }
+        return contents
+    }
+    
+    
+    
+    public init() {}
+    
 }

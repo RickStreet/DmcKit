@@ -127,7 +127,7 @@ public class ConfigParam {
     
     
     var line: String {
-        return cutLine("." + name + "~~~" + keyWord + "~~~" + type + "~~~" + value + "~~~" + entity\r\n)
+        return cutLine("." + name + "~~~" + keyWord + "~~~" + type + "~~~" + value + "~~~" + entity)
     }
     
     

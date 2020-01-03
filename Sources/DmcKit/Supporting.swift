@@ -71,7 +71,7 @@ func cutLine(_ line: String) -> String {
         cutLine += "\""
     }
     cutLine += longLine
-    return cutLine
+    return cutLine + "\r\n"
 }
 
 

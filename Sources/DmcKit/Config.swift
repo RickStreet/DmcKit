@@ -321,8 +321,8 @@ public class Config {
         for ind in inds {
             contents += getSectionCCFLines(ind)
         }
-        for dep in deps {
-            contents += getSectionCCFLines(dep)
+        for cv in cvs {
+            contents += getSectionCCFLines(cv)
         }
         for sub in subs {
             contents += getSectionCCFLines(sub)

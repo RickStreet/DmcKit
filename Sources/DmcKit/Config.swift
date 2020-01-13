@@ -187,7 +187,7 @@ public class Config {
                 case "[CONF":
                     section.name = getSectionName(sectionText: line)
                     configSection = section
-                case "[GENE]":
+                case "[GENE":
                     section.name = getSectionName(sectionText: line)
                     generalSection = section
                 case "[CALC":
@@ -313,7 +313,7 @@ public class Config {
     
     public func generateCCFContent () -> String {
         var contents = "CCF_Version 1\r\n"
-        contents += "[COMMENT]\r\n"
+        contents += "[COMMENT]"
         contents += getSectionCCFLines(generalSection)
         contents += getSectionCCFLines(configSection)
         contents += "[ET]\r\n"

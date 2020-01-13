@@ -314,7 +314,7 @@ public class Config {
     public func generateCCFContent () -> String {
         var contents = "CCF_Version 1\r\n"
         contents += "[COMMENT]\r\n"
-        contents += getSectionCCFLines(configSection)
+        contents += getSectionCCFLines(generalSection)
         contents += getSectionCCFLines(configSection)
         contents += "[ET]\r\n"
         contents += "[CSS]\r\n"

@@ -41,7 +41,7 @@ public class Model {
         // check if mdl file exists
         let fm = FileManager.default
         if !fm.fileExists(atPath: url.path) {
-            let result = dialogOK("Missing Model file (*.mdl).  Please make sure it is in the same directory as the controller ccf file", text: "Missing .mdl File")
+            let result = dialogOK("Missing Model File (*.mdl).", info: "Please make sure it is in the same directory as the controller ccf file")
             print(result)
             return
         }
@@ -198,7 +198,7 @@ public class Model {
         let fm = FileManager.default
         
         if !fm.fileExists(atPath: dpaURL.path) {
-            let answer = dialogOK("Missing dpa file (*.mdl).  Please make sure it is in the same directory as the controller ccf file", text: "Missing .dpa File")
+            let answer = dialogOK("Missing dpa file (*.dpa).", info: "Please make sure it is in the same directory as the controller ccf file")
             print(answer)
             return
         }

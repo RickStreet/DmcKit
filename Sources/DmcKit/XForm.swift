@@ -129,6 +129,9 @@ public class XForm {
         return
     }
     public init() {}
-
+    
+    public inin(_ xformValue: String) {
+        parse(xformValue)
+    }
     
 }

@@ -130,7 +130,7 @@ public class XForm {
     }
     public init() {}
     
-    public inin(_ xformValue: String) {
+    public init(_ xformValue: String) {
         parse(xformValue)
     }
     

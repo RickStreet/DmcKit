@@ -14,6 +14,7 @@ public class Config {
     
     var contents = "" // Used to store the file contents
     var url = URL(fileURLWithPath: "")
+    public var currentSection = Section() // Used to communicate current selected var across view controllers
     public var controllerName = ""
     public var baseName = ""
     var lines = [String]()

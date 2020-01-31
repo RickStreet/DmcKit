@@ -15,6 +15,18 @@ public class XForm {
     public var eqText = ""
     public var xFormPoints = [(x: Double, y: Double)]()
     
+    /// xForm text for ccf
+    public var xform: String {
+        if type == .none {
+            return ""
+        }
+        var xFormText = ""
+        for param in params {
+            xFormText += param + " "
+        }
+        return xFormText
+    }
+    
     public func parse(_ string: String) {
         params = string.components(separatedBy: " ")
         if params.count > 0 {

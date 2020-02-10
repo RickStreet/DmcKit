@@ -21,12 +21,12 @@ public enum PredictionFilterType: String {
     case timeHorizen = "Moving Average"
 }
 
-enum SolutionType: String {
+public enum SolutionType: String {
     case LP = "L"
     case QP = "Q"
 }
 
-enum ETType: String {
+public enum ETType: String {
     case none = "none"
     case rto = "rto"
     case irv = "irv"
@@ -38,7 +38,7 @@ enum RampType: String {
     case pseudo =  "Pseudo"
 }
 
-enum LPCriteria: String {
+public enum LPCriteria: String {
     case cost = "C"
     case move = "M"
 }

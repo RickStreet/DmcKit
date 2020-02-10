@@ -178,7 +178,7 @@ public class Model {
         } // Finished reading mdl
         
         
-        /*
+        
         print("noInds \(noInds)")
         print("noDeps \(noDeps)")
         print("noCoefs \(noCoefs)")
@@ -186,8 +186,8 @@ public class Model {
         print("numberCoefLines \(numberCoefLines)")
         print("noCurves \(gains.count)")
         print()
-        */
         
+        print("reading dpa file")
         getDPA()
     }
     
@@ -212,6 +212,7 @@ public class Model {
             dpaURL = mdlURL.deletingLastPathComponent().appendingPathComponent(dpaFile)
             // print("dpaURL \(dpaURL.path)")
         }
+        
         let fm = FileManager.default
         
         if !fm.fileExists(atPath: dpaURL.path) {

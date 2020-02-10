@@ -23,9 +23,11 @@ public class Dmcontroller {
     
     public func loadAll(url: URL) {
         configURL = url
+        print("reading config file...")
         config.readCCF(url: url)
         modelURL = self.configURL.deletingLastPathComponent()
         modelURL.appendPathComponent(self.config.modelName)
+        print("reading model file \(modelURL.path)...")
         model.readMDL(url: self.modelURL)
         integrate()
         loaded = true

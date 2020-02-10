@@ -528,6 +528,12 @@ public class Model {
         }
         return value
     }
+    
+    public func filterRgas(rgaLimit: Double) {
+        rgas = cRgas.filter{$0.rga >= rgaLimit}
+        
+    }
+
 
 
     public func calcRatios(ratioByMvPair: Bool) {

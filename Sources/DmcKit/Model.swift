@@ -28,6 +28,17 @@ public class Model {
     public var mdlURL = URL.init(fileURLWithPath: "")
     public var dpaURL = URL.init(fileURLWithPath: "")
     
+    public var cRgas = [Rga]()  // Calculated rga's
+    public var rgas = [Rga]()   // Filtered rga's
+    public var numberMvs = 0
+    public var selectedRgaIndex = 0
+    public var selected1Name = "" // used for gainRatio Calc
+    public var selected2Name = "" // used for gainRatio Calc
+
+    
+    public var gainRatios = [GainRatio]()
+
+    
     func clear() {
         deps.removeAll()
         inds.removeAll()
@@ -405,6 +416,178 @@ public class Model {
         }
     }
     
+    func calcRgas() {
+        cRgas.removeAll()
+        let nonZeroGains = gains.filter{$0.gain != 0.0}
+        
+        if numberMvs < 2 {
+            return
+        }
+        
+        var denseCRow = [Gain]() // gains for ind 1 where cv in both ind 1 and ind 2
+        var denseDRow = [Gain]() // gains for ind 2 where cv in both ind 1 and ind 2
+        
+        var mvIndices = [Int]()
+        for i in 0 ..< numberMvs {
+            if !inds[i].excluded {
+                mvIndices.append(inds[i].index)
+            }
+        }
+        /*
+        for mv in mvs {
+            if !mv.exclude {
+                mvIndices.append(mv.index)
+            } else {
+                print("mv \(mv.index) excluded")
+            }
+        }
+        */
+        // for a in 0 ..< numberMvs-1 {
+        //for b in a+1 ..< numberMvs {
+        // print(a, b)
+        for ia in 0 ..< mvIndices.count-1 {
+            let a = mvIndices[ia]
+            for ib in (ia + 1) ..< mvIndices.count {
+                let b = mvIndices[ib]
+                denseCRow.removeAll()
+                denseDRow.removeAll()
+                let cRow = nonZeroGains.filter{$0.indIndex == a && !inds[$0.depIndex].excluded} // gains for ind 1
+                let dRow = nonZeroGains.filter{$0.indIndex == b && !inds[$0.depIndex].excluded} // gains for ind 2
+                
+                for i in 0 ..< cRow.count {
+                    let dRowFiltered = dRow.filter{$0.depIndex == cRow[i].depIndex} // See if depNo is in dRow
+                    let count = dRowFiltered.count
+                    if count > 0 {
+                        denseCRow.append(cRow[i])
+                        denseDRow.append(dRowFiltered[0])
+                    }
+                }
+                /*
+                 print("")
+                 print("a: \(a)  b: \(b)")
+                 for i in 0 ..< denseCRow.count {
+                 print(denseCRow[i].depNo, denseCRow[i].gain, denseDRow[i].depNo, denseDRow[i].gain)
+                 }
+                 print("rgas")
+                 */
+                
+                if denseCRow.count > 1 {
+                    for c in 0 ..< denseCRow.count - 1 {
+                        for d in c + 1 ..< denseCRow.count {
+                            // print(c, d)
+                            // print(denseCRow[c].gain, denseCRow[d].gain)
+                            // print(denseDRow[c].gain, denseDRow[d].gain)
+                            
+                            // print(denseCRow[c].indNo, denseCRow[c].depNo, denseCRow[c].gain)
+                            // print(denseCRow[d].indNo, denseCRow[d].depNo, denseCRow[d].gain)
+                            // print(denseDRow[c].indNo, denseDRow[c].depNo, denseDRow[c].gain)
+                            // print(denseDRow[d].indNo, denseDRow[d].depNo, denseDRow[d].gain)
+                            
+                            let rga = Rga(ind1: denseCRow[c].indIndex, ind2: denseDRow[d].indIndex, dep1: denseCRow[c].depIndex, dep2: denseCRow[d].depIndex, gain11: denseCRow[c].gain, gain12: denseCRow[d].gain, gain21: denseDRow[c].gain, gain22: denseDRow[d].gain)
+                            // print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
+                            cRgas.append(rga)
+                        }
+                    }
+                }
+            }
+        }
+        cRgas.sort{$0.rga > $1.rga}
+    }
+    
+    func indName(index: Int) -> String {
+        var name = ""
+        if index < inds.count {
+            name = inds.filter{$0.index == index}[0].name
+        }
+        return name
+    }
+    
+    func indDescription(index: Int) -> String {
+        var value = ""
+        print("ind:  \(index)")
+        if index < inds.count {
+            value = inds.filter{$0.index == index}[0].shortDescription
+        }
+        return value
+    }
+    
+    func depName(index: Int) -> String {
+        var name = ""
+        if index < deps.count {
+            name = deps.filter{$0.index == index}[0].name
+        }
+        return name
+    }
+    
+    func depDescription(index: Int) -> String {
+        var value = ""
+        if index < deps.count {
+            value = deps.filter{$0.index == index}[0].shortDescription
+        }
+        return value
+    }
+
+
+    func calcRatios(ratioByMvPair: Bool) {
+        gainRatios.removeAll()
+        if ratioByMvPair {
+            let selectedMvs = inds.filter{$0.excluded == true}
+            if selectedMvs.count != 2 {
+                // Need 2 selected
+                return
+            } else {
+                let index1 = selectedMvs[0].index
+                let index2 = selectedMvs[1].index
+                selected1Name = indName(index: index1)
+                selected2Name = indName(index: index2)
+                let selectedGains1 = gains.filter{$0.indIndex == index1 && $0.gain != 0.0}
+                for gain in selectedGains1 {
+                    let depIndex = gain.depIndex
+                    let selectedGains2 = gains.filter{$0.depIndex == depIndex && $0.indIndex == index2 && $0.gain != 0.0}
+                    if selectedGains2.count > 0 {
+                        let depName =  self.depName(index: depIndex)
+                        let ratio = GainRatio(selected1Index: index1, selected2Index: index2, varIndex: depIndex, varName: depName, selected1Gain: gain, selected2Gain: selectedGains2[0], selected1Denominator: true)
+                        gainRatios.append(ratio)
+                    }
+                }
+                for ratio in gainRatios {
+                    print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
+                }
+                // print(ratios)
+            }
+            
+        } else {
+            let selectedInds = inds.filter{$0.excluded == true}
+            if selectedInds.count != 2 {
+                // Need 2 selected
+                return
+            } else {
+                gainRatios.removeAll()
+                let index1 = selectedInds[0].index
+                let index2 = selectedInds[1].index
+                selected1Name = depName(index: index1)
+                selected2Name = depName(index: index2)
+                let selectedGains1 = gains.filter{$0.depIndex == index1 && $0.gain != 0.0}
+                for gain in selectedGains1 {
+                    let indIndex = gain.indIndex
+                    let selectedGains2 = gains.filter{$0.indIndex == indIndex && $0.depIndex == index2 && $0.gain != 0.0}
+                    if selectedGains2.count > 0 {
+                        
+                        let indName = self.indName(index: indIndex)
+                        
+                        let ratio = GainRatio(selected1Index: index1, selected2Index: index2, varIndex: indIndex, varName: indName, selected1Gain: gain, selected2Gain: selectedGains2[0], selected1Denominator: true)
+                        gainRatios.append(ratio)
+                    }
+                }
+                for ratio in gainRatios {
+                    print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
+                }
+                // print(ratios)
+            }
+        }
+        
+    }
+
 
     public init() {}
 

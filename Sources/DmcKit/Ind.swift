@@ -24,6 +24,7 @@ public class Ind {
     public var longDescription = ""
     public var units: String
     public var selected = false
+    public var excluded = false
     public var typicalMove = 0.0
     
     public init(no: Int, name: String, shortDescription: String, units: String) {

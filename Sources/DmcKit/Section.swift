@@ -20,6 +20,7 @@ public class Section {
     public var shortDescription = ""
     public var selected = false
     public var targetGainWindow = 0.0 // used for display
+    public var select = true // used to select sections
     
     public var heading: String {
         return "\(index + 1).  \(name),  \(shortDescription)"

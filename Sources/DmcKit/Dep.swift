@@ -25,6 +25,7 @@ public class Dep {
     public var units: String
     public var ramp = 0
     public var selected = false
+    public var excluded = false
     public var longDescription = ""
     public var gainWindow = 0.0
     

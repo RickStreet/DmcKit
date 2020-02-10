@@ -24,6 +24,7 @@ public class Model {
     public var gains = [Gain]()
     public var curveSources = [CurveSource]()
     var dpaContents = [String]()
+    public var dpaLoaded = false
     
     public var mdlURL = URL.init(fileURLWithPath: "")
     public var dpaURL = URL.init(fileURLWithPath: "")
@@ -211,6 +212,7 @@ public class Model {
         if !fm.fileExists(atPath: dpaURL.path) {
             let answer = dialogOK("Missing dpa file (*.dpa).", info: "Please make sure it is in the same directory as the controller ccf file")
             print(answer)
+            dpaLoaded = false
             return
         }
         var contents = ""
@@ -220,7 +222,7 @@ public class Model {
         } catch let error as NSError {
             print("Failed reading from URL: \(dpaURL), Error: " + error.localizedDescription)
         }
-        
+        dpaLoaded = true
         
         
         contents = contents.replace("\r\n", with: "\n")
@@ -416,7 +418,7 @@ public class Model {
         }
     }
     
-    func calcRgas() {
+    public func calcRgas() {
         cRgas.removeAll()
         let nonZeroGains = gains.filter{$0.gain != 0.0}
         
@@ -494,7 +496,7 @@ public class Model {
         cRgas.sort{$0.rga > $1.rga}
     }
     
-    func indName(index: Int) -> String {
+    public func indName(index: Int) -> String {
         var name = ""
         if index < inds.count {
             name = inds.filter{$0.index == index}[0].name
@@ -502,7 +504,7 @@ public class Model {
         return name
     }
     
-    func indDescription(index: Int) -> String {
+    public func indDescription(index: Int) -> String {
         var value = ""
         print("ind:  \(index)")
         if index < inds.count {
@@ -511,7 +513,7 @@ public class Model {
         return value
     }
     
-    func depName(index: Int) -> String {
+    public func depName(index: Int) -> String {
         var name = ""
         if index < deps.count {
             name = deps.filter{$0.index == index}[0].name
@@ -519,7 +521,7 @@ public class Model {
         return name
     }
     
-    func depDescription(index: Int) -> String {
+    public func depDescription(index: Int) -> String {
         var value = ""
         if index < deps.count {
             value = deps.filter{$0.index == index}[0].shortDescription
@@ -528,7 +530,7 @@ public class Model {
     }
 
 
-    func calcRatios(ratioByMvPair: Bool) {
+    public func calcRatios(ratioByMvPair: Bool) {
         gainRatios.removeAll()
         if ratioByMvPair {
             let selectedMvs = inds.filter{$0.excluded == true}
@@ -586,6 +588,131 @@ public class Model {
             }
         }
         
+    }
+
+    public func writeDpaFile(url: URL) {
+        // let newUniqueFileName = GetUniqueFileName()
+        // let uniqueURL = UniqueFileURL()
+        // let newDpaURL = uniqueURL.newURL(fileURL: dirURL.appendingPathComponent(dpaName))
+        // let newDpaName = newUniqueFileName.getUniqueFileName(fullFileName: configPath + "/" + dpaName)
+        let newModelName = url.lastPathComponent
+        
+        
+        
+        // print("configPath: " + configPath)
+        print("dpaName: " + dpaName)
+        // print("newDpaName: " + newDpaURL.path)
+        print("newModelName: " + newModelName)
+        
+        var gain = Gain(indNo: 0, depNo: 0, originalGain: 0, adjustedGain: 0, adjustType: .none)
+        var lastGain: Gain?
+        var newDpaContents = ""
+        var indName = ""
+        var depName = ""
+        var comment = ""
+        
+        // let saveURL = SaveURL()
+        // saveURL.title = "dpa  File"
+        // saveURL.message = "Enter or select dpa file."
+        // saveURL.nameFieldStringValue = newDpaName
+        // let dpaURL = dirURL.appendingPathComponent(newDpaName)
+        // aveURL.fileTypes = ["dpa"]
+        
+        // print("path: \(configPath)")
+        // print("name: \(controllerName)")
+        // print("save: \(saveURL.nameFieldStringValue)")
+        
+        // if let url = saveURL.open(url: dpaURL) {
+        
+        
+        for (i, line) in dpaContents.enumerated() {
+            let operation = line.trim().left(4)
+            if i > 5 && (operation == ".CUR" || operation == "!#==" ) {
+                if let newGain = lastGain?.gain, let oldGain = lastGain?.originalGain {
+                    if newGain != oldGain {
+                        newDpaContents.append("    .GSCale   \(newGain.precisionString)\r\n")
+                        print("appending GSCale for \(newGain)")
+                    }
+                }
+                
+                let params = line.substring(from: 14).quotedWords()
+                // print(params)
+                if params.count > 2 {
+                    indName = params[0]
+                    depName = params[1]
+                    comment = params[2]
+                    let ind = inds.filter{$0.name == indName}
+                    let indNo = ind[0].index
+                    let dep = deps.filter{$0.name == depName}
+                    let depNo = dep[0].index
+                    let fGains = gains.filter{$0.indIndex == indNo && $0.depIndex == depNo}
+                    gain = fGains[0]  // Gain for Curve in gains
+                    // print(gain.originalGain, gain.adjustedGain, gain.gain, gain.adjustType)
+                    if gain.adjustType == .set {
+                        if comment.count > 2 {
+                            comment += "\r"
+                        }
+                        print("")
+                        comment = "RGA Original Gain was \(gain.originalGain) and set to \(gain.gain)"
+                        print(comment)
+                    }
+                    if gain.adjustType == .adjusted {
+                        if comment.count > 2 {
+                            comment += "\r"
+                        }
+                        print("")
+                        comment = "RGA Original Gain was \(gain.originalGain) and adjusted to \(gain.gain.precisionString)"
+                        print(comment)
+                    }
+                    newDpaContents.append(".CURve        \"\(indName)\"  \"\(depName)\"  \"\(comment)\"\r\n")
+                }
+                lastGain = gain
+                
+            } else {
+                if operation == ".MOD" {
+                    print("found the model!")
+                    let params = line.substring(from: 13).quotedWords()
+                    print(params.count)
+                    if params.count > 2 {
+                        // var newModelName = ""
+                        comment = params[2]
+                        
+                        /*
+                         if let i = newDpaName.indexBefore(".") {
+                         newModelName = String(newDpaName[i...])
+                         } else {
+                         newModelName = params[0]
+                         }
+                         */
+                        
+                        newDpaContents.append(".MODel       \"" + newModelName + "-RGA\"  \"" + params[1] + "\"  \"" + comment + "\"\r\n")
+                    } else {
+                        newDpaContents.append("\(line)\r\n")
+                    }
+                    
+                } else {
+                    // don't append GSCale if adjusted
+                    if !(gain.adjustType != .none && operation == ".GSC") {
+                        print("operation: " + operation)
+                        print(gain.adjustType)
+                        print("go ahead and append")
+                        newDpaContents.append("\(line)\r\n")
+                    }
+                    print("operation: " + operation)
+                    print(gain.adjustType)
+                }
+            }
+        }
+        
+        do {
+            try newDpaContents.write(to: url, atomically: false, encoding: String.Encoding.ascii)
+        }
+        catch {
+            /* error handling here */
+            print("error")
+        }
+        let _ = dialogOK("Dpa file saved.", info: url.path)
+        //}
     }
 
 

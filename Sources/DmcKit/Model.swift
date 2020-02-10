@@ -32,9 +32,11 @@ public class Model {
     public var cRgas = [Rga]()  // Calculated rga's
     public var rgas = [Rga]()   // Filtered rga's
     public var numberMvs = 0
+    public var selected1Denominator = true
     public var selectedRgaIndex = 0
     public var selected1Name = "" // used for gainRatio Calc
     public var selected2Name = "" // used for gainRatio Calc
+    public var ratioByMvPair = true
 
     
     public var gainRatios = [GainRatio]()
@@ -376,6 +378,12 @@ public class Model {
         getGainWindows()
         
     }
+   
+       public func getGain(ind: Int, dep: Int) -> Gain {
+           let gain = gains.filter{$0.indIndex == ind && $0.depIndex == dep}
+           return gain[0]
+       }
+    
     
     func getGainWindows() {
         // print("getting GainWindows...")

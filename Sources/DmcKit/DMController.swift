@@ -34,6 +34,7 @@ public class Dmcontroller {
     
     func integrate() {
         // print("Integrating...")
+        model.numberMvs = config.mvs.count
         for i in 0..<config.inds.count {
             model.inds[i].shortDescription = config.inds[i].shortDescription
             config.inds[i].longDescription = model.inds[i].longDescription

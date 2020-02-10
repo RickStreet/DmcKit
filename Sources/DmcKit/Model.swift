@@ -29,6 +29,7 @@ public class Model {
     public var mdlURL = URL.init(fileURLWithPath: "")
     public var dpaURL = URL.init(fileURLWithPath: "")
     
+    // RGA Properties
     public var cRgas = [Rga]()  // Calculated rga's
     public var rgas = [Rga]()   // Filtered rga's
     public var numberMvs = 0
@@ -36,9 +37,10 @@ public class Model {
     public var selectedRgaIndex = 0
     public var selected1Name = "" // used for gainRatio Calc
     public var selected2Name = "" // used for gainRatio Calc
+    public var selectedRatioIndex = 0
+
     public var ratioByMvPair = true
     public var ratios = [GainRatio]()
-
     
     public var gainRatios = [GainRatio]()
 

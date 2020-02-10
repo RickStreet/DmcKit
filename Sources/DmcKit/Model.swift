@@ -547,7 +547,7 @@ public class Model {
 
 
 
-    public func calcRatios(ratioByMvPair: Bool) {
+    public func calcRatios() {
         gainRatios.removeAll()
         if ratioByMvPair {
             let selectedMvs = inds.filter{$0.excluded == true}

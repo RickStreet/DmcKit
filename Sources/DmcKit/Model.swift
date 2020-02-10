@@ -37,7 +37,7 @@ public class Model {
     public var selected1Name = "" // used for gainRatio Calc
     public var selected2Name = "" // used for gainRatio Calc
     public var ratioByMvPair = true
-    public var ratios = [Ratio]()
+    public var ratios = [GainRatio]()
 
     
     public var gainRatios = [GainRatio]()

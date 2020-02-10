@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Rga {
+public class Rga {
     public var ind1 = 0
     public var ind2 = 0
     public var dep1 = 0
@@ -36,6 +36,16 @@ public struct Rga {
         } else {
             return 1.0 - rga11
         }
+    }
+    
+    public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Double, gain12: Double, gain21: Double, gain22: Double) {
+        self.ind1 = ind1
+        self.ind2 = ind2
+        self.dep1 = dep1
+        self.gain11 = gain11
+        self.gain12 = gain12
+        self.gain21 = gain21
+        self.gain22 = gain22
     }
     
     public init() {

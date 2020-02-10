@@ -9,7 +9,7 @@
 import Cocoa
 
 public class ReportCurveSource {
-    public var controller = DMController()
+    public var controller = Dmcontroller()
     var curveSources = [CurveSource]()
     
     public var sortByDep = true

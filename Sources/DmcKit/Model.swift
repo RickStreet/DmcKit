@@ -568,6 +568,7 @@ public class Model {
             let selectedMvs = inds.filter{$0.excluded == true}
             if selectedMvs.count != 2 {
                 // Need 2 selected
+                print("Need 2 MV's to calc ratio")
                 return
             } else {
                 let index1 = selectedMvs[0].index
@@ -587,7 +588,7 @@ public class Model {
                 for ratio in gainRatios {
                     print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
                 }
-                // print(ratios)
+                print(ratios)
             }
             
         } else {
@@ -616,7 +617,7 @@ public class Model {
                 for ratio in gainRatios {
                     print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
                 }
-                // print(ratios)
+                print(ratios)
             }
         }
         

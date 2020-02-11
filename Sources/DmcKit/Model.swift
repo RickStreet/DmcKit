@@ -188,7 +188,7 @@ public class Model {
         print()
         
         print("reading dpa file")
-        getDPA()
+        readDPA()
     }
     
     func getNumberArray(_ aString: String) -> [Double] {
@@ -202,9 +202,11 @@ public class Model {
         return numbers
     }
     
-    func getDPA() {
+    func readDPA() {
+        print("in readDPA()")
         let modelFile = mdlURL.lastPathComponent
         name = modelFile
+        print("model name \(name)")
         if var dpaFile = modelFile.fileBase() {
             baseName = dpaFile
             dpaFile += ".dpa"

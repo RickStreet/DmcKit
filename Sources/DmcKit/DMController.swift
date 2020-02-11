@@ -31,11 +31,12 @@ public class Dmcontroller {
         model.readMDL(url: self.modelURL)
         integrate()
         loaded = true
+        print("load complete!")
 
     }
     
     func integrate() {
-        // print("Integrating...")
+        print("Integrating...")
         model.numberMvs = config.mvs.count
         for i in 0..<config.inds.count {
             model.inds[i].shortDescription = config.inds[i].shortDescription
@@ -55,7 +56,7 @@ public class Dmcontroller {
             print("\(dep.name),   \(dep.longDescription),   \(dep.shortDescription),   \(dep.gainWindow)")
         }
         */
-        // print("Done integrating.")
+        print("Done integrating.")
     }
     
     public init() {}

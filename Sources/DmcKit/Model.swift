@@ -189,6 +189,7 @@ public class Model {
         
         print("reading dpa file")
         readDPA()
+        print("Completely done with dpa!")
     }
     
     func getNumberArray(_ aString: String) -> [Double] {

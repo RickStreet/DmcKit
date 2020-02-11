@@ -40,7 +40,7 @@ public class Model {
     public var selectedRatioIndex = 0
 
     public var ratioByMvPair = true
-    public var ratios = [GainRatio]()
+    // public var ratios = [GainRatio]()
     
     public var gainRatios = [GainRatio]()
 
@@ -588,7 +588,7 @@ public class Model {
                 for ratio in gainRatios {
                     print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
                 }
-                print(ratios)
+                // print(ratios)
             }
             
         } else {
@@ -617,7 +617,7 @@ public class Model {
                 for ratio in gainRatios {
                     print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
                 }
-                print(ratios)
+                // print(ratios)
             }
         }
         

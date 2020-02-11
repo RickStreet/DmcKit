@@ -240,10 +240,11 @@ public class Model {
         
         // let lines: [String]
         dpaContents = contents.components(separatedBy: "\n")
-        // print(lines)
         print("parsing dpa file lines...")
+        print(lines)
         // get long descriptions and step size for Ind
         lineNo = 7
+        print("updating inds")
         for ind in inds {
             let texts = dpaContents[lineNo].components(separatedBy: "  ")
             let longDescrip = texts[texts.count - 2].replace("\"", with: "")
@@ -264,6 +265,7 @@ public class Model {
             lineNo += 1
         }
         // get longDescrips for Dep
+        print("updating deps")
         for dep in deps {
             let texts = dpaContents[lineNo].components(separatedBy: "  ")
             let longDescrip = texts[texts.count - 2].replace("\"", with: "")
@@ -279,10 +281,10 @@ public class Model {
         lineNo += 1
         // Get Curve Sources
         curveSources.removeAll()
-        // print("getting curve sources:")
-        // print("line count", dpaContents.count)
-        // print("line", lineNo)
-        // print(dpaContents[lineNo])
+        print("getting curve sources:")
+        print("line count", dpaContents.count)
+        print("line", lineNo)
+        print(dpaContents[lineNo])
         while lineNo < dpaContents.count {
             if dpaContents[lineNo].hasPrefix(".CUR") {
                 curveSources.append(CurveSource())
@@ -292,12 +294,12 @@ public class Model {
                 curveSource.depName = tags[1]
                 curveSource.indIndex = indNo(name: tags[0])
                 curveSource.depIndex = depNo(name: tags[1])
-                // print("Curve", tags[0], tags[1])
+                print("Curve", tags[0], tags[1])
                 if lineNo < dpaContents.count - 1 {
                     lineNo += 1
                 }
-                // print("line after CUR", lineNo)
-                // print(dpaContents[lineNo])
+                print("line after CUR", lineNo)
+                print(dpaContents[lineNo])
 
                 while !dpaContents[lineNo].hasPrefix(".CUR"){
                     let curveType = getCurveType(dpaContents[lineNo])

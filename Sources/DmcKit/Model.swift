@@ -286,6 +286,7 @@ public class Model {
         print("line", lineNo)
         print(dpaContents[lineNo])
         while lineNo < dpaContents.count {
+            print()
             print("line \(lineNo)")
             if dpaContents[lineNo].hasPrefix(".CUR") {
                 curveSources.append(CurveSource())
@@ -302,7 +303,9 @@ public class Model {
                 print("line after CUR", lineNo)
                 print(dpaContents[lineNo])
 
-                while !dpaContents[lineNo].hasPrefix(".CUR"){
+                while !dpaContents[lineNo].hasPrefix(".CUR") && lineNo < dpaContents.count{
+                    print()
+                    print("line \(lineNo)")
                     let curveType = getCurveType(dpaContents[lineNo])
                     // print("get curve type", curveType.trim())
                     switch curveType {

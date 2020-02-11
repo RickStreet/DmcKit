@@ -455,10 +455,11 @@ public class Model {
         var denseDRow = [Gain]() // gains for ind 2 where cv in both ind 1 and ind 2
         
         var mvIndices = [Int]()
+        print("number Mvs \(numberMvs)")
         for i in 0 ..< numberMvs {
             if !inds[i].excluded {
                 mvIndices.append(inds[i].index)
-                print("appended mv \(inds[i].index) to rga.")
+                print("appended mv \(inds[i].index) to rga mvIndices.")
             }
         }
         /*
@@ -473,14 +474,14 @@ public class Model {
         // for a in 0 ..< numberMvs-1 {
         //for b in a+1 ..< numberMvs {
         // print(a, b)
-        for ia in 0 ..< mvIndices.count-1 {
+        for ia in 0 ..< mvIndices.count - 1 {
             let a = mvIndices[ia]
             for ib in (ia + 1) ..< mvIndices.count {
                 let b = mvIndices[ib]
                 denseCRow.removeAll()
                 denseDRow.removeAll()
-                let cRow = nonZeroGains.filter{$0.indIndex == a && !inds[$0.depIndex].excluded} // gains for ind 1
-                let dRow = nonZeroGains.filter{$0.indIndex == b && !inds[$0.depIndex].excluded} // gains for ind 2
+                let cRow = nonZeroGains.filter{$0.indIndex == a && !deps[$0.depIndex].excluded} // gains for ind 1
+                let dRow = nonZeroGains.filter{$0.indIndex == b && !deps[$0.depIndex].excluded} // gains for ind 2
                 
                 for i in 0 ..< cRow.count {
                     let dRowFiltered = dRow.filter{$0.depIndex == cRow[i].depIndex} // See if depNo is in dRow

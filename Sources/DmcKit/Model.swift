@@ -286,6 +286,7 @@ public class Model {
         print("line", lineNo)
         print(dpaContents[lineNo])
         while lineNo < dpaContents.count {
+            print("line \(lineNo)")
             if dpaContents[lineNo].hasPrefix(".CUR") {
                 curveSources.append(CurveSource())
                 let curveSource = curveSources.last!

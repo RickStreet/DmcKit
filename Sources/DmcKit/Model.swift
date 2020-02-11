@@ -210,7 +210,9 @@ public class Model {
             dpaFile += ".dpa"
             dpaName = dpaFile
             dpaURL = mdlURL.deletingLastPathComponent().appendingPathComponent(dpaFile)
-            // print("dpaURL \(dpaURL.path)")
+            print("dpaURL \(dpaURL.path)")
+        } else {
+            print("No model file")
         }
         
         let fm = FileManager.default
@@ -228,7 +230,6 @@ public class Model {
         } catch let error as NSError {
             print("Failed reading from URL: \(dpaURL), Error: " + error.localizedDescription)
         }
-        dpaLoaded = true
         
         
         contents = contents.replace("\r\n", with: "\n")
@@ -238,7 +239,7 @@ public class Model {
         // let lines: [String]
         dpaContents = contents.components(separatedBy: "\n")
         // print(lines)
-        
+        print("parsing dpa file lines...")
         // get long descriptions and step size for Ind
         lineNo = 7
         for ind in inds {
@@ -379,6 +380,7 @@ public class Model {
         }
         // print("done getting curvesources")
         // print()
+        dpaLoaded = true
         getGainWindows()
         
     }

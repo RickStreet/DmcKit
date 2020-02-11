@@ -458,6 +458,7 @@ public class Model {
         for i in 0 ..< numberMvs {
             if !inds[i].excluded {
                 mvIndices.append(inds[i].index)
+                print("appended mv \(inds[i].index) to rga.")
             }
         }
         /*

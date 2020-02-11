@@ -42,6 +42,7 @@ public class Rga {
         self.ind1 = ind1
         self.ind2 = ind2
         self.dep1 = dep1
+        self.dep2 = dep2
         self.gain11 = gain11
         self.gain12 = gain12
         self.gain21 = gain21

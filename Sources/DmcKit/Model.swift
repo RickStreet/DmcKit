@@ -241,7 +241,7 @@ public class Model {
         // let lines: [String]
         dpaContents = contents.components(separatedBy: "\n")
         print("parsing dpa file lines...")
-        print(lines)
+        print(dpaContents)
         // get long descriptions and step size for Ind
         lineNo = 7
         print("updating inds")

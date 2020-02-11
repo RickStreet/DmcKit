@@ -512,7 +512,7 @@ public class Model {
                             // print(denseDRow[d].indNo, denseDRow[d].depNo, denseDRow[d].gain)
                             
                             let rga = Rga(ind1: denseCRow[c].indIndex, ind2: denseDRow[d].indIndex, dep1: denseCRow[c].depIndex, dep2: denseCRow[d].depIndex, gain11: denseCRow[c].gain, gain12: denseCRow[d].gain, gain21: denseDRow[c].gain, gain22: denseDRow[d].gain)
-                            // print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
+                            print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
                             cRgas.append(rga)
                         }
                     }

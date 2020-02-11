@@ -380,14 +380,16 @@ public class Model {
                     if lineNo < dpaContents.count {
                         // print(dpaContents[lineNo])
                     }
+                    print()
+                    print("Exit inner while")
                 }
             }
             // lineNo += 1
             // print("line end file while", lineNo)
             // print(dpaContents[lineNo])
         }
-        // print("done getting curvesources")
-        // print()
+        print("done getting curvesources")
+        print()
         dpaLoaded = true
         getGainWindows()
         
@@ -400,7 +402,7 @@ public class Model {
     
     
     func getGainWindows() {
-        // print("getting GainWindows...")
+        print("getting GainWindows...")
         for dep in deps {
             let depGains = gains.filter{$0.depIndex == dep.index}
             var gainWindow = 0.0
@@ -412,7 +414,7 @@ public class Model {
             }
             dep.gainWindow = gainWindow
         }
-        // print("done getting GainWindows.")
+        print("done getting GainWindows.")
     }
     
     func getCurveType(_ line: String) -> String {

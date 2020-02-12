@@ -162,9 +162,9 @@ public class Config {
                 section.sectionName = line
                 // if line.hasPrefix("[") {
                 
-                let prefix = line.left(5)
+                let prefix = line.left(4)
                 switch prefix {
-                case "[IND:":
+                case "[IND":
                     // Ind
                     // isVar = true
                     section.index = indIndex
@@ -172,7 +172,7 @@ public class Config {
                     section.name = getVarName(sectionText: line)
                     inds.append(section)
                 // print("Ind: \(section.name)")
-                case "[DEP:":
+                case "[DEP":
                     // Dep
                     section.name = getVarName(sectionText: line)
                     section.index = cvIndex
@@ -180,19 +180,19 @@ public class Config {
                     cvs.append(section)
                     // print("Dep: \(section.name)")
                 // isVar = true
-                case "[SUB:]":
+                case "[SUB:":
                     section.index = subIndex
                     subIndex += 1
                     section.name = getVarName(sectionText: line)
                     print("sub in \(section.name)")
                     subs.append(section)
-                case "[CONF":
+                case "[CON":
                     section.name = getSectionName(sectionText: line)
                     configSection = section
-                case "[GENE":
+                case "[GEN":
                     section.name = getSectionName(sectionText: line)
                     generalSection = section
-                case "[CALC":
+                case "[CAL":
                     section.name = getSectionName(sectionText: line)
                     calcSection = section
                 default:
@@ -326,6 +326,7 @@ public class Config {
         for cv in cvs {
             contents += getSectionCCFLines(cv)
         }
+        print("no subs \(subs.count)")
         for sub in subs {
             print("sub out \(sub.name)")
             contents += getSectionCCFLines(sub)

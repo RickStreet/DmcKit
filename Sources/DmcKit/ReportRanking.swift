@@ -10,7 +10,7 @@ import Cocoa
 import StringKit
 
 public class ReportRanking {
-    public var controller = Dmcontroller()
+    public var controller = DmcController()
 
     let tabParagraphStyle = NSMutableParagraphStyle()
 

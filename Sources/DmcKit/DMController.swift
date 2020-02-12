@@ -9,7 +9,7 @@
 import Foundation
 import StringKit
 
-public class Dmcontroller {
+public class DmcController {
     public var config = Config()
     public var model = Model()
     

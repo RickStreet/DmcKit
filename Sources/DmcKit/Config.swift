@@ -180,7 +180,7 @@ public class Config {
                     cvs.append(section)
                     // print("Dep: \(section.name)")
                 // isVar = true
-                case "[SUB:":
+                case "[SUB":
                     section.index = subIndex
                     subIndex += 1
                     section.name = getVarName(sectionText: line)

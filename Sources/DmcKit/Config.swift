@@ -184,6 +184,7 @@ public class Config {
                     section.index = subIndex
                     subIndex += 1
                     section.name = getVarName(sectionText: line)
+                    print("sub in \(section.name)")
                     subs.append(section)
                 case "[CONF":
                     section.name = getSectionName(sectionText: line)
@@ -326,6 +327,7 @@ public class Config {
             contents += getSectionCCFLines(cv)
         }
         for sub in subs {
+            print("sub out \(sub.name)")
             contents += getSectionCCFLines(sub)
         }
         for param in calcParams {

@@ -37,7 +37,7 @@ public class Rga {
             return 1.0 - rga11
         }
     }
-    
+        
     public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Double, gain12: Double, gain21: Double, gain22: Double) {
         self.ind1 = ind1
         self.ind2 = ind2

@@ -36,6 +36,12 @@ public class Gain {
         }
         return 0.0
     }
+    
+    public func revert() {
+        adjustType = .none
+        adjustedGain = nil
+    }
+    
     public var index: Int {
         return depIndex * 1000000 + indIndex
     }

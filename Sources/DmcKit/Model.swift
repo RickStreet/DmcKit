@@ -972,14 +972,15 @@ public class Model {
             }
             
         } else {
-            let selectedInds = inds.filter{$0.excluded == true}
-            if selectedInds.count != 2 {
+            // ratio by cv pairs
+            let selectedDeps = deps.filter{$0.excluded == true}
+            if selectedDeps.count != 2 {
                 // Need 2 selected
                 return
             } else {
                 gainRatios.removeAll()
-                let index1 = selectedInds[0].index
-                let index2 = selectedInds[1].index
+                let index1 = selectedDeps[0].index
+                let index2 = selectedDeps[1].index
                 selected1Name = depName(index: index1)
                 selected2Name = depName(index: index2)
                 let selectedGains1 = gains.filter{$0.depIndex == index1 && $0.gain != 0.0}

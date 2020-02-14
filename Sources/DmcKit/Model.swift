@@ -946,7 +946,7 @@ public class Model {
     public func calcRatios() {
         gainRatios.removeAll()
         if ratioByMvPair {
-            let selectedMvs = inds.filter{$0.excluded == true}
+            let selectedMvs = inds.filter{$0.selected == true}
             if selectedMvs.count != 2 {
                 // Need 2 selected
                 print("Need 2 MV's to calc ratio")
@@ -974,7 +974,7 @@ public class Model {
             
         } else {
             // ratio by cv pairs
-            let selectedDeps = deps.filter{$0.excluded == true}
+            let selectedDeps = deps.filter{$0.selected == true}
             if selectedDeps.count != 2 {
                 // Need 2 selected
                 return

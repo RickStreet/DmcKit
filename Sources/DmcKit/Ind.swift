@@ -23,8 +23,8 @@ public class Ind {
     public var shortDescription: String
     public var longDescription = ""
     public var units: String
-    public var selected = false
-    public var excluded = false
+    public var selected = false // used for ratios
+    public var excluded = false // used to exclude from rga
     public var typicalMove = 0.0
     
     public init(no: Int, name: String, shortDescription: String, units: String) {

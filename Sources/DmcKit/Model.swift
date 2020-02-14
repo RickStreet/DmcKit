@@ -38,6 +38,7 @@ public class Model {
     public var selected1Name = "" // used for gainRatio Calc
     public var selected2Name = "" // used for gainRatio Calc
     public var selectedRatioIndex = 0
+    public var excludeByMV = true // used for exclude VC
 
     public var ratioByMvPair = true
     // public var ratios = [GainRatio]()

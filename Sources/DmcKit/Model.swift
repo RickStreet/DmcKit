@@ -39,10 +39,12 @@ public class Model {
     public var selected2Name = "" // used for gainRatio Calc
     public var selectedRatioIndex = 0
     public var excludeByMV = true // used for exclude VC
+    public var selectedRgaRow: Int?
 
+    // Gain Ratio Properties
     public var ratioByMvPair = true
-    // public var ratios = [GainRatio]()
-    
+    public var selectedGainRatioRow: Int?
+        
     public var gainRatios = [GainRatio]()
 
     
@@ -142,7 +144,7 @@ public class Model {
             for ind in inds {
                 // let tInd = lines[lineNo].substring(with: 0..<13)
                 let textGain = lines[lineNo].substring(with: 46..<69)
-                print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")
+                // print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")
                 var originalGain = textGain.doubleValue!
                 
                 // If SS gain is not 0, append gain
@@ -401,16 +403,16 @@ public class Model {
     // From DMCTuner Modified
 
     func readDPA() {
-        print("in readDPA()")
+        // print("in readDPA()")
         let modelFile = mdlURL.lastPathComponent
         name = modelFile
-        print("model name \(name)")
+        // print("model name \(name)")
         if var dpaFile = modelFile.fileBase() {
             baseName = dpaFile
             dpaFile += ".dpa"
             dpaName = dpaFile
             dpaURL = mdlURL.deletingLastPathComponent().appendingPathComponent(dpaFile)
-            print("dpaURL \(dpaURL.path)")
+            // print("dpaURL \(dpaURL.path)")
         } else {
             print("No model file")
         }
@@ -438,11 +440,11 @@ public class Model {
         
         // let lines: [String]
         dpaContents = contents.components(separatedBy: "\n")
-        print("parsing dpa file lines...")
-        print(dpaContents)
+        // print("parsing dpa file lines...")
+        // print(dpaContents)
         // get long descriptions and step size for Ind
         lineNo = 7
-        print("updating inds")
+        // print("updating inds")
         for ind in inds {
             let texts = dpaContents[lineNo].components(separatedBy: "  ")
             let longDescrip = texts[texts.count - 2].replace("\"", with: "")
@@ -463,7 +465,7 @@ public class Model {
             lineNo += 1
         }
         // get longDescrips for Dep
-        print("updating deps")
+        // print("updating deps")
         for dep in deps {
             let texts = dpaContents[lineNo].components(separatedBy: "  ")
             let longDescrip = texts[texts.count - 2].replace("\"", with: "")
@@ -479,13 +481,13 @@ public class Model {
         lineNo += 1
         // Get Curve Sources
         curveSources.removeAll()
-        print("getting curve sources:")
-        print("line count", dpaContents.count)
-        print("line", lineNo)
-        print(dpaContents[lineNo])
+        // print("getting curve sources:")
+        // print("line count", dpaContents.count)
+        // print("line", lineNo)
+        // print(dpaContents[lineNo])
         while lineNo < dpaContents.count {
-            print()
-            print("line \(lineNo)")
+            // print()
+            // print("line \(lineNo)")
             if dpaContents[lineNo].hasPrefix(".CUR") {
                 curveSources.append(CurveSource())
                 let curveSource = curveSources.last!
@@ -528,16 +530,16 @@ public class Model {
 
                 curveSource.indIndex = indNo(name: tags[0])
                 curveSource.depIndex = depNo(name: tags[1])
-                print("Curve", tags[0], tags[1])
+                // print("Curve", tags[0], tags[1])
                 if lineNo < dpaContents.count - 1 {
                     lineNo += 1
                 }
-                print("line after CUR", lineNo)
-                print(dpaContents[lineNo])
+                // print("line after CUR", lineNo)
+                // print(dpaContents[lineNo])
 
                 while !dpaContents[lineNo].hasPrefix(".CUR") && lineNo < dpaContents.count{
-                    print()
-                    print("line \(lineNo)")
+                    // print()
+                    // print("line \(lineNo)")
                     let curveType = getCurveType(dpaContents[lineNo])
                     // print("get curve type", curveType.trim())
                     switch curveType {
@@ -612,15 +614,15 @@ public class Model {
                     if lineNo < dpaContents.count {
                         // print(dpaContents[lineNo])
                     }
-                    print()
-                    print("Exit inner while")
+                    // print()
+                    // print("Exit inner while")
                 }
             }
             // lineNo += 1
             // print("line end file while", lineNo)
             // print(dpaContents[lineNo])
         }
-        print("done getting curvesources")
+        // print("done getting curvesources")
         print()
         dpaLoaded = true
         getGainWindows()
@@ -783,7 +785,7 @@ public class Model {
     
     
     func getGainWindows() {
-        print("getting GainWindows...")
+        // print("getting GainWindows...")
         for dep in deps {
             let depGains = gains.filter{$0.depIndex == dep.index}
             var gainWindow = 0.0
@@ -795,7 +797,7 @@ public class Model {
             }
             dep.gainWindow = gainWindow
         }
-        print("done getting GainWindows.")
+        // print("done getting GainWindows.")
     }
     
     func getCurveType(_ line: String) -> String {
@@ -835,11 +837,11 @@ public class Model {
         var denseDRow = [Gain]() // gains for ind 2 where cv in both ind 1 and ind 2
         
         var mvIndices = [Int]()
-        print("number Mvs \(numberMvs)")
+        // print("number Mvs \(numberMvs)")
         for i in 0 ..< numberMvs {
             if !inds[i].excluded {
                 mvIndices.append(inds[i].index)
-                print("appended mv \(inds[i].index) to rga mvIndices.")
+                // print("appended mv \(inds[i].index) to rga mvIndices.")
             }
         }
         /*
@@ -893,7 +895,7 @@ public class Model {
                             // print(denseDRow[d].indNo, denseDRow[d].depNo, denseDRow[d].gain)
                             
                             let rga = Rga(ind1: denseCRow[c].indIndex, ind2: denseDRow[d].indIndex, dep1: denseCRow[c].depIndex, dep2: denseCRow[d].depIndex, gain11: denseCRow[c].gain, gain12: denseCRow[d].gain, gain21: denseDRow[c].gain, gain22: denseDRow[d].gain)
-                            print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
+                            // print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
                             cRgas.append(rga)
                         }
                     }
@@ -913,7 +915,7 @@ public class Model {
     
     public func indDescription(index: Int) -> String {
         var value = ""
-        print("ind:  \(index)")
+        // print("ind:  \(index)")
         if index < inds.count {
             value = inds.filter{$0.index == index}[0].shortDescription
         }
@@ -966,9 +968,11 @@ public class Model {
                         gainRatios.append(ratio)
                     }
                 }
+                /*
                 for ratio in gainRatios {
                     print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
                 }
+                 */
                 // print(ratios)
             }
             
@@ -996,9 +1000,11 @@ public class Model {
                         gainRatios.append(ratio)
                     }
                 }
+                /*
                 for ratio in gainRatios {
                     print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
                 }
+                */
                 // print(ratios)
             }
         }
@@ -1015,9 +1021,9 @@ public class Model {
         
         
         // print("configPath: " + configPath)
-        print("dpaName: " + dpaName)
+        // print("dpaName: " + dpaName)
         // print("newDpaName: " + newDpaURL.path)
-        print("newModelName: " + newModelName)
+        // print("newModelName: " + newModelName)
         
         var gain = Gain(indNo: 0, depNo: 0, originalGain: 0, adjustedGain: 0, adjustType: .none)
         var lastGain: Gain?
@@ -1046,7 +1052,7 @@ public class Model {
                 if let newGain = lastGain?.gain, let oldGain = lastGain?.originalGain {
                     if newGain != oldGain {
                         newDpaContents.append("    .GSCale   \(newGain.precisionString)\r\n")
-                        print("appending GSCale for \(newGain)")
+                        // print("appending GSCale for \(newGain)")
                     }
                 }
                 
@@ -1067,17 +1073,17 @@ public class Model {
                         if comment.count > 2 {
                             comment += "\r"
                         }
-                        print("")
+                        // print("")
                         comment = "RGA Original Gain was \(gain.originalGain) and set to \(gain.gain)"
-                        print(comment)
+                        // print(comment)
                     }
                     if gain.adjustType == .adjusted {
                         if comment.count > 2 {
                             comment += "\r"
                         }
-                        print("")
+                        // print("")
                         comment = "RGA Original Gain was \(gain.originalGain) and adjusted to \(gain.gain.precisionString)"
-                        print(comment)
+                        // print(comment)
                     }
                     newDpaContents.append(".CURve        \"\(indName)\"  \"\(depName)\"  \"\(comment)\"\r\n")
                 }
@@ -1085,9 +1091,9 @@ public class Model {
                 
             } else {
                 if operation == ".MOD" {
-                    print("found the model!")
+                    // print("found the model!")
                     let params = line.substring(from: 13).quotedWords()
-                    print(params.count)
+                    // print(params.count)
                     if params.count > 2 {
                         // var newModelName = ""
                         comment = params[2]
@@ -1108,13 +1114,13 @@ public class Model {
                 } else {
                     // don't append GSCale if adjusted
                     if !(gain.adjustType != .none && operation == ".GSC") {
-                        print("operation: " + operation)
-                        print(gain.adjustType)
-                        print("go ahead and append")
+                        // print("operation: " + operation)
+                        // print(gain.adjustType)
+                        // print("go ahead and append")
                         newDpaContents.append("\(line)\r\n")
                     }
-                    print("operation: " + operation)
-                    print(gain.adjustType)
+                    // print("operation: " + operation)
+                    // print(gain.adjustType)
                 }
             }
         }

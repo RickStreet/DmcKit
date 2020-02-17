@@ -142,7 +142,7 @@ public class Model {
             for ind in inds {
                 // let tInd = lines[lineNo].substring(with: 0..<13)
                 let textGain = lines[lineNo].substring(with: 46..<69)
-                // print("Dep: \(tDep) \(tInd) textGain: \(textGain)")
+                print("Dep: \(tDep) \(tInd) textGain: \(textGain)")
                 var originalGain = textGain.doubleValue!
                 
                 // If SS gain is not 0, append gain

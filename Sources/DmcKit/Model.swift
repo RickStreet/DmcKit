@@ -34,15 +34,14 @@ public class Model {
     public var rgas = [Rga]()   // Filtered rga's
     public var numberMvs = 0
     public var selected1Denominator = true
-    public var selectedRgaIndex = 0
+    public var selectedRgaIndex: Int?
     public var selected1Name = "" // used for gainRatio Calc
     public var selected2Name = "" // used for gainRatio Calc
-    public var selectedRatioIndex = 0
     public var excludeByMV = true // used for exclude VC
-    public var selectedRgaRow: Int?
 
     // Gain Ratio Properties
     public var ratioByMvPair = true
+    public var selectedRatioIndex: Int?
     public var selectedGainRatioRow: Int?
         
     public var gainRatios = [GainRatio]()

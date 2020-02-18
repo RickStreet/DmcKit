@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Double {
+public extension Double {
     var precisionString: String {
         if self == 0 {
             return "0"
@@ -22,11 +22,6 @@ extension Double {
             return  String(format: "%.\(decimals)f", self)
         }
     }
-}
-
-
-
-extension Double {
     // Rounds the double to 'places' significant digits
     func roundTo(places:Int) -> Double {
         guard self != 0.0 else {

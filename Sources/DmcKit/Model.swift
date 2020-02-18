@@ -911,11 +911,12 @@ public class Model {
     }
     
     func sortRga() {
+        print("sorting rgas")
         switch sortRgaBy {
         case .rga:
-            rgas.sort{$0.rga > $1.rga}
+            cRgas.sort{$0.rga > $1.rga}
         case .mv:
-            rgas.sort {
+            cRgas.sort {
                 if $0.ind1 != $1.ind1 {
                     return $0.ind1 < $1.ind1
                 } else {
@@ -923,7 +924,7 @@ public class Model {
                 }
             }
         case .cv:
-            rgas.sort {
+            cRgas.sort {
                 if $0.dep1 != $1.dep1 {
                     return $0.dep1 < $1.dep1
                 } else {
@@ -936,6 +937,7 @@ public class Model {
     }
         
     public func filterRgas(rgaLimit: Double) {
+        print("filtering with limit \(rgaLimit)")
         rgas = cRgas.filter{$0.rga >= rgaLimit}
         
     }

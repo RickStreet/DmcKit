@@ -38,6 +38,7 @@ public class Model {
     public var selected1Name = "" // used for gainRatio Calc
     public var selected2Name = "" // used for gainRatio Calc
     public var excludeByMV = true // used for exclude VC
+    public var rgaLimit = 5.0
     public var sortRgaBy: SortRgaBy = .rga {
         didSet {
             sortRga()
@@ -912,9 +913,9 @@ public class Model {
     func sortRga() {
         switch sortRgaBy {
         case .rga:
-            cRgas.sort{$0.rga > $1.rga}
+            rgas.sort{$0.rga > $1.rga}
         case .mv:
-            cRgas.sort {
+            rgas.sort {
                 if $0.ind1 != $1.ind1 {
                     return $0.ind1 < $1.ind1
                 } else {
@@ -922,7 +923,7 @@ public class Model {
                 }
             }
         case .cv:
-            cRgas.sort {
+            rgas.sort {
                 if $0.dep1 != $1.dep1 {
                     return $0.dep1 < $1.dep1
                 } else {
@@ -930,7 +931,15 @@ public class Model {
                 }
             }
         }
+        selectedRgaIndex = nil
+        filterRgas(rgaLimit: rgaLimit)
     }
+        
+    public func filterRgas(rgaLimit: Double) {
+        rgas = cRgas.filter{$0.rga >= rgaLimit}
+        
+    }
+
     
     public func indName(index: Int) -> String {
         var name = ""
@@ -963,11 +972,6 @@ public class Model {
             value = deps.filter{$0.index == index}[0].shortDescription
         }
         return value
-    }
-    
-    public func filterRgas(rgaLimit: Double) {
-        rgas = cRgas.filter{$0.rga >= rgaLimit}
-        
     }
 
 

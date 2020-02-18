@@ -14,6 +14,11 @@ public enum GainAdjustType: String {
     case adjusted = "Adjust"
 }
 
+public enum SortRgaBy {
+    case mv
+    case cv
+    case rga
+}
 
 public enum PredictionFilterType: String {
     case none = "None"

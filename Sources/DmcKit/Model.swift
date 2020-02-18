@@ -38,6 +38,11 @@ public class Model {
     public var selected1Name = "" // used for gainRatio Calc
     public var selected2Name = "" // used for gainRatio Calc
     public var excludeByMV = true // used for exclude VC
+    public var sortRgaBy: SortRgaBy = .rga {
+        didSet {
+            sortRga()
+        }
+    }
 
     // Gain Ratio Properties
     public var ratioByMvPair = true
@@ -901,7 +906,30 @@ public class Model {
                 }
             }
         }
-        cRgas.sort{$0.rga > $1.rga}
+        sortRga()
+    }
+    
+    func sortRga() {
+        switch sortRgaBy {
+        case .rga:
+            cRgas.sort{$0.rga > $1.rga}
+        case .mv:
+            cRgas.sort {
+                if $0.ind1 != $1.ind1 {
+                    return $0.ind1 < $1.ind1
+                } else {
+                    return $0.ind2 < $1.ind2
+                }
+            }
+        case .cv:
+            cRgas.sort {
+                if $0.dep1 != $1.dep1 {
+                    return $0.dep1 < $1.dep1
+                } else {
+                    return $0.dep2 < $1.dep2
+                }
+            }
+        }
     }
     
     public func indName(index: Int) -> String {

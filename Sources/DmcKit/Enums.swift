@@ -20,6 +20,11 @@ public enum SortRgaBy {
     case rga
 }
 
+public enum SortRatioBy {
+    case variable
+    case ratio
+}
+
 public enum PredictionFilterType: String {
     case none = "None"
     case firstOrder = "First Order"

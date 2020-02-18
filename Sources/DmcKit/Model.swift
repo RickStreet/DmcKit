@@ -48,7 +48,11 @@ public class Model {
     // Gain Ratio Properties
     public var ratioByMvPair = true
     public var selectedRatioIndex: Int?
-    public var selectedGainRatioRow: Int?
+    public var sortRatioBy: SortRatioBy = .ratio {
+        didSet {
+            sortRatios()
+        }
+    }
         
     public var gainRatios = [GainRatio]()
 
@@ -1041,7 +1045,18 @@ public class Model {
                 // print(ratios)
             }
         }
-        
+    }
+    
+    func sortRatios() {
+        switch sortRatioBy {
+        case .ratio:
+            print("sort ratios by ratio")
+            gainRatios.sort{$0.value < $1.value}
+        case .variable:
+            print("sort ratios by var")
+            gainRatios.sort{$0.varIndex < $1.varIndex}
+        }
+        selectedRatioIndex = nil
     }
 
     public func writeDpaFile(url: URL) {

@@ -17,7 +17,7 @@ public class Rga {
     public var gain21 = 0.0
     public var gain22 = 0.0
     
-    let zeroTolerence = 9.99999999e-13
+    let zeroTolerence = 9.999999999999999e-13
     
     public var rga11: Double {
         let denominator = gain11 * gain22 - gain12 * gain21

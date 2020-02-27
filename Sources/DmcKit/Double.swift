@@ -31,8 +31,8 @@ public extension Double {
         return (self * divisor).rounded() / divisor
     }
     
-    func roundTo(decimals: Int) -> Double {
-        let divisor = pow(10.0, Double(decimals))
+    func roundTo(decimalPlaces: Int) -> Double {
+        let divisor = pow(10.0, Double(decimalPlaces))
         return (self * divisor).rounded() / divisor
     }
 }

@@ -87,7 +87,10 @@ public class XForm {
             case "PWLN":
                 type =  .pwl
                 getXFormPoints()
-                eqText = ""
+                eqText = "PWLN"
+                for (index, point) in xFormPoints.enumerated(){
+                    eqText += "\n(x\(index + 1): \(point.x), y\(index + 1) \(point.y)"
+                }
             case "SHIFTERATEPOWER":
                 type =  .shiftRatePower
                 eqText = "ShiftRatePower(shift: \(params[1])   rate: \(params[2])   power: \(params[3]))"
@@ -109,10 +112,10 @@ public class XForm {
         // if param.hasPrefix("PWLN") {
         var i = 2
         while i < params.count {
-            print(params[i], params[i+1])
+            // print(params[i], params[i+1])
             if let x = params[i].doubleValue, let y = params[i+1].doubleValue {
                 // print(comps[i], comps[i+1])
-                print(x, y)
+                // print(x, y)
                 xFormPoints.append((x: x, y: y))
             }
             i += 2

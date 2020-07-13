@@ -14,6 +14,7 @@ public class Config {
     
     var contents = "" // Used to store the file contents
     var url = URL(fileURLWithPath: "")
+    var directoryUrl = URL(fileURLWithPath: "")
     public var selectedSection: Section? // Used to communicate current selected var across view controllers
     public var controllerName = ""
     public var baseName = ""
@@ -63,6 +64,7 @@ public class Config {
     
     public func readCCF(url: URL) {
         clear()
+        directoryUrl = url.deletingLastPathComponent()
         do {
             // Read the file contents
             contents = try String(contentsOf: url, encoding: .ascii)

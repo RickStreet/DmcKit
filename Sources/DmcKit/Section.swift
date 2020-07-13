@@ -8,6 +8,7 @@
 
 import Foundation
 import StringKit
+import FileKit
 
 // IQ General Section Type
 @dynamicMemberLookup
@@ -21,6 +22,7 @@ public class Section {
     public var selected = false
     public var targetGainWindow = 0.0 // used for display
     public var select = true // used to select sections
+    public var type = "" // used to build interface points
     
     public var heading: String {
         return "\(index + 1).  \(name),  \(shortDescription)"

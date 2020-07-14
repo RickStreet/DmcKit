@@ -166,6 +166,7 @@ public class Config {
                 // if line.hasPrefix("[") {
                 
                 let prefix = line.left(4)
+                print("prefix \(prefix)")
                 switch prefix {
                 case "[IND":
                     // Ind

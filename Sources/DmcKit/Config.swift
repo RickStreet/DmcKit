@@ -196,7 +196,8 @@ public class Config {
                     section.name = getSectionName(sectionText: line)
                     generalSection = section
                 case "[ET]":
-                    section.name = getSectionName(sectionText: line)
+                    print("ET section added")
+                    section.name = "ET"
                     etSection = section
                 case "[CAL":
                     section.name = getSectionName(sectionText: line)

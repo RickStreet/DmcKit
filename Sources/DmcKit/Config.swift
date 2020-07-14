@@ -30,6 +30,7 @@ public class Config {
     public var calcSection = Section()
     public var configSection = Section()
     public var generalSection = Section()
+    public var etSection = Section()
     public var gMults = [GMult]()
     public var modelName = ""
     public var configURL = URL.init(fileURLWithPath: "")
@@ -194,6 +195,9 @@ public class Config {
                 case "[GEN":
                     section.name = getSectionName(sectionText: line)
                     generalSection = section
+                case "[ET]":
+                    section.name = getSectionName(sectionText: line)
+                    etSection = section
                 case "[CAL":
                     section.name = getSectionName(sectionText: line)
                     calcSection = section
@@ -320,7 +324,8 @@ public class Config {
         contents += "[COMMENT]\r\n"
         contents += getSectionCCFLines(configSection)
         contents += getSectionCCFLines(generalSection)
-        contents += "[ET]\r\n"
+        contents += getSectionCCFLines(etSection)
+        // contents += "[ET]\r\n"
         contents += "[CSS]\r\n"
         for ind in inds {
             contents += getSectionCCFLines(ind)

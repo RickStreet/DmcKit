@@ -130,6 +130,63 @@ public class ConfigParam {
         return cutLine("." + name + "~~~" + keyWord + "~~~" + type + "~~~" + value + "~~~" + entity)
     }
     
+    func parseLongTag(entity: String) -> (device: String, unit: String, dcsTag: String, source: String, formatCode: String) {
+        // "device":unit:"dcs tag":source:format code
+        var device = ""
+        var unit = ""
+        var dcsTag = ""
+        var source = ""
+        var formatCode = ""
+        
+        var tLine = entity.substring(from: 1)
+        if !tLine.hasPrefix("\"") {
+            // Has Device
+            if let at = tLine.indexBefore("\"") {
+                device = String(tLine[...at])
+            }
+        }
+        if let at = tLine.indexAfter(":") {
+            tLine = String(tLine[at...])
+            if !tLine.hasPrefix(":") {
+                // Has unit
+                if let at = tLine.indexBefore(":") {
+                    unit = String(tLine[...at])
+                }
+            }
+        }
+        
+        if let at = tLine.indexAfter("\"") {
+            tLine = String(tLine[at...])
+            if !tLine.hasPrefix("\"") {
+                // Have DSC Tag
+                if let at = tLine.indexBefore("\"") {
+                    dcsTag =  String(tLine[...at])
+                }
+            }
+        }
+        
+        if let at = tLine.indexAfter(":") {
+            tLine = String(tLine[at...])
+            if !tLine.hasPrefix(":") {
+                // Has source
+                if let at = tLine.indexBefore(":") {
+                    source = String(tLine[...at])
+                }
+            }
+        }
+        
+        if let at = tLine.indexAfter(":") {
+            tLine = String(tLine[at...])
+            if tLine.count > 0 {
+                // Have format code
+                formatCode = String(tLine[at...])
+            }
+        }
+        return (device, unit, dcsTag, source, formatCode)
+
+
+    }
+    
     
     public init(id: Int, name: String, keyWord: String, type: String, value: String, entity: String) {
         // self.section = section
@@ -139,6 +196,10 @@ public class ConfigParam {
         self.type = type
         self.value = value
         self.entity = entity
+        if entity.contains(target: "\"") {
+            // long tag
+            parseLongTag(entity: entity)
+        }
     }
 
     public init(id: Int, name: String, keyWord: String, type: String, value: String) {

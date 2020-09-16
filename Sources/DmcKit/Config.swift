@@ -190,7 +190,7 @@ public class Config {
                     section.name = getVarName(sectionText: line)
                     print("sub in \(section.name)")
                     subs.append(section)
-                case "[CON":
+                case "[CON": // Config
                     section.name = getSectionName(sectionText: line)
                     configSection = section
                 case "[GEN":
@@ -245,12 +245,10 @@ public class Config {
                 //if section.name == "CALC" {
                 if !(name.hasPrefix("CALC") || name.hasPrefix("COMMENT")) && section.name == "CALC" {
                     calcParams.append(configParam)
+                    configParam.calcIndex = calcIndex
+                    calcIndex += 1
                 } else {
-                    if section.name == "CALC" {
-                        configParam.index = calcIndex
-                        calcIndex += 1
-                    }
-                    section.append(configParam)
+                   section.append(configParam)
                 }
                 // }
                 

@@ -24,7 +24,7 @@ import StringKit
  */
 public class ConfigParam {
     public var id = 0       // Order in file
-    public var index = 0    // Calc Index
+    public var calcIndex = 0    // Calc Index
     // var section = Section() // Section
     public var name = ""   // Param name
     public var keyWord = "" // Build, Constant, Write...

@@ -369,6 +369,7 @@ public class Config {
     }
     
     func getSectionCCFLines(_ section: Section) -> String {
+        print("Generating lines for \(section.name)")
         var params = [ConfigParam]()
         if section.name == "CALC" {
             params = section.params.sorted{$0.calcIndex < $1.calcIndex}

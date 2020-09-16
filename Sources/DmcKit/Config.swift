@@ -252,8 +252,11 @@ public class Config {
                     // calcIndex += 1
                 } else {
                     // Calc
+                    print()
+                    print("Calc: \(configParam.name)")
+                    print()
                     configParam.calcIndex = calcIndex
-                   section.append(configParam)
+                    section.append(configParam)
                     calcIndex += 1
                 }
                 // }
@@ -334,19 +337,19 @@ public class Config {
     public func generateCCFContent () -> String {
         var contents = "CCF_Version 1\r\n"
         contents += "[COMMENT]\r\n"
-
+        
         // Config
         contents += "\(configSection.sectionName)\r\n"
         contents += getSectionCCFLines(configSection)
-
+        
         // General
         contents += "\(generalSection.sectionName)\r\n"
         contents += getSectionCCFLines(generalSection)
-
+        
         // ET
         contents += "\(etSection.sectionName)\r\n"
         contents += getSectionCCFLines(etSection)
-
+        
         // CSS
         contents += "[CSS]\r\n"
         
@@ -354,12 +357,12 @@ public class Config {
         for ind in inds {
             contents += getSectionCCFLines(ind)
         }
-
+        
         // Deps
         for cv in cvs {
             contents += getSectionCCFLines(cv)
         }
-
+        
         print("no subs \(subs.count)")
         for sub in subs {
             print("sub out \(sub.name)")
@@ -375,7 +378,7 @@ public class Config {
         contents += getSectionCCFLines(calcSection)
         
         return contents
-
+        
     }
     
     func getSectionCCFLines(_ section: Section) -> String {

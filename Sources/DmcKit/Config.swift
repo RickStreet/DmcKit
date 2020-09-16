@@ -244,11 +244,17 @@ public class Config {
                 
                 //if section.name == "CALC" {
                 if !(name.hasPrefix("CALC") || name.hasPrefix("COMMENT")) && section.name == "CALC" {
+                    // Global Variable
+                    print()
+                    print("Global: \(configParam.name)")
+                    print()
                     calcParams.append(configParam)
-                    configParam.calcIndex = calcIndex
-                    calcIndex += 1
+                    // calcIndex += 1
                 } else {
+                    // Calc
+                    configParam.calcIndex = calcIndex
                    section.append(configParam)
+                    calcIndex += 1
                 }
                 // }
                 

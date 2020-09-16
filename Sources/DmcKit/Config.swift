@@ -230,19 +230,7 @@ public class Config {
                     configParam.entity = ""
                 }
                 
-                /*
-                 // ***********************************
-                 if section.name == "66AI1043PVF" {
-                 print(params)
-                 if params[2] == "R4" {
-                 print(Double(params[3]) ?? "nil")
-                 print()
-                 }
-                 }
-                 */
-                
-                
-                //if section.name == "CALC" {
+                // Check if global variable
                 if !(name.hasPrefix("CALC") || name.hasPrefix("COMMENTC")) && section.name == "CALC" {
                     // Global Variable
                     print()
@@ -251,13 +239,12 @@ public class Config {
                     calcParams.append(configParam)
                     // calcIndex += 1
                 } else {
-                    // Calc
-                    print()
-                    print("Calc: \(configParam.name)")
-                    print()
+                    // Normal Section
                     configParam.calcIndex = calcIndex
                     section.append(configParam)
-                    calcIndex += 1
+                    if section.name == "CALC" {
+                        calcIndex += 1
+                    }
                 }
                 // }
                 

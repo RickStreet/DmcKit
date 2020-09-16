@@ -335,13 +335,13 @@ public class Config {
         var contents = "CCF_Version 1\r\n"
         contents += "[COMMENT]\r\n"
 
-        var contents = "\(section.sectionName)\r\n"
+        contents += "\(configSection.sectionName)\r\n"
         contents += getSectionCCFLines(configSection)
 
-        var contents = "\(section.sectionName)\r\n"
+        contents += "\(generalSection.sectionName)\r\n"
         contents += getSectionCCFLines(generalSection)
 
-        var contents = "\(section.sectionName)\r\n"
+        contents += "\(etSection.sectionName)\r\n"
         contents += getSectionCCFLines(etSection)
         // contents += "[ET]\r\n"
 
@@ -360,7 +360,7 @@ public class Config {
             contents += getSectionCCFLines(sub)
         }
         
-        var contents = "\(section.sectionName)\r\n"
+        contents += "\(calcSection.sectionName)\r\n"
         for param in calcParams {
             contents += param.line
         }

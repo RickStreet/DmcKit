@@ -166,7 +166,7 @@ public class Config {
                 // if line.hasPrefix("[") {
                 
                 let prefix = line.left(4)
-                print("prefix \(prefix)")
+                // print("prefix \(prefix)")
                 switch prefix {
                 case "[IND":
                     // Ind
@@ -188,7 +188,7 @@ public class Config {
                     section.index = subIndex
                     subIndex += 1
                     section.name = getVarName(sectionText: line)
-                    print("sub in \(section.name)")
+                    // print("sub in \(section.name)")
                     subs.append(section)
                 case "[CON": // Config
                     section.name = getSectionName(sectionText: line)
@@ -197,7 +197,7 @@ public class Config {
                     section.name = getSectionName(sectionText: line)
                     generalSection = section
                 case "[ET]":
-                    print("ET section added")
+                    // print("ET section added")
                     section.name = "ET"
                     etSection = section
                 case "[CAL":
@@ -233,9 +233,9 @@ public class Config {
                 // Check if global variable
                 if !(name.hasPrefix("CALC") || name.hasPrefix("COMMENTC")) && section.name == "CALC" {
                     // Global Variable
-                    print()
-                    print("Global: \(configParam.name)")
-                    print()
+                    // print()
+                    // print("Global: \(configParam.name)")
+                    // print()
                     calcParams.append(configParam)
                     // calcIndex += 1
                 } else {
@@ -313,12 +313,6 @@ public class Config {
          print(ff.name, ff.shortDescription)
          }
          */
-        print()
-        print("section: \(calcSection.name)")
-        for param in calcSection.params {
-            print("\(param.name), \(param.value)")
-        }
-        
     }
     
     public func generateCCFContent () -> String {
@@ -350,9 +344,9 @@ public class Config {
             contents += getSectionCCFLines(cv)
         }
         
-        print("no subs \(subs.count)")
+        // print("no subs \(subs.count)")
         for sub in subs {
-            print("sub out \(sub.name)")
+            // print("sub out \(sub.name)")
             contents += getSectionCCFLines(sub)
         }
         
@@ -369,7 +363,7 @@ public class Config {
     }
     
     func getSectionCCFLines(_ section: Section) -> String {
-        print("Generating lines for \(section.name)")
+        // print("Generating lines for \(section.name)")
         var params = [ConfigParam]()
         if section.name == "CALC" {
             params = section.params.sorted{$0.calcIndex < $1.calcIndex}

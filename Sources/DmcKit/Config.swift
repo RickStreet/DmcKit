@@ -243,7 +243,7 @@ public class Config {
                 
                 
                 //if section.name == "CALC" {
-                if !(name.hasPrefix("CALC") || name.hasPrefix("COMMENT")) && section.name == "CALC" {
+                if !(name.hasPrefix("CALC") || name.hasPrefix("COMMENTC")) && section.name == "CALC" {
                     // Global Variable
                     print()
                     print("Global: \(configParam.name)")

@@ -318,6 +318,7 @@ public class Config {
          }
          */
         print()
+        print("section: \(calcSection.name)")
         for param in calcSection.params {
             print("\(param.name), \(param.value)")
         }
@@ -353,7 +354,12 @@ public class Config {
     }
     
     func getSectionCCFLines(_ section: Section) -> String {
-        let params = section.params.sorted{$0.name < $1.name}
+        var params = [ConfigParam]()
+        if section.name == "CALC" {
+            params = section.params.sorted{$0.calcIndex < $1.calcIndex}
+        } else {
+            params = section.params.sorted{$0.name < $1.name}
+        }
         var contents = "\(section.sectionName)\r\n"
         for param in params {
             contents += param.line

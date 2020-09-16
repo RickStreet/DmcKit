@@ -317,6 +317,11 @@ public class Config {
          print(ff.name, ff.shortDescription)
          }
          */
+        print()
+        for param in calcSection.params {
+            print("\(param.name), \(param.value)")
+        }
+        
     }
     
     public func generateCCFContent () -> String {

@@ -335,21 +335,27 @@ public class Config {
         var contents = "CCF_Version 1\r\n"
         contents += "[COMMENT]\r\n"
 
+        // Config
         contents += "\(configSection.sectionName)\r\n"
         contents += getSectionCCFLines(configSection)
 
+        // General
         contents += "\(generalSection.sectionName)\r\n"
         contents += getSectionCCFLines(generalSection)
 
+        // ET
         contents += "\(etSection.sectionName)\r\n"
         contents += getSectionCCFLines(etSection)
-        // contents += "[ET]\r\n"
 
+        // CSS
         contents += "[CSS]\r\n"
+        
+        // Inds
         for ind in inds {
             contents += getSectionCCFLines(ind)
         }
 
+        // Deps
         for cv in cvs {
             contents += getSectionCCFLines(cv)
         }
@@ -360,7 +366,9 @@ public class Config {
             contents += getSectionCCFLines(sub)
         }
         
+        // Calcs
         contents += "\(calcSection.sectionName)\r\n"
+        // Global Params
         for param in calcParams {
             contents += param.line
         }

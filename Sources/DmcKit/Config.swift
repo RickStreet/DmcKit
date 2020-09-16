@@ -376,7 +376,7 @@ public class Config {
         } else {
             params = section.params.sorted{$0.name < $1.name}
         }
-        // var contents = "\(section.sectionName)\r\n"
+        var contents = ""
         for param in params {
             contents += param.line
         }

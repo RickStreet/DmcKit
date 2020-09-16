@@ -334,22 +334,33 @@ public class Config {
     public func generateCCFContent () -> String {
         var contents = "CCF_Version 1\r\n"
         contents += "[COMMENT]\r\n"
+
+        var contents = "\(section.sectionName)\r\n"
         contents += getSectionCCFLines(configSection)
+
+        var contents = "\(section.sectionName)\r\n"
         contents += getSectionCCFLines(generalSection)
+
+        var contents = "\(section.sectionName)\r\n"
         contents += getSectionCCFLines(etSection)
         // contents += "[ET]\r\n"
+
         contents += "[CSS]\r\n"
         for ind in inds {
             contents += getSectionCCFLines(ind)
         }
+
         for cv in cvs {
             contents += getSectionCCFLines(cv)
         }
+
         print("no subs \(subs.count)")
         for sub in subs {
             print("sub out \(sub.name)")
             contents += getSectionCCFLines(sub)
         }
+        
+        var contents = "\(section.sectionName)\r\n"
         for param in calcParams {
             contents += param.line
         }
@@ -366,7 +377,7 @@ public class Config {
         } else {
             params = section.params.sorted{$0.name < $1.name}
         }
-        var contents = "\(section.sectionName)\r\n"
+        // var contents = "\(section.sectionName)\r\n"
         for param in params {
             contents += param.line
         }

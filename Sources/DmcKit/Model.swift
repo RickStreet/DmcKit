@@ -1099,11 +1099,14 @@ public class Model {
             if i > 5 && (operation == ".CUR" || operation == "!#==" ) {
                 if let newGain = lastGain?.gain, let oldGain = lastGain?.originalGain {
                     if newGain != oldGain {
-                        newDpaContents.append("    .GSCale   \(newGain.precisionString)\r\n")
-                        // print("appending GSCale for \(newGain)")
+                        if deps[gain.depIndex].ramp > 0 {
+                            newDpaContents.append("    .GSCale   \(newGain.precisionString)\r\n")
+                            // print("appending GSCale for \(newGain)")
+                        } else {
+                            newDpaContents.append("    .RSCale   \(newGain.precisionString)\r\n")
+                        }
                     }
-                }
-                
+                }                
                 let params = line.substring(from: 14).quotedWords()
                 // print(params)
                 if params.count > 2 {

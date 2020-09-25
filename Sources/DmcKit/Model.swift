@@ -1100,10 +1100,10 @@ public class Model {
                 if let newGain = lastGain?.gain, let oldGain = lastGain?.originalGain {
                     if newGain != oldGain {
                         if deps[gain.depIndex].ramp > 0 {
-                            newDpaContents.append("    .GSCale   \(newGain.precisionString)\r\n")
+                            newDpaContents.append("    .RSCale   \(newGain.precisionString)\r\n")
                             // print("appending GSCale for \(newGain)")
                         } else {
-                            newDpaContents.append("    .RSCale   \(newGain.precisionString)\r\n")
+                            newDpaContents.append("    .GSCale   \(newGain.precisionString)\r\n")
                         }
                     }
                 }                

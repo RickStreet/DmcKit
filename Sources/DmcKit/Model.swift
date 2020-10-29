@@ -1064,7 +1064,8 @@ public class Model {
         // let uniqueURL = UniqueFileURL()
         // let newDpaURL = uniqueURL.newURL(fileURL: dirURL.appendingPathComponent(dpaName))
         // let newDpaName = newUniqueFileName.getUniqueFileName(fullFileName: configPath + "/" + dpaName)
-        let newModelName = url.lastPathComponent
+        let modelURL = url.deletingPathExtension()
+        let newModelName = modelURL.lastPathComponent
         
         
         

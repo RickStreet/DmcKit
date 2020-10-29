@@ -24,6 +24,8 @@ public class Section {
     public var select = true // used to select sections
     public var type = "" // used to build interface points
     
+    public var note = ""
+    
     public var heading: String {
         return "\(index + 1).  \(name),  \(shortDescription)"
     }

@@ -35,6 +35,8 @@ public class ConfigParam {
     var originalValue = ""
     var updatedValue: String?
     
+    public var note = ""
+    
     public var value = "" {
         didSet {
             if type == "R4" || type == "I4" {

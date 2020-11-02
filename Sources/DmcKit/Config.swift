@@ -378,6 +378,7 @@ public class Config {
         return contents
     }
     
+    // get IO
     public func getIO() -> [(dcsTag: String, name: String, keyWord: String)] {
         var ioList = [(dcsTag: String, name: String, keyWord: String)]()
         for param in configSection.params {

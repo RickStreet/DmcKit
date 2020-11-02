@@ -10,6 +10,7 @@ import Foundation
 import StringKit
 import DialogKit
 
+/// DMCplus Model
 public class Model {
     public var name = ""
     public var baseName = ""

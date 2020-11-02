@@ -185,8 +185,14 @@ public class ConfigParam {
             }
         }
         return (device, unit, dcsTag, source, formatCode)
-
-
+    }
+    
+    public var io: Bool {
+        if keyWord == "WRITE" || keyWord == "AWRITE" || keyWord ==
+            "LWRITE" || keyWord == "PWRITE" || keyWord == "RDWRT"  || keyWord == "READ" {
+            return true
+        }
+        return false
     }
     
     

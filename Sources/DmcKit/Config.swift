@@ -378,8 +378,8 @@ public class Config {
         return contents
     }
     
-    public func getIO() -> [(name: String, dcsPoint: String, keyWord: String)] {
-        var ioList = [(name: String, dcsPoint: String, keyWord: String)]()
+    public func getIO() -> [(name: String, dcsTag: String, keyWord: String)] {
+        var ioList = [(name: String, dcsTag: String, keyWord: String)]()
         for param in configSection.params {
             if param.io {
                 ioList.append((param.name, param.dcsTag, param.keyWord))

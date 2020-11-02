@@ -378,47 +378,48 @@ public class Config {
         return contents
     }
     
-    public func getIO() -> [(name: String, keyWord: String)] {
-        var ioList = [(name: String, keyWord: String)]()
+    public func getIO() -> [(name: String, dcsPoint: String, keyWord: String)] {
+        var ioList = [(name: String, dcsPoint: String, keyWord: String)]()
         for param in configSection.params {
             if param.io {
-                ioList.append((param.name, param.keyWord))
+                ioList.append((param.name, param.dcsTag, param.keyWord))
             }
         }
         for param in generalSection.params {
             if param.io {
-                ioList.append((param.name, param.keyWord))
+                ioList.append((param.name, param.dcsTag, param.keyWord))
             }
         }
         for mv in mvs {
             for param in mv.params {
                 if param.io {
-                    ioList.append((param.name, param.keyWord))
+                    ioList.append((param.name, param.dcsTag, param.keyWord))
+
                 }
             }
         }
         for ff in ffs {
             for param in ff.params {
                 if param.io {
-                    ioList.append((param.name, param.keyWord))
+                    ioList.append((param.name, param.dcsTag, param.keyWord))
                 }
             }
         }
         for cv in cvs {
             for param in cv.params {
                 if param.io {
-                    ioList.append((param.name, param.keyWord))
+                    ioList.append((param.name, param.dcsTag, param.keyWord))
                 }
             }
         }
         for param in calcParams {
             if param.io {
-                ioList.append((param.name, param.keyWord))
+                ioList.append((param.name, param.dcsTag, param.keyWord))
             }
         }
         for param in etSection.params {
             if param.io {
-                ioList.append((param.name, param.keyWord))
+                ioList.append((param.name, param.dcsTag, param.keyWord))
             }
         }
         ioList.sort{$0.name < $1.name}

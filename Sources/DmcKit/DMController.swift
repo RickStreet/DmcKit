@@ -17,6 +17,9 @@ public class DmcController {
     public var configURL = URL.init(fileURLWithPath: "")
     public var loaded = false
     
+    var dpaTypicalMoves = [Double]()
+    var ccfTypicalMoves = [Double]()
+    
     var excelInstalled = false
     var excelURLs = [URL]()
     
@@ -32,7 +35,28 @@ public class DmcController {
         integrate()
         loaded = true
         print("load complete!")
-
+        for i in 0..<model.inds.count {
+            print("dpa typmov \(model.inds[i].typicalMove)")
+            dpaTypicalMoves.append(model.inds[i].typicalMove)
+        }
+        for i in 0..<config.inds.count {
+            print("ccf typmov \(config.inds[i].typmov.doubleValue)")
+            ccfTypicalMoves.append(config.inds[i].typmov.doubleValue)
+        }
+    }
+    
+    public func typicalMovesByDPA() {
+        for i in 0..<model.inds.count {
+            model.inds[i].typicalMove = dpaTypicalMoves[i]
+        }
+        model.getGainWindows()
+    }
+    
+    public func typicalMovesByCCF() {
+        for i in 0..<model.inds.count {
+            model.inds[i].typicalMove = ccfTypicalMoves[i]
+        }
+        model.getGainWindows()
     }
     
     func integrate() {
@@ -48,78 +72,57 @@ public class DmcController {
             config.cvs[i].longDescription = model.deps[i].longDescription
         }
         /*
-        print()
-        for ind in model.inds {
-            print("\(ind.name),   \(ind.longDescription),  \(ind.shortDescription)")
-        }
-        for dep in model.deps {
-            print("\(dep.name),   \(dep.longDescription),   \(dep.shortDescription),   \(dep.gainWindow)")
-        }
-        */
+         print()
+         for ind in model.inds {
+         print("\(ind.name),   \(ind.longDescription),  \(ind.shortDescription)")
+         }
+         for dep in model.deps {
+         print("\(dep.name),   \(dep.longDescription),   \(dep.shortDescription),   \(dep.gainWindow)")
+         }
+         */
         print("Done integrating.")
     }
     
-    public init() {}
-    
-    /*
-    func getSubControllerGains() {
-        excelURLs.removeAll()
-
-        let buildPercentGainsExcel = BuildPercentGainsExcel ()
-        buildPercentGainsExcel.cvs = config.cvs
-        buildPercentGainsExcel.inds = config.inds
-        buildPercentGainsExcel.gains = model.gains
-        // print("Excel file:")
-        // print(config.configURL.path)
-        let fileName = config.configURL.deletingLastPathComponent().path + "/" + config.baseName.capitalized + "_pGains.xlsx"
-        buildPercentGainsExcel.outputFileName = fileName
-        // print(fileName)
-        buildPercentGainsExcel.run()
-        excelURLs.append(URL(fileURLWithPath: fileName))
- 
-
-        if config.subs.count < 1 {
-            return
-        }
-        var allCvSubs = [(Section, String)]()
+    public func getSubControllers() -> [SubController] {
         
-        for cv in config.cvs {
-            let subs = cv.cvinsb.value.components(separatedBy: "&")
-            for sub in subs {
-                allCvSubs.append((cv, sub))
-            }
-        }
+        var subs = [SubController]()
+        let mainController = SubController()
+        mainController.name = model.name
+        mainController.inds = model.inds
+        mainController.deps = model.deps
+        mainController.gains = model.gains
+        subs.append(mainController)
         
-        // print("Getting sub gains...")
-        var subGains = [Gain]()
-        for sub in config.subs {
-            subGains.removeAll()
-            let subCvs = allCvSubs.filter{$0.1 == sub}.map{$0.0} // Get cvs in sub
-            // let subCvs = config.cvs.filter{$0.cvinsb.value.contains(target: sub)}
-            // print()
-            // print(sub)
-            for cv in subCvs {
-                subGains += model.gains.filter{$0.depIndex == cv.index}
-                // print(cv.index)
+        if config.subs.count > 0 {
+            
+            var allCvSubNames = [(cv: String, sub: String)]()
+            
+            for cv in config.cvs {
+                let cvNames = cv.cvinsb.value.components(separatedBy: "&")
+                for sub in cvNames {
+                    allCvSubNames.append((cv.name, sub))
+                }
             }
-            var inds = subGains.map{$0.indIndex}
-            inds = Array(Set(inds))
-            inds.sort{$0 < $1}
-            var subInds = [Section]()
-            for ind in inds {
-                subInds.append(config.inds[ind])
+            for sub in config.subs {
+                let subController = SubController()
+                let subCvNames = allCvSubNames.filter{$0.1 == sub.name}.map{$0.0}  // list od dep names in sub
+                for cvName in subCvNames {
+                    subController.deps.append(contentsOf: model.deps.filter{$0.name == cvName})
+                }
+                for dep in subController.deps {
+                    subController.gains += model.gains.filter{$0.depIndex == dep.index}
+                }
+                var indInices = subController.gains.map{$0.indIndex}
+                indInices = Array(Set(indInices)) // Get ride of duplicate indices
+                indInices.sort{$0 < $1}
+                for index in indInices {
+                    subController.inds.append(model.inds[index])
+                }
+                subs.append(subController)
             }
-            let fileName = config.configURL.deletingLastPathComponent().path + "/" + config.baseName.capitalized + "_" + sub + "_pGains.xlsx"
-            buildPercentGainsExcel.outputFileName = fileName
-            buildPercentGainsExcel.cvs = subCvs
-            buildPercentGainsExcel.inds = subInds
-            buildPercentGainsExcel.gains = subGains
-            buildPercentGainsExcel.subName = sub
-            buildPercentGainsExcel.run()
-            excelURLs.append(URL(fileURLWithPath: fileName))
         }
-        // print("done getting sub gains.")
+        return subs
     }
-    */
     
+    public init() {}
 }

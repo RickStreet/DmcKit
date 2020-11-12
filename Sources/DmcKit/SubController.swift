@@ -12,4 +12,7 @@ public class SubController {
     public var inds = [Ind]()
     public var deps = [Dep]()
     public var gains = [Gain]()
+    
+    public init() {}
+
 }

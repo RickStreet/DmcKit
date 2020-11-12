@@ -87,7 +87,7 @@ public class DmcController {
         
         var subs = [SubController]()
         let mainController = SubController()
-        mainController.name = model.name
+        mainController.name = model.baseName
         mainController.inds = model.inds
         mainController.deps = model.deps
         mainController.gains = model.gains
@@ -105,6 +105,7 @@ public class DmcController {
             }
             for sub in config.subs {
                 let subController = SubController()
+                subController.name = sub.name
                 let subCvNames = allCvSubNames.filter{$0.1 == sub.name}.map{$0.0}  // list od dep names in sub
                 for cvName in subCvNames {
                     subController.deps.append(contentsOf: model.deps.filter{$0.name == cvName})

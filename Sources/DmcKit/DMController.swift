@@ -177,7 +177,7 @@ public class DmcController {
                 let deps = config.cvs.filter{$0.name.uppercased() == tag.uppercased()}
                 if !deps.isEmpty {
                     let dep = deps[0]
-                    let newLine = "\(params[0])  \"\(tag)\"  \(params[2].trimQuotes())  \"\(dep.shortDescription)\"  \"\(params[4])\""
+                    let newLine = "\(params[0])    \"\(tag)\"  \(params[3])  \"\(dep.shortDescription)\"  \(params[5])"
                     newDpaContents += newLine + "\r\n"
 
                     print(newLine)

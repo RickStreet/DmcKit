@@ -138,8 +138,10 @@ public class DmcController {
             var tag = ""
             if operation == ".IND" || operation == ".DEP" {
                 params = line.trimQuotes().components(separatedBy: "  ")
+                print(params)
                 if params.count > 1 {
                     tag = params[1]
+                    print("tag \(tag)")
                 }
             }
             switch operation {

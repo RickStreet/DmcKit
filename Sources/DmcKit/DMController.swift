@@ -141,7 +141,9 @@ public class DmcController {
             let operation = line.trim().left(4)
             var params = [String]()
             var tag = ""
-            if operation == ".IND" || operation == ".DEP" {
+            switch operation {
+            case ".IND":
+                print("IND \(line)")
                 print()
                 params = line.components(separatedBy: "  ")
                 print("params")
@@ -151,10 +153,6 @@ public class DmcController {
                     tag = params[1].trimQuotes()
                     print("tag \(tag)")
                 }
-            }
-            switch operation {
-            case ".IND":
-                print("IND \(line)")
                 let inds = config.inds.filter{$0.name.uppercased() == tag.uppercased()}
                 if !inds.isEmpty {
                     let ind = inds[0]
@@ -166,6 +164,16 @@ public class DmcController {
                 }
             case ".DEP":
                 print("DEP \(line)")
+                print()
+                params = line.components(separatedBy: "  ")
+                print("params")
+                print(params)
+                print()
+                if params.count > 1 {
+                    tag = params[2].trimQuotes()
+                    print("tag \(tag)")
+                }
+
                 let deps = config.cvs.filter{$0.name.uppercased() == tag.uppercased()}
                 if !deps.isEmpty {
                     let dep = deps[0]

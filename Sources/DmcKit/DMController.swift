@@ -142,8 +142,11 @@ public class DmcController {
             var params = [String]()
             var tag = ""
             if operation == ".IND" || operation == ".DEP" {
+                print()
                 params = line.trimQuotes().components(separatedBy: "  ")
+                print("params")
                 print(params)
+                print()
                 if params.count > 1 {
                     tag = params[1]
                     print("tag \(tag)")

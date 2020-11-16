@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/RickStreet/DialogKit.git",
         "state": {
           "branch": null,
-          "revision": "c95488a196d46d63ce39ec83aea64b9b2080f823",
-          "version": "1.0.7"
+          "revision": "ba5c368ade6f845124643754a068c4e685040a21",
+          "version": "1.0.8"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/RickStreet/StringKit.git",
         "state": {
           "branch": null,
-          "revision": "3487c2f2c3b84f58ed815a09cd883271212c9d04",
-          "version": "1.0.12"
+          "revision": "6a17301f92606eaa5aed44b6364a20ce0231e9d3",
+          "version": "1.0.14"
         }
       }
     ]

@@ -8,6 +8,7 @@
 
 import Foundation
 import StringKit
+import DialogKit
 
 public class DmcController {
     public var config = Config()
@@ -124,6 +125,59 @@ public class DmcController {
         }
         return subs
     }
+    
+    /// Writes new dpa file using ccf descriptions and move sizes
+    /// - Parameter url: file location to write to
+    public func wrireDpaFile(url: URL) {
+        // let modelURL = url.deletingPathExtension()
+        // let newModelName = modelURL.lastPathComponent
+        var newDpaContents = ""
+        for (_, line) in model.dpaContents.enumerated() {
+            let operation = line.trim().left(4)
+            var params = [String]()
+            var tag = ""
+            if operation == ".IND" || operation == ".DEP" {
+                params = line.trimQuotes().components(separatedBy: "  ")
+                if params.count > 1 {
+                    tag = params[1]
+                }
+            }
+            switch operation {
+            case ".IND":
+                print("IND \(line)")
+                let inds = config.inds.filter{$0.name == tag}
+                if !inds.isEmpty {
+                    let ind = inds[0]
+                    let newLine = "\(params[0])  \"\(params[1])\"  \"\(params[2])\"  \"\(ind.shortDescription)\"  \(ind.typmov.doubleValue)"
+                    print(newLine)
+                } else {
+                    print("Cannot get ind from config")
+                }
+            case ".DEP":
+                print("DEP \(line)")
+                let deps = config.cvs.filter{$0.name == tag}
+                if !deps.isEmpty {
+                    let dep = deps[0]
+                    let newLine = "\(params[0])  \"\(params[1])\"  \"\(params[2])\"  \"\(dep.shortDescription)\"  \"\(params[4])\""
+                    print(newLine)
+                } else {
+                    print("Cannot get ind from config")
+                }
+
+            default:
+                newDpaContents = line
+            }
+        }
+        do {
+            try newDpaContents.write(to: url, atomically: false, encoding: String.Encoding.ascii)
+        }
+        catch {
+            /* error handling here */
+            print("error")
+        }
+        let _ = dialogOK("Dpa file saved.", info: url.path)
+    }
+
     
     public init() {}
 }

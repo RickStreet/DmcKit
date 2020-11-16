@@ -1099,6 +1099,7 @@ public class Model {
         for (i, line) in dpaContents.enumerated() {
             let operation = line.trim().left(4)
             if i > 5 && (operation == ".CUR" || operation == "!#==" ) {
+                // Line after header and is type.CURve
                 if let newGain = lastGain?.gain, let oldGain = lastGain?.originalGain {
                     if newGain != oldGain {
                         if deps[gain.depIndex].ramp > 0 {
@@ -1188,6 +1189,7 @@ public class Model {
         let _ = dialogOK("Dpa file saved.", info: url.path)
         //}
     }
+    
 
 
     public init() {}

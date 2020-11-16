@@ -143,14 +143,12 @@ public class DmcController {
             var tag = ""
             if operation == ".IND" || operation == ".DEP" {
                 print()
-                let newLine = line.trimQuotes()
-                print("newLine w/o quotes: \(newLine)")
-                params = newLine.components(separatedBy: "  ")
+                params = line.components(separatedBy: "  ")
                 print("params")
                 print(params)
                 print()
                 if params.count > 1 {
-                    tag = params[1]
+                    tag = params[1].trimQuotes()
                     print("tag \(tag)")
                 }
             }
@@ -160,7 +158,7 @@ public class DmcController {
                 let inds = config.inds.filter{$0.name.uppercased() == tag.uppercased()}
                 if !inds.isEmpty {
                     let ind = inds[0]
-                    let newLine = "\(params[0])  \"\(params[1])\"  \"\(params[2])\"  \"\(ind.shortDescription)\"  \(ind.typmov.doubleValue)"
+                    let newLine = "\(params[0])  \"\(tag)\"  \(params[2])  \"\(ind.shortDescription)\"  \(ind.typmov.doubleValue)"
                     print(newLine)
                     newDpaContents += newLine + "\r\n"
                 } else {
@@ -171,7 +169,7 @@ public class DmcController {
                 let deps = config.cvs.filter{$0.name.uppercased() == tag.uppercased()}
                 if !deps.isEmpty {
                     let dep = deps[0]
-                    let newLine = "\(params[0])  \"\(params[1])\"  \"\(params[2])\"  \"\(dep.shortDescription)\"  \"\(params[4])\""
+                    let newLine = "\(params[0])  \"\(tag)\"  \(params[2].trimQuotes())  \"\(dep.shortDescription)\"  \"\(params[4])\""
                     newDpaContents += newLine + "\r\n"
 
                     print(newLine)

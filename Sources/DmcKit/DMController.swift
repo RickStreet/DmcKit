@@ -143,7 +143,9 @@ public class DmcController {
             var tag = ""
             if operation == ".IND" || operation == ".DEP" {
                 print()
-                params = line.trimQuotes().components(separatedBy: "  ")
+                let newLine = line.trimQuotes()
+                print("newLine w/o quotes: \(newLine)")
+                params = newLine.components(separatedBy: "  ")
                 print("params")
                 print(params)
                 print()

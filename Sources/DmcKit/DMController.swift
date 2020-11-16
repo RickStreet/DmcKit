@@ -147,27 +147,30 @@ public class DmcController {
             switch operation {
             case ".IND":
                 print("IND \(line)")
-                let inds = config.inds.filter{$0.name == tag}
+                let inds = config.inds.filter{$0.name.uppercased() == tag.uppercased()}
                 if !inds.isEmpty {
                     let ind = inds[0]
                     let newLine = "\(params[0])  \"\(params[1])\"  \"\(params[2])\"  \"\(ind.shortDescription)\"  \(ind.typmov.doubleValue)"
                     print(newLine)
+                    newDpaContents += newLine + "\r\n"
                 } else {
-                    print("Cannot get ind from config")
+                    print("Cannot get ind \(tag) from config")
                 }
             case ".DEP":
                 print("DEP \(line)")
-                let deps = config.cvs.filter{$0.name == tag}
+                let deps = config.cvs.filter{$0.name.uppercased() == tag.uppercased()}
                 if !deps.isEmpty {
                     let dep = deps[0]
                     let newLine = "\(params[0])  \"\(params[1])\"  \"\(params[2])\"  \"\(dep.shortDescription)\"  \"\(params[4])\""
+                    newDpaContents += newLine + "\r\n"
+
                     print(newLine)
                 } else {
-                    print("Cannot get ind from config")
+                    print("Cannot get dep \(tag) from config")
                 }
 
             default:
-                newDpaContents = line
+                newDpaContents += line + "\r\n"
             }
         }
         do {

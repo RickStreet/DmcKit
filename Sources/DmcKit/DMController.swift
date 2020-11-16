@@ -129,6 +129,11 @@ public class DmcController {
     /// Writes new dpa file using ccf descriptions and move sizes
     /// - Parameter url: file location to write to
     public func wrireDpaFile(url: URL) {
+        
+        for i in 0..<model.inds.count {
+            print("\(i), \(model.inds[i].name), \(config.inds[i].name)")
+        }
+        
         // let modelURL = url.deletingPathExtension()
         // let newModelName = modelURL.lastPathComponent
         var newDpaContents = ""

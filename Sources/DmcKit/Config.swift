@@ -273,8 +273,11 @@ public class Config {
             cv.shortDescription = cv.descdep.value
             // print(cv.name, cv.shortDescription)
         }
+        print()
+        print("Getting Gmults...")
         for ind in inds {
             let mults = ind.params.filter{$0.name.left(5) == "GMULT"}
+            print("\(ind.name), gmults \(mults.count)")
             for mult in mults {
                 if var depIndex = mult.name.substring(from: 5).integerValue {
                     depIndex -= 1  // Aspen indicies start with 1
@@ -293,15 +296,14 @@ public class Config {
                 ffs.append(ind)
             }
         }
-        /*
+
          print()
          print("GMults:")
          for gmult in gMults {
          print(gmult.indIndex, gmult.depIndex, gmult.value)
          }
          print()
-         */
-        
+
         /*
          print()
          print("Mvs:")

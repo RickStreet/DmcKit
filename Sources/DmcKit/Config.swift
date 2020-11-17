@@ -280,10 +280,14 @@ public class Config {
             print("\(ind.name), gmults \(mults.count)")
             for mult in mults {
                 if var depIndex = mult.name.substring(from: 5).integerValue {
-                    depIndex -= 1  // Aspen indicies start with 1
-                    // print(depIndex, mult.doubleValue)
-                    let gmult = GMult(indIndex: ind.index, depIndex: depIndex, value: mult.doubleValue)
-                    gMults.append(gmult)
+                    if depIndex <= cvs.count {
+                        depIndex -= 1  // Aspen indicies start with 1
+                        // print(depIndex, mult.doubleValue)
+                        let gmult = GMult(indIndex: ind.index, depIndex: depIndex, value: mult.doubleValue)
+                        gMults.append(gmult)
+                    } else {
+                        print("Gmult dep index \(depIndex - 1) out of range.")
+                    }
                 }
                 // print(mult.name.substring(from: 5), mult.doubleValue)
             }

@@ -206,7 +206,12 @@ public class ConfigParam {
         self.entity = entity
         if entity.contains(target: "\"") {
             // long tag
-            parseLongTag(entity: entity)
+            let params = parseLongTag(entity: entity)
+            self.entityDevice = params.device
+            self.entityUnit = params.unit
+            self.dcsTag = params.dcsTag
+            self.entitySource = params.source
+            self.entityFormatCode = params.formatCode
         }
     }
 

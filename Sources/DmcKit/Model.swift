@@ -481,6 +481,8 @@ public class Model {
             let longDescrip = texts[texts.count - 2].replace("\"", with: "")
             // depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
             dep.longDescription = longDescrip
+            let rampIndex = texts[texts.count - 1].integerValue ?? 0
+            dep.ramp = rampIndex
             // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
             // print("lDescrip \(depInfo.last?.description)")
             

@@ -136,9 +136,9 @@ public class Model {
         while lines[lineNo].substring(with: 8..<16) == "0.000000" {
             let tag = lines[lineNo].substring(with: 36..<49).trim()
             let units = lines[lineNo].substring(with: 49..<61).trim()
-            let ramp =  lines[lineNo].substring(with: 66..<67)
+            let rampIndex =  lines[lineNo].substring(with: 66..<67).integerValue ?? 0
             // print("ramp: \(ramp)")
-            deps.append(Dep(no: depNo, name: tag, shortDescription: "", units: units, ramp: ramp.integerValue ?? 0))
+            deps.append(Dep(no: depNo, name: tag, shortDescription: "", units: units, ramp: rampIndex))
             lineNo += 1
             depNo += 1
             // print("Dep: \(tag) \(units)")
@@ -481,8 +481,6 @@ public class Model {
             let longDescrip = texts[texts.count - 2].replace("\"", with: "")
             // depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
             dep.longDescription = longDescrip
-            let rampIndex = texts[texts.count - 1].integerValue ?? 0
-            dep.ramp = rampIndex
             // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
             // print("lDescrip \(depInfo.last?.description)")
             

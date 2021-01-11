@@ -1073,7 +1073,7 @@ public class Model {
             let operation = line.trim().left(4).uppercased()
             switch operation {
             case ".IND":
-                newLine = ".INDependent  \"\(inds[indIndex].name)\"  \"\(inds[indIndex].units)\"  \"\(inds[indIndex].shortDescription)\"  \( inds[indIndex].typicalMove)"
+                newLine = ".INDependent  \"\(inds[indIndex].name)\"  \"\(inds[indIndex].units)\"  \"\(inds[indIndex].shortDescription)\"  \(inds[indIndex].typicalMove)"
                 indIndex += 1
             case ".DEP":
                 var rampText = ""
@@ -1085,8 +1085,7 @@ public class Model {
                 default:
                     break
                 }
-                
-                newLine = ".INDependent  \"\(deps[depIndex].name)\"  \"\(deps[depIndex].units)\"  \"\(deps[depIndex].shortDescription)\"  \(rampText)"
+                newLine = ".INDependent  \"\(deps[depIndex].name)\"  \"\(deps[depIndex].units)\"  \"\(deps[depIndex].shortDescription)\"  \"\(rampText)\""
                 depIndex += 1
             default:
                 newLine = line

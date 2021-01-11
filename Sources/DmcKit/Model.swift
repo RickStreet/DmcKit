@@ -45,7 +45,7 @@ public class Model {
             sortRga()
         }
     }
-
+    
     // Gain Ratio Properties
     public var ratioByMvPair = true
     public var selectedRatioIndex: Int?
@@ -54,9 +54,9 @@ public class Model {
             sortRatios()
         }
     }
-        
+    
     public var gainRatios = [GainRatio]()
-
+    
     
     func clear() {
         deps.removeAll()
@@ -217,201 +217,201 @@ public class Model {
     }
     // From DMCTuner
     /*
-    func readDPA() {
-        print("in readDPA()")
-        let modelFile = mdlURL.lastPathComponent
-        name = modelFile
-        print("model name \(name)")
-        if var dpaFile = modelFile.fileBase() {
-            baseName = dpaFile
-            dpaFile += ".dpa"
-            dpaName = dpaFile
-            dpaURL = mdlURL.deletingLastPathComponent().appendingPathComponent(dpaFile)
-            print("dpaURL \(dpaURL.path)")
-        } else {
-            print("No model file")
-        }
-        
-        let fm = FileManager.default
-        
-        if !fm.fileExists(atPath: dpaURL.path) {
-            let answer = dialogOK("Missing dpa file (*.dpa).", info: "Please make sure it is in the same directory as the controller ccf file")
-            print(answer)
-            dpaLoaded = false
-            return
-        }
-        var contents = ""
-        do {
-            // Read the file contents
-            contents = try String(contentsOf: dpaURL)
-        } catch let error as NSError {
-            print("Failed reading from URL: \(dpaURL), Error: " + error.localizedDescription)
-        }
-        
-        
-        contents = contents.replace("\r\n", with: "\n")
-        var lineNo = 0
-        
-        
-        // let lines: [String]
-        dpaContents = contents.components(separatedBy: "\n")
-        print("parsing dpa file lines...")
-        print(dpaContents)
-        // get long descriptions and step size for Ind
-        lineNo = 7
-        print("updating inds")
-        for ind in inds {
-            let texts = dpaContents[lineNo].components(separatedBy: "  ")
-            let longDescrip = texts[texts.count - 2].replace("\"", with: "")
-            var typicalMove = 0.0
-            if let step = texts.last!.doubleValue {
-                typicalMove = step
-            }
-            // let typicalMove = doubleValue(texts.lastt!)
-            ind.longDescription = longDescrip
-            ind.typicalMove = typicalMove
-            
-            // print("\(ind.name), typMove: \(ind.typicalMove)")
-            // indInfo.append(IndInfo(no: ind.no, name: ind.name, description: longDescrip, typicalMove: typicalMove))
-            // print("lDescrip \(indInfo.last?.description)")
-            
-            
-            // print("\((ind.no, ind.tag, longDescrip, typicalMove))")
-            lineNo += 1
-        }
-        // get longDescrips for Dep
-        print("updating deps")
-        for dep in deps {
-            let texts = dpaContents[lineNo].components(separatedBy: "  ")
-            let longDescrip = texts[texts.count - 2].replace("\"", with: "")
-            // depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
-            dep.longDescription = longDescrip
-            // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
-            // print("lDescrip \(depInfo.last?.description)")
-            
-            lineNo += 1
-        }
-        
-        
-        lineNo += 1
-        // Get Curve Sources
-        curveSources.removeAll()
-        print("getting curve sources:")
-        print("line count", dpaContents.count)
-        print("line", lineNo)
-        print(dpaContents[lineNo])
-        while lineNo < dpaContents.count {
-            print()
-            print("line \(lineNo)")
-            if dpaContents[lineNo].hasPrefix(".CUR") {
-                curveSources.append(CurveSource())
-                let curveSource = curveSources.last!
-                let tags = dpaContents[lineNo].substring(from: 14).quotedWords()
-                curveSource.indName = tags[0]
-                curveSource.depName = tags[1]
-                curveSource.indIndex = indNo(name: tags[0])
-                curveSource.depIndex = depNo(name: tags[1])
-                print("Curve", tags[0], tags[1])
-                if lineNo < dpaContents.count - 1 {
-                    lineNo += 1
-                }
-                print("line after CUR", lineNo)
-                print(dpaContents[lineNo])
-
-                while !dpaContents[lineNo].hasPrefix(".CUR") && lineNo < dpaContents.count{
-                    print()
-                    print("line \(lineNo)")
-                    let curveType = getCurveType(dpaContents[lineNo])
-                    // print("get curve type", curveType.trim())
-                    switch curveType {
-                    case ".UNIty  ":
-                        curveSource.type = "UNI"
-                        curveSource.sourceCase = "Unity Curve"
-                        curveSource.sources.append(.unity)
-                        // print(".UNI")
-                    case ".ZERo   ":
-                        curveSource.type = "ZER"
-                        curveSource.sourceCase = "Zero Curve"
-                        curveSource.sources.append(.zero)
-                        // print(".ZER")
-                        
-                    case "    .REP":
-                        let values = dpaContents[lineNo].substring(from: 10).quotedWords()
-                        curveSource.type = "REP"
-                        curveSource.sourceCase = values[0]
-                        curveSource.sourceCurve = values[1]
-                        curveSource.sourceInd = values[2]
-                        curveSource.sourceDep = values[3]
-                        curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
-                        // print(".REP")
-                        
-                    case "    .FIR":
-                        curveSource.type = "FIR"
-                        let curve = dpaContents[lineNo].substring(from: 16).components(separatedBy: " ")
-                        // print(curve)
-                        if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let gain =  curve[2].doubleValue{
-                            curveSource.deadtime = deadtime / 60.0
-                            curveSource.tau = tau / 60.0
-                            curveSource.gain = gain
-                            curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
-                        }
-                        // print(".FIR")
-                        
-                    case "    .SEC":
-                        curveSource.type = "SEC"
-                        // print(dpaContents[lineNo].substring(from: 17))
-                        let curve = dpaContents[lineNo].substring(from: 17).components(separatedBy: " ")
-                        // print(curve)
-                        if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let damp = curve[2].doubleValue, let gain = curve[3].doubleValue {
-                            curveSource.deadtime = deadtime / 60.0
-                            curveSource.tau = tau / 60.0
-                            curveSource.damp = damp
-                            curveSource.gain = gain
-                            curveSource.sources.append(.second(deadtime: deadtime / 60.0, tau: tau / 60.0, damp: damp, gain: gain))
-                            // print(".SEC")
-                        }
-                        
-                    case "    .CON":
-                        let curve = dpaContents[lineNo].substring(from: 15).quotedWords()
-                        curveSource.type = "CON"
-                        curveSource.sourceCase = curve[0]
-                        curveSource.sourceCurve = curve[1]
-                        curveSource.convoluteCase = curve[2]
-                        curveSource.convoluteCurve = curve[3]
-                        curveSource.sourceInd = curve[4]
-                        curveSource.sourceDep = curve[5]
-                        curveSource.convoluteIndName = curve[6]
-                        curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
-                        // print(".CON")
-                        
-                    default:
-                        break
-                    }
-                    lineNo += 1
-                    if lineNo == dpaContents.count {
-                        break
-                    }
-                    // print("line end curve while", lineNo)
-                    if lineNo < dpaContents.count {
-                        // print(dpaContents[lineNo])
-                    }
-                    print()
-                    print("Exit inner while")
-                }
-            }
-            // lineNo += 1
-            // print("line end file while", lineNo)
-            // print(dpaContents[lineNo])
-        }
-        print("done getting curvesources")
-        print()
-        dpaLoaded = true
-        getGainWindows()
-    }
-    */
-   
+     func readDPA() {
+     print("in readDPA()")
+     let modelFile = mdlURL.lastPathComponent
+     name = modelFile
+     print("model name \(name)")
+     if var dpaFile = modelFile.fileBase() {
+     baseName = dpaFile
+     dpaFile += ".dpa"
+     dpaName = dpaFile
+     dpaURL = mdlURL.deletingLastPathComponent().appendingPathComponent(dpaFile)
+     print("dpaURL \(dpaURL.path)")
+     } else {
+     print("No model file")
+     }
+     
+     let fm = FileManager.default
+     
+     if !fm.fileExists(atPath: dpaURL.path) {
+     let answer = dialogOK("Missing dpa file (*.dpa).", info: "Please make sure it is in the same directory as the controller ccf file")
+     print(answer)
+     dpaLoaded = false
+     return
+     }
+     var contents = ""
+     do {
+     // Read the file contents
+     contents = try String(contentsOf: dpaURL)
+     } catch let error as NSError {
+     print("Failed reading from URL: \(dpaURL), Error: " + error.localizedDescription)
+     }
+     
+     
+     contents = contents.replace("\r\n", with: "\n")
+     var lineNo = 0
+     
+     
+     // let lines: [String]
+     dpaContents = contents.components(separatedBy: "\n")
+     print("parsing dpa file lines...")
+     print(dpaContents)
+     // get long descriptions and step size for Ind
+     lineNo = 7
+     print("updating inds")
+     for ind in inds {
+     let texts = dpaContents[lineNo].components(separatedBy: "  ")
+     let longDescrip = texts[texts.count - 2].replace("\"", with: "")
+     var typicalMove = 0.0
+     if let step = texts.last!.doubleValue {
+     typicalMove = step
+     }
+     // let typicalMove = doubleValue(texts.lastt!)
+     ind.longDescription = longDescrip
+     ind.typicalMove = typicalMove
+     
+     // print("\(ind.name), typMove: \(ind.typicalMove)")
+     // indInfo.append(IndInfo(no: ind.no, name: ind.name, description: longDescrip, typicalMove: typicalMove))
+     // print("lDescrip \(indInfo.last?.description)")
+     
+     
+     // print("\((ind.no, ind.tag, longDescrip, typicalMove))")
+     lineNo += 1
+     }
+     // get longDescrips for Dep
+     print("updating deps")
+     for dep in deps {
+     let texts = dpaContents[lineNo].components(separatedBy: "  ")
+     let longDescrip = texts[texts.count - 2].replace("\"", with: "")
+     // depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
+     dep.longDescription = longDescrip
+     // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
+     // print("lDescrip \(depInfo.last?.description)")
+     
+     lineNo += 1
+     }
+     
+     
+     lineNo += 1
+     // Get Curve Sources
+     curveSources.removeAll()
+     print("getting curve sources:")
+     print("line count", dpaContents.count)
+     print("line", lineNo)
+     print(dpaContents[lineNo])
+     while lineNo < dpaContents.count {
+     print()
+     print("line \(lineNo)")
+     if dpaContents[lineNo].hasPrefix(".CUR") {
+     curveSources.append(CurveSource())
+     let curveSource = curveSources.last!
+     let tags = dpaContents[lineNo].substring(from: 14).quotedWords()
+     curveSource.indName = tags[0]
+     curveSource.depName = tags[1]
+     curveSource.indIndex = indNo(name: tags[0])
+     curveSource.depIndex = depNo(name: tags[1])
+     print("Curve", tags[0], tags[1])
+     if lineNo < dpaContents.count - 1 {
+     lineNo += 1
+     }
+     print("line after CUR", lineNo)
+     print(dpaContents[lineNo])
+     
+     while !dpaContents[lineNo].hasPrefix(".CUR") && lineNo < dpaContents.count{
+     print()
+     print("line \(lineNo)")
+     let curveType = getCurveType(dpaContents[lineNo])
+     // print("get curve type", curveType.trim())
+     switch curveType {
+     case ".UNIty  ":
+     curveSource.type = "UNI"
+     curveSource.sourceCase = "Unity Curve"
+     curveSource.sources.append(.unity)
+     // print(".UNI")
+     case ".ZERo   ":
+     curveSource.type = "ZER"
+     curveSource.sourceCase = "Zero Curve"
+     curveSource.sources.append(.zero)
+     // print(".ZER")
+     
+     case "    .REP":
+     let values = dpaContents[lineNo].substring(from: 10).quotedWords()
+     curveSource.type = "REP"
+     curveSource.sourceCase = values[0]
+     curveSource.sourceCurve = values[1]
+     curveSource.sourceInd = values[2]
+     curveSource.sourceDep = values[3]
+     curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
+     // print(".REP")
+     
+     case "    .FIR":
+     curveSource.type = "FIR"
+     let curve = dpaContents[lineNo].substring(from: 16).components(separatedBy: " ")
+     // print(curve)
+     if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let gain =  curve[2].doubleValue{
+     curveSource.deadtime = deadtime / 60.0
+     curveSource.tau = tau / 60.0
+     curveSource.gain = gain
+     curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
+     }
+     // print(".FIR")
+     
+     case "    .SEC":
+     curveSource.type = "SEC"
+     // print(dpaContents[lineNo].substring(from: 17))
+     let curve = dpaContents[lineNo].substring(from: 17).components(separatedBy: " ")
+     // print(curve)
+     if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let damp = curve[2].doubleValue, let gain = curve[3].doubleValue {
+     curveSource.deadtime = deadtime / 60.0
+     curveSource.tau = tau / 60.0
+     curveSource.damp = damp
+     curveSource.gain = gain
+     curveSource.sources.append(.second(deadtime: deadtime / 60.0, tau: tau / 60.0, damp: damp, gain: gain))
+     // print(".SEC")
+     }
+     
+     case "    .CON":
+     let curve = dpaContents[lineNo].substring(from: 15).quotedWords()
+     curveSource.type = "CON"
+     curveSource.sourceCase = curve[0]
+     curveSource.sourceCurve = curve[1]
+     curveSource.convoluteCase = curve[2]
+     curveSource.convoluteCurve = curve[3]
+     curveSource.sourceInd = curve[4]
+     curveSource.sourceDep = curve[5]
+     curveSource.convoluteIndName = curve[6]
+     curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
+     // print(".CON")
+     
+     default:
+     break
+     }
+     lineNo += 1
+     if lineNo == dpaContents.count {
+     break
+     }
+     // print("line end curve while", lineNo)
+     if lineNo < dpaContents.count {
+     // print(dpaContents[lineNo])
+     }
+     print()
+     print("Exit inner while")
+     }
+     }
+     // lineNo += 1
+     // print("line end file while", lineNo)
+     // print(dpaContents[lineNo])
+     }
+     print("done getting curvesources")
+     print()
+     dpaLoaded = true
+     getGainWindows()
+     }
+     */
+    
     // From DMCTuner Modified
-
+    
     func readDPA() {
         // print("in readDPA()")
         let modelFile = mdlURL.lastPathComponent
@@ -533,11 +533,11 @@ public class Model {
                         }
                     }
                 }
-
                 
                 
                 
-
+                
+                
                 curveSource.indIndex = indNo(name: tags[0])
                 curveSource.depIndex = depNo(name: tags[1])
                 // print("Curve", tags[0], tags[1])
@@ -546,7 +546,7 @@ public class Model {
                 }
                 // print("line after CUR", lineNo)
                 // print(dpaContents[lineNo])
-
+                
                 while !dpaContents[lineNo].hasPrefix(".CUR") && lineNo < dpaContents.count{
                     // print()
                     // print("line \(lineNo)")
@@ -557,13 +557,13 @@ public class Model {
                         curveSource.type = "UNI"
                         curveSource.sourceCase = "Unity Curve"
                         curveSource.sources.append(.unity)
-                        // print(".UNI")
+                    // print(".UNI")
                     case ".ZERo   ":
                         curveSource.type = "ZER"
                         curveSource.sourceCase = "Zero Curve"
                         curveSource.sources.append(.zero)
-                        // print(".ZER")
-                        
+                    // print(".ZER")
+                    
                     case "    .REP":
                         let values = dpaContents[lineNo].substring(from: 10).quotedWords()
                         curveSource.type = "REP"
@@ -572,8 +572,8 @@ public class Model {
                         curveSource.sourceInd = values[2]
                         curveSource.sourceDep = values[3]
                         curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
-                        // print(".REP")
-                        
+                    // print(".REP")
+                    
                     case "    .FIR":
                         curveSource.type = "FIR"
                         let curve = dpaContents[lineNo].substring(from: 16).components(separatedBy: " ")
@@ -584,8 +584,8 @@ public class Model {
                             curveSource.gain = gain
                             curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
                         }
-                        // print(".FIR")
-                        
+                    // print(".FIR")
+                    
                     case "    .SEC":
                         curveSource.type = "SEC"
                         // print(dpaContents[lineNo].substring(from: 17))
@@ -611,8 +611,8 @@ public class Model {
                         curveSource.sourceDep = curve[5]
                         curveSource.convoluteIndName = curve[6]
                         curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
-                        // print(".CON")
-                        
+                    // print(".CON")
+                    
                     default:
                         break
                     }
@@ -637,161 +637,161 @@ public class Model {
         dpaLoaded = true
         getGainWindows()
     }
-
-
+    
+    
     
     /*
-    // From DMCRga
-    func readDPA() {
-        var contents = ""
-        let fm = FileManager.default
-        if fm.fileExists(atPath: dpaURL.path) {
-            // print("File exists")
-            do {
-                contents = try String(contentsOfFile: dpaURL.path, encoding: String.Encoding.ascii)
-                // print("\(fileContents)").path
-                // the above prints "some text"
-            } catch let error as NSError {
-                print("Error: \(error)")
-            }
-        } else {
-            print("File does not exist")
-            let answer =  dialogOK("DPA File Missing.", info: dpaURL.path)
-            print("\(answer)")
-        }
-        
-        contents = contents.replace("\r\n", with: "\n")
-
-        
-        // if let contents = fileContents {
-        contents.removeAll()
-        dpaContents = contents.components(separatedBy: "\n")
-        // print(lines)
-        
-        // get long descriptions and step size for Ind
-        var lineNo = 7
-        for var ind in inds {
-            let texts = dpaContents[lineNo].components(separatedBy: "  ")
-            let longDescrip = texts[texts.count - 2].replace("\"", with: "")
-            var typicalMove = 0.0
-            if let step = texts.last!.doubleValue {
-                typicalMove = step
-            }
-            // let typicalMove = doubleValue(texts.lastt!)
-            ind.description = longDescrip
-            ind.typicalMove = typicalMove
-            indInfo.append(IndInfo(no: ind.no, name: ind.name, description: longDescrip, typicalMove: typicalMove))
-            // print("lDescrip \(indInfo.last?.description)")
-            
-            
-            // print("\((ind.no, ind.tag, longDescrip, typicalMove))")
-            lineNo += 1
-        }
-        // get longDescrips for Dep
-        for var dep in deps {
-            let texts = dpaContents[lineNo].components(separatedBy: "  ")
-            let longDescrip = texts[texts.count - 2].replace("\"", with: "")
-            dep.description = longDescrip
-            depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
-            // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
-            // print("lDescrip \(depInfo.last?.description)")
-            
-            lineNo += 1
-        }
-        
-        // get curves
-        for i in lineNo ..< dpaContents.count {
-            let operation = dpaContents[i].left(4)
-            if operation == ".CUR" {
-                let params = dpaContents[i].substring(from: 14).quotedWords()
-                print(params)
-                let indName = params[0]
-                let depName = params[1]
-                let comment = params[2]
-                if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
-                    // print("Modified Gain")
-                    if let i1 = comment.indexAfter("was "), let i2 = comment.indexBefore(" and"), let i3 = comment.indexAfter(" to") {
-                        let gainOriginal = String(comment[i1...i2]).doubleValue
-                        let gainAdjusted = String(comment[i3...]).doubleValue
-                        let updateInd = inds.filter{$0.name == indName}
-                        let indNo = updateInd[0].no
-                        let updateDep = deps.filter{$0.name == depName}
-                        let depNo = updateDep[0].no
-                        let gain = gains.filter{$0.indNo == indNo && $0.depNo == depNo}
-                        if gain.count > 0 {
-                            if let gOriginal = gainOriginal {
-                                gain[0].originalGain = gOriginal
-                            }
-                            if let gAdjusted = gainAdjusted {
-                                gain[0].adjustedGain = gAdjusted
-                            }
-                            if comment.contains("set") {
-                                gain[0].adjustType = .set
-                            } else {
-                                gain[0].adjustType = .adjusted
-                            }
-                        }
-                    }
-                    /*
-                    let index1 = comment.lastIndexOf("was")
-                    let index2 = comment.indexOf("and")
-                    let index3 = comment.lastIndexOf("to")
-                    if let i1 = index1, let i2 = index2, let i3 = index3 {
-                        // let gainOriginal = comment.substring(with: i1 ..< i2).doubleValue
-                        let gainOriginal = String(comment[i1 ..< i2]).doubleValue
-                        // print("oGain: \(gainOriginal)")
-                        // let gainAdjusted = comment.substring(from: i3).doubleValue
-                        let gainAdjusted = String(comment[i3...]).doubleValue
-                        // print("aGain: \(gainAdjusted)")
-                        let updateInd = inds.filter{$0.name == indName}
-                        let indNo = updateInd[0].no
-                        let updateDep = deps.filter{$0.name == depName}
-                        let depNo = updateDep[0].no
-                        var gain = gains.filter{$0.indNo == indNo && $0.depNo == depNo}
-                        if gain.count > 0 {
-                            if let gOriginal = gainOriginal {
-                                gain[0].originalGain = gOriginal
-                            }
-                            if let gAdjusted = gainAdjusted {
-                                gain[0].adjustedGain = gAdjusted
-                            }
-                            if comment.contains("set") {
-                                gain[0].adjustType = .set
-                            } else {
-                                gain[0].adjustType = .adjusted
-                            }
-                        }
-                    }
-                    */
-                }
-            }
-        }
-        
-        
-        /*
-         for (index, value) in deps.enumerated() {
-         depDict[value.no] = index
-         }
-         
-         
-         for (index, value) in inds.enumerated() {
-         indDict[value.no] = index
-         }
-         */
-        
-        dpaLoaded = true
-        getGainWindows()
-
-        
-        
+     // From DMCRga
+     func readDPA() {
+     var contents = ""
+     let fm = FileManager.default
+     if fm.fileExists(atPath: dpaURL.path) {
+     // print("File exists")
+     do {
+     contents = try String(contentsOfFile: dpaURL.path, encoding: String.Encoding.ascii)
+     // print("\(fileContents)").path
+     // the above prints "some text"
+     } catch let error as NSError {
+     print("Error: \(error)")
+     }
+     } else {
+     print("File does not exist")
+     let answer =  dialogOK("DPA File Missing.", info: dpaURL.path)
+     print("\(answer)")
+     }
+     
+     contents = contents.replace("\r\n", with: "\n")
+     
+     
+     // if let contents = fileContents {
+     contents.removeAll()
+     dpaContents = contents.components(separatedBy: "\n")
+     // print(lines)
+     
+     // get long descriptions and step size for Ind
+     var lineNo = 7
+     for var ind in inds {
+     let texts = dpaContents[lineNo].components(separatedBy: "  ")
+     let longDescrip = texts[texts.count - 2].replace("\"", with: "")
+     var typicalMove = 0.0
+     if let step = texts.last!.doubleValue {
+     typicalMove = step
+     }
+     // let typicalMove = doubleValue(texts.lastt!)
+     ind.description = longDescrip
+     ind.typicalMove = typicalMove
+     indInfo.append(IndInfo(no: ind.no, name: ind.name, description: longDescrip, typicalMove: typicalMove))
+     // print("lDescrip \(indInfo.last?.description)")
+     
+     
+     // print("\((ind.no, ind.tag, longDescrip, typicalMove))")
+     lineNo += 1
+     }
+     // get longDescrips for Dep
+     for var dep in deps {
+     let texts = dpaContents[lineNo].components(separatedBy: "  ")
+     let longDescrip = texts[texts.count - 2].replace("\"", with: "")
+     dep.description = longDescrip
+     depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
+     // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
+     // print("lDescrip \(depInfo.last?.description)")
+     
+     lineNo += 1
+     }
+     
+     // get curves
+     for i in lineNo ..< dpaContents.count {
+     let operation = dpaContents[i].left(4)
+     if operation == ".CUR" {
+     let params = dpaContents[i].substring(from: 14).quotedWords()
+     print(params)
+     let indName = params[0]
+     let depName = params[1]
+     let comment = params[2]
+     if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
+     // print("Modified Gain")
+     if let i1 = comment.indexAfter("was "), let i2 = comment.indexBefore(" and"), let i3 = comment.indexAfter(" to") {
+     let gainOriginal = String(comment[i1...i2]).doubleValue
+     let gainAdjusted = String(comment[i3...]).doubleValue
+     let updateInd = inds.filter{$0.name == indName}
+     let indNo = updateInd[0].no
+     let updateDep = deps.filter{$0.name == depName}
+     let depNo = updateDep[0].no
+     let gain = gains.filter{$0.indNo == indNo && $0.depNo == depNo}
+     if gain.count > 0 {
+     if let gOriginal = gainOriginal {
+     gain[0].originalGain = gOriginal
+     }
+     if let gAdjusted = gainAdjusted {
+     gain[0].adjustedGain = gAdjusted
+     }
+     if comment.contains("set") {
+     gain[0].adjustType = .set
+     } else {
+     gain[0].adjustType = .adjusted
+     }
+     }
+     }
+     /*
+     let index1 = comment.lastIndexOf("was")
+     let index2 = comment.indexOf("and")
+     let index3 = comment.lastIndexOf("to")
+     if let i1 = index1, let i2 = index2, let i3 = index3 {
+     // let gainOriginal = comment.substring(with: i1 ..< i2).doubleValue
+     let gainOriginal = String(comment[i1 ..< i2]).doubleValue
+     // print("oGain: \(gainOriginal)")
+     // let gainAdjusted = comment.substring(from: i3).doubleValue
+     let gainAdjusted = String(comment[i3...]).doubleValue
+     // print("aGain: \(gainAdjusted)")
+     let updateInd = inds.filter{$0.name == indName}
+     let indNo = updateInd[0].no
+     let updateDep = deps.filter{$0.name == depName}
+     let depNo = updateDep[0].no
+     var gain = gains.filter{$0.indNo == indNo && $0.depNo == depNo}
+     if gain.count > 0 {
+     if let gOriginal = gainOriginal {
+     gain[0].originalGain = gOriginal
+     }
+     if let gAdjusted = gainAdjusted {
+     gain[0].adjustedGain = gAdjusted
+     }
+     if comment.contains("set") {
+     gain[0].adjustType = .set
+     } else {
+     gain[0].adjustType = .adjusted
+     }
+     }
+     }
+     */
+     }
+     }
+     }
+     
+     
+     /*
+     for (index, value) in deps.enumerated() {
+     depDict[value.no] = index
+     }
+     
+     
+     for (index, value) in inds.enumerated() {
+     indDict[value.no] = index
+     }
+     */
+     
+     dpaLoaded = true
+     getGainWindows()
+     
+     
+     
+     }
+     */
+    
+    
+    public func getGain(ind: Int, dep: Int) -> Gain {
+        let gain = gains.filter{$0.indIndex == ind && $0.depIndex == dep}
+        return gain[0]
     }
- */
-    
-    
-       public func getGain(ind: Int, dep: Int) -> Gain {
-           let gain = gains.filter{$0.indIndex == ind && $0.depIndex == dep}
-           return gain[0]
-       }
     
     
     func getGainWindows() {
@@ -855,14 +855,14 @@ public class Model {
             }
         }
         /*
-        for mv in mvs {
-            if !mv.exclude {
-                mvIndices.append(mv.index)
-            } else {
-                print("mv \(mv.index) excluded")
-            }
-        }
-        */
+         for mv in mvs {
+         if !mv.exclude {
+         mvIndices.append(mv.index)
+         } else {
+         print("mv \(mv.index) excluded")
+         }
+         }
+         */
         // for a in 0 ..< numberMvs-1 {
         //for b in a+1 ..< numberMvs {
         // print(a, b)
@@ -940,13 +940,13 @@ public class Model {
         selectedRgaIndex = nil
         filterRgas(rgaLimit: rgaLimit)
     }
-        
+    
     public func filterRgas(rgaLimit: Double) {
         print("filtering with limit \(rgaLimit)")
         rgas = cRgas.filter{$0.rga >= rgaLimit}
         
     }
-
+    
     
     public func indName(index: Int) -> String {
         var name = ""
@@ -980,9 +980,9 @@ public class Model {
         }
         return value
     }
-
-
-
+    
+    
+    
     public func calcRatios() {
         gainRatios.removeAll()
         if ratioByMvPair {
@@ -1007,9 +1007,9 @@ public class Model {
                     }
                 }
                 /*
-                for ratio in gainRatios {
-                    print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
-                }
+                 for ratio in gainRatios {
+                 print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
+                 }
                  */
                 // print(ratios)
             }
@@ -1039,10 +1039,10 @@ public class Model {
                     }
                 }
                 /*
-                for ratio in gainRatios {
-                    print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
-                }
-                */
+                 for ratio in gainRatios {
+                 print("\(ratio.varIndex)  \(ratio.selected1Index)  \(ratio.selected2Index)  \(ratio.selected1Gain.gain)  \(ratio.selected2Gain.gain)  \(ratio.value)")
+                 }
+                 */
                 // print(ratios)
             }
         }
@@ -1059,8 +1059,42 @@ public class Model {
         }
         selectedRatioIndex = nil
     }
-
+    
     public func writeDpaFile(url: URL) {
+        var newDpaContents = ""
+        
+        var indIndex = 0
+        var depIndex = 0
+        var newLine = ""
+        
+        for line in dpaContents  {
+            // if line.left(1) != "!" {
+            // Not a comment
+            let operation = line.trim().left(4).uppercased()
+            switch operation {
+            case ".IND":
+                newLine = ".INDependent  \"\(inds[indIndex].name)\"  \"\(inds[indIndex].units)\"  \"\(inds[indIndex].shortDescription)\"\( inds[indIndex].typicalMove)"
+                indIndex += 1
+            case ".DEP":
+                newLine = ".INDependent  \"\(deps[indIndex].name)\"  \"\(deps[indIndex].units)\"  \"\(deps[indIndex].shortDescription)\"\( deps[indIndex].ramp)"
+                depIndex += 1
+            default:
+                newLine = line
+            }
+            newDpaContents.append(newLine)
+            // }
+        }
+        do {
+            try newDpaContents.write(to: url, atomically: false, encoding: String.Encoding.ascii)
+        }
+        catch {
+            /* error handling here */
+            print("error")
+        }
+        let _ = dialogOK("Dpa file saved.", info: url.path)
+    }
+    
+    public func writeDpaFileRGA(url: URL) {
         // let newUniqueFileName = GetUniqueFileName()
         // let uniqueURL = UniqueFileURL()
         // let newDpaURL = uniqueURL.newURL(fileURL: dirURL.appendingPathComponent(dpaName))
@@ -1190,10 +1224,10 @@ public class Model {
         //}
     }
     
-
-
+    
+    
     public init() {}
-
-
-
+    
+    
+    
 }

@@ -1081,7 +1081,7 @@ public class Model {
             default:
                 newLine = line
             }
-            newDpaContents.append(newLine)
+            newDpaContents.append("\(newLine)\r\n")
             // }
         }
         do {

@@ -18,6 +18,7 @@ let package = Package(
             .branch("master")
         ),*/
         .package(url: "https://github.com/RickStreet/StringKit.git", from: "1.0.12"),
+        .package(url: "https://github.com/RickStreet/DoubleKit.git", from: "1.0.6"),
         .package(url: "https://github.com/RickStreet/DialogKit.git", from: "1.0.0"),
         .package(url: "https://github.com/RickStreet/FileKit.git", from: "1.1.19")
 
@@ -28,9 +29,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "DmcKit",
-            dependencies: ["StringKit", "DialogKit", "FileKit"]),
+            dependencies: ["StringKit", "DoubleKit", "DialogKit", "FileKit"]),
         .testTarget(
             name: "DmcKitTests",
-            dependencies: ["DmcKit", "StringKit", "DialogKit", "FileKit"]),
+            dependencies: ["DmcKit", "StringKit", "DoubleKit", "DialogKit", "FileKit"]),
     ]
 )

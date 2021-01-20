@@ -11,12 +11,21 @@
         }
       },
       {
+        "package": "DoubleKit",
+        "repositoryURL": "https://github.com/RickStreet/DoubleKit.git",
+        "state": {
+          "branch": null,
+          "revision": "4f74057aec64b4ef8a4aa9bc0cc564f7a0b2d14d",
+          "version": "1.0.6"
+        }
+      },
+      {
         "package": "FileKit",
         "repositoryURL": "https://github.com/RickStreet/FileKit.git",
         "state": {
           "branch": null,
-          "revision": "b1a0e52e557131cfd7112fced99f2b8fdd5652f9",
-          "version": "1.1.19"
+          "revision": "48f9132ad38601bc02354878e57eb2caaf6a5880",
+          "version": "1.1.32"
         }
       },
       {
@@ -24,8 +33,8 @@
         "repositoryURL": "https://github.com/RickStreet/StringKit.git",
         "state": {
           "branch": null,
-          "revision": "6a17301f92606eaa5aed44b6364a20ce0231e9d3",
-          "version": "1.0.14"
+          "revision": "c7793ea50d094069a6f059eff50b8f60341511d9",
+          "version": "1.0.21"
         }
       }
     ]

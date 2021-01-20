@@ -8,6 +8,7 @@
 
 import Foundation
 import StringKit
+import DoubleKit
 import DialogKit
 
 /// DMCplus Model

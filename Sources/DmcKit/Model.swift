@@ -1086,7 +1086,7 @@ public class Model {
                 default:
                     break
                 }
-                newLine = ".INDependent  \"\(deps[depIndex].name)\"  \"\(deps[depIndex].units)\"  \"\(deps[depIndex].shortDescription)\"  \"\(rampText)\""
+                newLine = ".DEPendent    \"\(deps[depIndex].name)\"  \"\(deps[depIndex].units)\"  \"\(deps[depIndex].shortDescription)\"  \"\(rampText)\""
                 depIndex += 1
             default:
                 newLine = line

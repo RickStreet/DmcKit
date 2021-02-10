@@ -1074,9 +1074,11 @@ public class Model {
             let operation = line.trim().left(4).uppercased()
             switch operation {
             case ".IND":
+                print("indIndex \(indIndex)")
                 newLine = ".INDependent  \"\(inds[indIndex].name)\"  \"\(inds[indIndex].units)\"  \"\(inds[indIndex].shortDescription)\"  \(inds[indIndex].typicalMove)"
                 indIndex += 1
             case ".DEP":
+                print("depIndex \(depIndex)")
                 var rampText = ""
                 switch deps[depIndex].ramp {
                 case 1:

@@ -1068,7 +1068,7 @@ public class Model {
         var depIndex = 0
         var newLine = ""
         
-        for line in dpaContents  {
+        for (index, line) in dpaContents.enumerated()  {
             // if line.left(1) != "!" {
             // Not a comment
             let operation = line.trim().left(4).uppercased()
@@ -1093,7 +1093,11 @@ public class Model {
             default:
                 newLine = line
             }
-            newDpaContents.append("\(newLine)\r\n")
+            if index < dpaContents.count {
+                newDpaContents.append("\(newLine)\r\n")
+            } else {
+                newDpaContents.append("\(newLine)")
+            }
             // }
         }
         do {

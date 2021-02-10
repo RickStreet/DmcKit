@@ -1093,7 +1093,7 @@ public class Model {
             default:
                 newLine = line
             }
-            if index < dpaContents.count {
+            if index < dpaContents.count - 1 {
                 newDpaContents.append("\(newLine)\r\n")
             } else {
                 newDpaContents.append("\(newLine)")

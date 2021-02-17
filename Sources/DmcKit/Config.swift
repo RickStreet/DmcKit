@@ -343,17 +343,20 @@ public class Config {
         
         // Inds
         for ind in inds {
+            contents += "[IND:\(ind.name)]"
             contents += getSectionCCFLines(ind)
         }
         
         // Deps
         for cv in cvs {
+            contents += "[DEP:\(cv.name)]"
             contents += getSectionCCFLines(cv)
         }
         
         // print("no subs \(subs.count)")
         for sub in subs {
             // print("sub out \(sub.name)")
+            contents += "[SUB:\(sub.name)]"
             contents += getSectionCCFLines(sub)
         }
         

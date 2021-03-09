@@ -12,7 +12,12 @@ import FileKit
 
 // IQ General Section Type
 @dynamicMemberLookup
-public class Section {
+public class Section: Equatable {
+    public static func == (lhs: Section, rhs: Section) -> Bool {
+        return lhs.name == rhs.name
+    }
+
+    
     public var id = 0
     public var index = 0
     public var name = ""

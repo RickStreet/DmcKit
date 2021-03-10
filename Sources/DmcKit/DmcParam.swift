@@ -34,4 +34,6 @@ public class DmcParam: Codable, Equatable {
         case hide = "hide"
         case notes = "notes"
     }
+    
+    public init() {}
 }

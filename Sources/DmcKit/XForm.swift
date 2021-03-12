@@ -5,6 +5,8 @@
 //  Created by Rick Street on 12/2/19.
 //  Copyright © 2019 Rick Street. All rights reserved.
 //
+// Parses xform param value from ccf
+//
 
 import Foundation
 import StringKit
@@ -17,14 +19,19 @@ public class XForm {
     
     /// xForm text for ccf
     public var xform: String {
-        if type == .none {
+        switch type {
+        case .none:
             return ""
+        case .pwl:
+            var xFormText = "PWLN \(xFormPoints.count)"
+            for point in xFormPoints {
+                xFormText += " \(point.x) \(point.y)"
+            }
+            return xFormText
+
+        default:
+            return params.joined(separator: " ")
         }
-        var xFormText = ""
-        for param in params {
-            xFormText += param + " "
-        }
-        return xFormText
     }
     
     public func parse(_ string: String) {

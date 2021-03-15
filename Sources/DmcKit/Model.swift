@@ -514,9 +514,9 @@ public class Model {
                     if let i1 = comment.indexAfter("was "), let i2 = comment.indexBefore(" and"), let i3 = comment.indexAfter(" to") {
                         let gainOriginal = String(comment[i1...i2]).doubleValue
                         let gainAdjusted = String(comment[i3...]).doubleValue
-                        let updateInd = inds.filter{$0.name == indName}
+                        let updateInd = inds.filter{$0.name.uppercased() == indName.uppercased()}
                         let indNo = updateInd[0].index
-                        let updateDep = deps.filter{$0.name == depName}
+                        let updateDep = deps.filter{$0.name.uppercased() == depName.uppercased()}
                         let depNo = updateDep[0].index
                         let gain = gains.filter{$0.indIndex == indNo && $0.depIndex == depNo}
                         if gain.count > 0 {
@@ -819,7 +819,7 @@ public class Model {
         }
     }
     public func depNo(name: String) -> Int {
-        let dep = deps.filter{$0.name == name}
+        let dep = deps.filter{$0.name.uppercased() == name.uppercased()}
         if dep.count > 0 {
             return dep[0].index
         } else {
@@ -828,7 +828,7 @@ public class Model {
     }
     
     public func indNo(name: String) -> Int {
-        let ind = inds.filter{$0.name == name}
+        let ind = inds.filter{$0.name.uppercased() == name.uppercased()}
         if ind.count > 0 {
             return ind[0].index
         } else {
@@ -1166,9 +1166,9 @@ public class Model {
                     indName = params[0]
                     depName = params[1]
                     comment = params[2]
-                    let ind = inds.filter{$0.name == indName}
+                    let ind = inds.filter{$0.name.uppercased() == indName.uppercased()}
                     let indNo = ind[0].index
-                    let dep = deps.filter{$0.name == depName}
+                    let dep = deps.filter{$0.name.uppercased() == depName.uppercased()}
                     let depNo = dep[0].index
                     let fGains = gains.filter{$0.indIndex == indNo && $0.depIndex == depNo}
                     gain = fGains[0]  // Gain for Curve in gains

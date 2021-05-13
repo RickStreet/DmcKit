@@ -89,7 +89,7 @@ public class Section: Equatable {
                                        type: param.type,
                                        value: value,
                                        entity: param.entity)
-            params.append(newParam)
+            append(newParam)
         }
     }
     

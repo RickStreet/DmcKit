@@ -16,7 +16,7 @@ public class Section: Equatable {
     public static func == (lhs: Section, rhs: Section) -> Bool {
         return lhs.name == rhs.name
     }
-
+    
     
     public var id = 0
     public var index = 0
@@ -37,13 +37,13 @@ public class Section: Equatable {
     
     // used to get mult params for section
     public var params = [ConfigParam]() /* {
-        didSet {
-            if let param = params.last {
-                properties.updateValue(param, forKey: param.name.lowercased())
-                // print("added \(param.name.lowercased()) to properties")
-            }
-        }
-    } */
+     didSet {
+     if let param = params.last {
+     properties.updateValue(param, forKey: param.name.lowercased())
+     // print("added \(param.name.lowercased()) to properties")
+     }
+     }
+     } */
     // dictionary used to add and update parameters/params
     public var properties = [String : ConfigParam]()
     
@@ -59,23 +59,42 @@ public class Section: Equatable {
         }
     }
     
-    /*
-    func changeValue(paramName: String, newValue: String) {
-        if let param = properties[paramName] {
-            switch param.type {
-            case "R4", "I4":
-                let cValue = newValue
-                param.value = cValue.replace(",", with: "")
-            default:
-                param.value = newValue
+    public func addOrChange(param: ConfigParam) {
+        let currentParams = params.filter{$0.name == param.name}
+        if currentParams.count > 0 {
+            // Param already exists
+            
+            if let currentParam = currentParams.first {
+                // Keep current value if template value is ?
+                currentParam.dcsTag = param.dcsTag
+                currentParam.entity = param.entity
+                currentParam.keyWord = param.keyWord
+                currentParam.type = param.type
+                if param.value != "?" {
+                    currentParam.value = param.value
+                }
             }
-            print("changed \(param.name) to \(param.value)")
+            
+        } else {
+            // Param doees not exist, append
+            var value = ""
+            if param.value.contains(target: "?") {
+                value = ""
+            } else {
+                value = param.value
+            }
+            let newParam = ConfigParam(id: params.count,
+                                       name: param.name,
+                                       keyWord: param.keyWord,
+                                       type: param.type,
+                                       value: value,
+                                       entity: param.entity)
+            params.append(newParam)
         }
     }
-    */
     
     
     public init() {}
-
+    
 }
 

@@ -42,11 +42,11 @@ public class ReportRanking {
         // let smallAttribute = [ NSAttributedStringKey.foregroundColor: navy, NSAttributedStringKey.font: NSFont(name: "HelveticaNeue", size: 6.0)!]
 
         for cv in cvs {
-            rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "CV Lower", rankType: String(cv.cvlpql.intValue == 0 ? "L" : "U"), rank: cv.cvrankl.intValue))
-            rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "CV Upper", rankType: String(cv.cvupql.intValue == 0 ? "L" : "U"), rank: cv.cvranku.intValue))
+            rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "CV Lower", rankType: cv.cvrankl.intValue, rank: cv.cvrankl.intValue))
+            rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "CV Upper", rankType: cv.cvranku.intValue, rank: cv.cvranku.intValue))
             if cv.etcswc.intValue > 0 {
-                rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "ET Lower", rankType: String(cv.etlclpq.intValue == 0 ? "L" : "U"), rank: cv.etcrl.intValue))
-                rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "ET Upper", rankType: String(cv.etuclpq.intValue == 0 ? "L" : "U"), rank: cv.etcru.intValue))
+                rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "ET Lower", rankType: cv.etclpql.intValue, rank: cv.etcrl.intValue))
+                rankings.append(Ranking(index: cv.index, name: cv.name, description: cv.shortDescription, rankLimitType: "ET Upper", rankType: cv.etclpqu.intValue, rank: cv.etcru.intValue))
             }
         }
         rankings.sort(){$0.sortVar < $1.sortVar}

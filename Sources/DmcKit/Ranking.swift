@@ -12,16 +12,18 @@ public struct Ranking {
     public var index = 0
     public var name = ""
     public var description = ""
-    public var rankType = ""
+    public var rankLimitType = ""
+    public var rankType = "" // L or Q
     public var rank = 0
     
     public var sortVar: Int {
         return rank * 1000000 + index
     }
-    public init(index: Int, name: String, description: String, rankType: String, rank: Int) {
+    public init(index: Int, name: String, description: String, rankLimitType: String, rankType: String, rank: Int) {
         self.index =  index
         self.name = name
         self.description = description
+        self.rankLimitType = rankType
         self.rankType = rankType
         self.rank = rank
     }

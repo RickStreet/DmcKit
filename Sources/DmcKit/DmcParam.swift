@@ -27,7 +27,7 @@ public class DmcParam: Codable, Equatable {
     enum CodingKeys: String, CodingKey {
         case name = "name"
         case description = "description"
-        case type = "type"
+        case type = "variable_type"
         case cat = "cat"
         case tune = "tune"
         case limit = "limit"

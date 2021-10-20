@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import StringKit
 
 public class ReportCurveSource {
     public var controller = DmcController()

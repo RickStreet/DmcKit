@@ -70,7 +70,7 @@ public class Section: Equatable {
                 currentParam.entity = param.entity
                 currentParam.keyWord = param.keyWord
                 currentParam.type = param.type
-                if !param.value.contains(target: "?") {
+                if !param.value.contains(target: "?") { // If value contains ?, don't replace
                     currentParam.value = param.value
                 }
             }

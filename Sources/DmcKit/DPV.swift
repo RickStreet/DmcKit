@@ -126,6 +126,12 @@ public class DPV {
             print("\(number)")
         }
     }
+    
+    public init() {
+        // Empty
+        
+    }
+
 }
 
 

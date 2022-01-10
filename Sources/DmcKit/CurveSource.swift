@@ -31,6 +31,7 @@ public class CurveSource {
     public var convoluteIndName = ""
     public var convoluteCase = ""
     public var convoluteCurve = ""
+    public var note = ""
     public var deadtime = 0.0
     public var tau = 0.0
     public var damp = 0.0

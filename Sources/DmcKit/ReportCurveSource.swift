@@ -385,6 +385,10 @@ public class ReportCurveSource {
                 description.append(aString)
             }
         }
+        if !curve.note.isEmpty {
+            let aString = NSAttributedString(string: "\t\tNote: \(curve.note)\n", attributes: normalAttribute)
+            description.append(aString)
+        }
         contents.append(description)
         
     }

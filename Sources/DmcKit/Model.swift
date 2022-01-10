@@ -505,6 +505,9 @@ public class Model {
                 let tags = dpaContents[lineNo].substring(from: 14).quotedWords()
                 let indName = tags[0]
                 let depName = tags[1]
+                if tags.count > 2 {
+                    curveSource.note = tags[2]
+                }
                 curveSource.indName = indName
                 curveSource.depName = depName
                 let comment = tags[2]

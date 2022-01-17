@@ -466,9 +466,7 @@ public class Model {
         for line in dpaContents {
             if line.hasPrefix("!") {
                 print("comment")
-                break
-            } else {
-                print("dpa line")
+                continue
             }
             let curveType = getCurveType(line)
 

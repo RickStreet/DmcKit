@@ -455,7 +455,7 @@ public class Model {
         // print("parsing dpa file lines...")
         // print(dpaContents)
         // get long descriptions and step size for Ind
-        lineNo = 5
+        lineNo = 6
         let line = dpaContents[lineNo].substring(from: 6)
         let texts = line.quotedWords()
         if texts.count > 2 {

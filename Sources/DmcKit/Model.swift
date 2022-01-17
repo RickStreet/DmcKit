@@ -462,6 +462,7 @@ public class Model {
         var indIndex = 0
         var depIndex = 0
         var curveSource = CurveSource()
+        curveSources.removeAll()
 
         for line in dpaContents {
             if line.hasPrefix("!") {
@@ -478,8 +479,8 @@ public class Model {
             
             switch curveType {
             case ".MODel  ":
-                if texts.count > 3 {
-                    modelNotes = texts[4]
+                if texts.count > 1 {
+                    modelNotes = texts[2]
                     modelNotes = modelNotes.replace("!~", with: "\n")
                 }
             case ".NCOeff ":
@@ -489,7 +490,7 @@ public class Model {
                 // Time to steady-state seconds
                 break
             case ".INDepen":
-                let longDescrip = texts[3]
+                let longDescrip = texts[2]
                 var typicalMove = 0.0
                 if let step = texts.last!.doubleValue {
                     typicalMove = step
@@ -498,7 +499,7 @@ public class Model {
                 inds[indIndex].typicalMove = typicalMove
                 indIndex += 1
             case ".DEPende":
-                let longDescrip = texts[3]
+                let longDescrip = texts[2]
                 deps[depIndex].longDescription = longDescrip
                 depIndex += 1
             case ".CURve  ":

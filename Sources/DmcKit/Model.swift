@@ -446,12 +446,163 @@ public class Model {
         }
         
         
+        
+        
         contents = contents.replace("\r\n", with: "\n")
-        var lineNo = 0
+        
+        
+        
         
         
         // let lines: [String]
         dpaContents = contents.components(separatedBy: "\n")
+        
+        
+        // New Parse
+        var indIndex = 0
+        var depIndex = 0
+        var curveSource = CurveSource()
+        for line in dpaContents {
+            if line.hasPrefix("!") {
+                break
+            }
+            let texts = line.components(separatedBy: "  ")
+            
+            switch line.left(4) {
+            case ".MOD":
+                if texts.count > 3 {
+                    modelNotes = texts[4]
+                    modelNotes = modelNotes.replace("!~", with: "\n")
+                }
+            case ".NCO":
+                // Number coeficents
+                break
+            case ".TTS":
+                // Time to steady-state seconds
+                break
+            case ".IND":
+                let longDescrip = texts[3]
+                var typicalMove = 0.0
+                if let step = texts.last!.doubleValue {
+                    typicalMove = step
+                }
+                inds[indIndex].longDescription = longDescrip
+                inds[indIndex].typicalMove = typicalMove
+                indIndex += 1
+            case ".DEP":
+                let longDescrip = texts[3]
+                deps[depIndex].longDescription = longDescrip
+                depIndex += 1
+            case ".CUR":
+                curveSources.append(CurveSource())
+                curveSource = curveSources.last!
+                let indName = texts[1]
+                curveSource.indName = indName
+                let depName = texts[2]
+                curveSource.depName = depName
+                let comment = texts[3]
+                curveSource.note = comment
+                curveSource.indIndex = indNo(name: indName)
+                curveSource.depIndex = depNo(name: depName)
+
+                if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
+                    // print("Modified Gain")
+                    if let i1 = comment.indexAfter("was "), let i2 = comment.indexBefore(" and"), let i3 = comment.indexAfter(" to") {
+                        let gainOriginal = String(comment[i1...i2]).doubleValue
+                        let gainAdjusted = String(comment[i3...]).doubleValue
+                        let updateInd = inds.filter{$0.name.uppercased() == indName.uppercased()}
+                        let indNo = updateInd[0].index
+                        let updateDep = deps.filter{$0.name.uppercased() == depName.uppercased()}
+                        let depNo = updateDep[0].index
+                        let gain = gains.filter{$0.indIndex == indNo && $0.depIndex == depNo}
+                        if gain.count > 0 {
+                            if let gOriginal = gainOriginal {
+                                gain[0].originalGain = gOriginal
+                            }
+                            if let gAdjusted = gainAdjusted {
+                                gain[0].adjustedGain = gAdjusted
+                            }
+                            if comment.contains("set") {
+                                gain[0].adjustType = .set
+                            } else {
+                                gain[0].adjustType = .adjusted
+                            }
+                        }
+                    }
+                }
+    
+            case ".UNI":
+                curveSource.type = "UNI"
+                curveSource.sourceCase = "Unity Curve"
+                curveSource.sources.append(.unity)
+            case ".ZER":
+                curveSource.type = "ZER"
+                curveSource.sourceCase = "Zero Curve"
+                curveSource.sources.append(.zero)
+            case "    ":
+                let operation = getCurveType(line)
+                switch operation {
+                case "    .REP":
+                    let values = line.substring(from: 10).quotedWords()
+                    curveSource.type = "REP"
+                    curveSource.sourceCase = values[0]
+                    curveSource.sourceCurve = values[1]
+                    curveSource.sourceInd = values[2]
+                    curveSource.sourceDep = values[3]
+                    curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
+                // print(".REP")
+                
+                case "    .FIR":
+                    curveSource.type = "FIR"
+                    let curve = line.substring(from: 16).components(separatedBy: " ")
+                    // print(curve)
+                    if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let gain =  curve[2].doubleValue{
+                        curveSource.deadtime = deadtime / 60.0
+                        curveSource.tau = tau / 60.0
+                        curveSource.gain = gain
+                        curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
+                    }
+             // print(".FIR")
+                
+                case "    .SEC":
+                    curveSource.type = "SEC"
+                    // print(dpaContents[lineNo].substring(from: 17))
+                    let curve = line.substring(from: 17).components(separatedBy: " ")
+                    // print(curve)
+                    if let deadtime = curve[1].doubleValue, let tau = texts[2].doubleValue, let damp = curve[2].doubleValue, let gain = curve[3].doubleValue {
+                        curveSource.deadtime = deadtime / 60.0
+                        curveSource.tau = tau / 60.0
+                        curveSource.damp = damp
+                        curveSource.gain = gain
+                        curveSource.sources.append(.second(deadtime: deadtime / 60.0, tau: tau / 60.0, damp: damp, gain: gain))
+                        // print(".SEC")
+                    }
+                    
+                case "    .CON":
+                    let curve = line.substring(from: 15).quotedWords()
+                    curveSource.type = "CON"
+                    curveSource.sourceCase = curve[0]
+                    curveSource.sourceCurve = curve[1]
+                    curveSource.convoluteCase = curve[2]
+                    curveSource.convoluteCurve = curve[3]
+                    curveSource.sourceInd = curve[4]
+                    curveSource.sourceDep = curve[5]
+                    curveSource.convoluteIndName = curve[6]
+                    curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
+                // print(".CON")
+                
+                default:
+                    break
+                }
+
+            default:
+                break
+                
+            }
+        }
+
+        /*
+        var lineNo = 0
         // print("parsing dpa file lines...")
         // print(dpaContents)
         // get long descriptions and step size for Ind
@@ -647,6 +798,7 @@ public class Model {
         }
         // print("done getting curvesources")
         print()
+         */
         dpaLoaded = true
         getGainWindows()
     }

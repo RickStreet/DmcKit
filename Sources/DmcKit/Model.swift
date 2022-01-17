@@ -462,25 +462,44 @@ public class Model {
         var indIndex = 0
         var depIndex = 0
         var curveSource = CurveSource()
+
         for line in dpaContents {
             if line.hasPrefix("!") {
                 break
             }
+            let curveType = getCurveType(line)
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             let texts = line.components(separatedBy: "  ")
             
-            switch line.left(4) {
-            case ".MOD":
+            switch curveType {
+            case ".MODel  ":
                 if texts.count > 3 {
                     modelNotes = texts[4]
                     modelNotes = modelNotes.replace("!~", with: "\n")
                 }
-            case ".NCO":
+            case ".NCOeff ":
                 // Number coeficents
                 break
-            case ".TTS":
+            case ".TTSs   ":
                 // Time to steady-state seconds
                 break
-            case ".IND":
+            case ".INDepen":
                 let longDescrip = texts[3]
                 var typicalMove = 0.0
                 if let step = texts.last!.doubleValue {
@@ -489,18 +508,19 @@ public class Model {
                 inds[indIndex].longDescription = longDescrip
                 inds[indIndex].typicalMove = typicalMove
                 indIndex += 1
-            case ".DEP":
+            case ".DEPende":
                 let longDescrip = texts[3]
                 deps[depIndex].longDescription = longDescrip
                 depIndex += 1
-            case ".CUR":
+            case ".CURve  ":
                 curveSources.append(CurveSource())
                 curveSource = curveSources.last!
-                let indName = texts[1]
-                curveSource.indName = indName
-                let depName = texts[2]
+                let tags = line.substring(from: 14).quotedWords()
+                let indName = tags[0]
+                let depName = tags[1]
+                let comment = tags[2]
+               curveSource.indName = indName
                 curveSource.depName = depName
-                let comment = texts[3]
                 curveSource.note = comment
                 curveSource.indIndex = indNo(name: indName)
                 curveSource.depIndex = depNo(name: depName)
@@ -531,69 +551,64 @@ public class Model {
                     }
                 }
     
-            case ".UNI":
+            case ".UNIty  ":
                 curveSource.type = "UNI"
                 curveSource.sourceCase = "Unity Curve"
                 curveSource.sources.append(.unity)
-            case ".ZER":
+            case ".ZERo   ":
                 curveSource.type = "ZER"
                 curveSource.sourceCase = "Zero Curve"
                 curveSource.sources.append(.zero)
-            case "    ":
-                let operation = getCurveType(line)
-                switch operation {
-                case "    .REP":
-                    let values = line.substring(from: 10).quotedWords()
-                    curveSource.type = "REP"
-                    curveSource.sourceCase = values[0]
-                    curveSource.sourceCurve = values[1]
-                    curveSource.sourceInd = values[2]
-                    curveSource.sourceDep = values[3]
-                    curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
-                // print(".REP")
                 
-                case "    .FIR":
-                    curveSource.type = "FIR"
-                    let curve = line.substring(from: 16).components(separatedBy: " ")
-                    // print(curve)
-                    if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let gain =  curve[2].doubleValue{
-                        curveSource.deadtime = deadtime / 60.0
-                        curveSource.tau = tau / 60.0
-                        curveSource.gain = gain
-                        curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
-                    }
-             // print(".FIR")
-                
-                case "    .SEC":
-                    curveSource.type = "SEC"
-                    // print(dpaContents[lineNo].substring(from: 17))
-                    let curve = line.substring(from: 17).components(separatedBy: " ")
-                    // print(curve)
-                    if let deadtime = curve[1].doubleValue, let tau = texts[2].doubleValue, let damp = curve[2].doubleValue, let gain = curve[3].doubleValue {
-                        curveSource.deadtime = deadtime / 60.0
-                        curveSource.tau = tau / 60.0
-                        curveSource.damp = damp
-                        curveSource.gain = gain
-                        curveSource.sources.append(.second(deadtime: deadtime / 60.0, tau: tau / 60.0, damp: damp, gain: gain))
-                        // print(".SEC")
-                    }
-                    
-                case "    .CON":
-                    let curve = line.substring(from: 15).quotedWords()
-                    curveSource.type = "CON"
-                    curveSource.sourceCase = curve[0]
-                    curveSource.sourceCurve = curve[1]
-                    curveSource.convoluteCase = curve[2]
-                    curveSource.convoluteCurve = curve[3]
-                    curveSource.sourceInd = curve[4]
-                    curveSource.sourceDep = curve[5]
-                    curveSource.convoluteIndName = curve[6]
-                    curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
-                // print(".CON")
-                
-                default:
-                    break
+            case "    .REP":
+                let values = line.substring(from: 10).quotedWords()
+                curveSource.type = "REP"
+                curveSource.sourceCase = values[0]
+                curveSource.sourceCurve = values[1]
+                curveSource.sourceInd = values[2]
+                curveSource.sourceDep = values[3]
+                curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
+            // print(".REP")
+            
+            case "    .FIR":
+                curveSource.type = "FIR"
+                let curve = line.substring(from: 16).components(separatedBy: " ")
+                // print(curve)
+                if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let gain =  curve[2].doubleValue{
+                    curveSource.deadtime = deadtime / 60.0
+                    curveSource.tau = tau / 60.0
+                    curveSource.gain = gain
+                    curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
                 }
+            // print(".FIR")
+            
+            case "    .SEC":
+                curveSource.type = "SEC"
+                // print(dpaContents[lineNo].substring(from: 17))
+                let curve = line.substring(from: 17).components(separatedBy: " ")
+                // print(curve)
+                if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let damp = curve[2].doubleValue, let gain = curve[3].doubleValue {
+                    curveSource.deadtime = deadtime / 60.0
+                    curveSource.tau = tau / 60.0
+                    curveSource.damp = damp
+                    curveSource.gain = gain
+                    curveSource.sources.append(.second(deadtime: deadtime / 60.0, tau: tau / 60.0, damp: damp, gain: gain))
+                    // print(".SEC")
+                }
+                
+            case "    .CON":
+                let curve = line.substring(from: 15).quotedWords()
+                curveSource.type = "CON"
+                curveSource.sourceCase = curve[0]
+                curveSource.sourceCurve = curve[1]
+                curveSource.convoluteCase = curve[2]
+                curveSource.convoluteCurve = curve[3]
+                curveSource.sourceInd = curve[4]
+                curveSource.sourceDep = curve[5]
+                curveSource.convoluteIndName = curve[6]
+                curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
+            // print(".CON")
+
 
             default:
                 break

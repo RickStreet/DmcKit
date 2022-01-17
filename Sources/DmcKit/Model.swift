@@ -465,7 +465,10 @@ public class Model {
 
         for line in dpaContents {
             if line.hasPrefix("!") {
+                print("comment")
                 break
+            } else {
+                print("dpa line")
             }
             let curveType = getCurveType(line)
 
@@ -473,7 +476,7 @@ public class Model {
             if let firstQuoteIndex = line.indexOf("\"") {
                 texts = String(line[firstQuoteIndex...]).quotedWords()
             }
-            print(texts)
+            print("texts: \(texts)")
             
             switch curveType {
             case ".MODel  ":

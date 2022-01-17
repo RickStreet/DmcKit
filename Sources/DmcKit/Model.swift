@@ -469,23 +469,11 @@ public class Model {
             }
             let curveType = getCurveType(line)
 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            let texts = line.components(separatedBy: "  ")
+            var texts = [String]()
+            if let firstQuoteIndex = line.indexOf("\"") {
+                texts = String(line[firstQuoteIndex...]).quotedWords()
+            }
+            print(texts)
             
             switch curveType {
             case ".MODel  ":

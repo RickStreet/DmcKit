@@ -14,6 +14,7 @@ import DialogKit
 /// DMCplus Model
 public class Model {
     public var name = ""
+    public var modelNotes = ""
     public var baseName = ""
     public var dpaName = ""
     public var noInds = 0
@@ -454,6 +455,14 @@ public class Model {
         // print("parsing dpa file lines...")
         // print(dpaContents)
         // get long descriptions and step size for Ind
+        lineNo = 5
+        let line = dpaContents[lineNo].substring(from: 6)
+        let texts = line.quotedWords()
+        if texts.count > 2 {
+            modelNotes = texts[2]
+            modelNotes = modelNotes.replace("!~", with: "\n")
+        }
+        
         lineNo = 7
         // print("updating inds")
         for ind in inds {

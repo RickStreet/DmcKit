@@ -23,11 +23,6 @@ public class ReportCurveSource {
         contents.deleteCharacters(in: NSRange(location: 0, length: contents.length))
         
         
-        if sortByDep {
-            curveSources.sort{$0.depSort < $1.depSort}
-        } else {
-            curveSources.sort{$0.indSort < $1.indSort}
-        }
         
         // Set Styles
         
@@ -77,10 +72,27 @@ public class ReportCurveSource {
         
         // let contents = NSMutableAttributedString()
         
-        
         if sortByDep {
+            curveSources.sort{$0.depSort < $1.depSort}
             let titleString = NSAttributedString(string: "\(controller.config.baseName) Curve Source Sorted by Dependent\n".capitalized, attributes: titleAttribute)
             contents.append(titleString)
+
+
+        } else {
+            curveSources.sort{$0.indSort < $1.indSort}
+            let titleString = NSAttributedString(string: "\(controller.config.baseName) Curve Source Sorted by Independent\n".capitalized, attributes: titleAttribute)
+            contents.append(titleString)
+
+        }
+        
+        // Model Notes
+        let noteTitleString = NSAttributedString(string: "\nModel Notes\n", attributes: headerAttribute)
+        contents.append(noteTitleString)
+        let noteString = NSAttributedString(string: "\(controller.model.modelNotes)\n", attributes: normalAttribute)
+        contents.append(noteString)
+
+        
+        if sortByDep {
             var depLast = ""
             for curve in curveSources {
                 if depLast != curve.depName {
@@ -144,8 +156,6 @@ public class ReportCurveSource {
             
             
         } else {
-            let titleString = NSAttributedString(string: "\(controller.config.baseName) Curve Source Sorted by Independent\n".capitalized, attributes: titleAttribute)
-            contents.append(titleString)
             var indLast = ""
             for curve in curveSources {
                 if indLast != curve.depName {

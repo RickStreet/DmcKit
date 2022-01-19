@@ -494,8 +494,11 @@ public class Model {
 
                 let longDescrip = values[4]
                 var typicalMove = 0.0
-                if let step = texts.last!.doubleValue {
+                if let step = values.last!.doubleValue {
                     typicalMove = step
+                    print("Typ Move \(step)")
+                } else {
+                    print("Cannot find typ move")
                 }
                 inds[indIndex].longDescription = longDescrip
                 inds[indIndex].typicalMove = typicalMove

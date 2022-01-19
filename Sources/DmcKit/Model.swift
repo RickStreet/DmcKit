@@ -490,7 +490,9 @@ public class Model {
                 // Time to steady-state seconds
                 break
             case ".INDepen":
-                let longDescrip = texts[2]
+                let values = line.components(separatedBy: "  ")
+
+                let longDescrip = values[4]
                 var typicalMove = 0.0
                 if let step = texts.last!.doubleValue {
                     typicalMove = step

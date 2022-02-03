@@ -8,7 +8,6 @@
 
 import Foundation
 import StringKit
-import FileKit
 
 // IQ General Section Type
 @dynamicMemberLookup

@@ -20,15 +20,6 @@
         }
       },
       {
-        "package": "FileKit",
-        "repositoryURL": "https://github.com/RickStreet/FileKit.git",
-        "state": {
-          "branch": null,
-          "revision": "a4527407fabda034484637b5e2039bf477c42509",
-          "version": "1.1.34"
-        }
-      },
-      {
         "package": "StringKit",
         "repositoryURL": "https://github.com/RickStreet/StringKit.git",
         "state": {

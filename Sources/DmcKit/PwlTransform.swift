@@ -59,21 +59,11 @@ public class PwlTransform {
         
         let scaledStartPoint = scalePoint(startPoint)
         let scaledEndPoint = scalePoint(endPoint)
+
         scaledPoints.append(scaledStartPoint)
-        
-        
-        for i in 1 ..< points.count {
+        for i in 1 ..< points.count - 1 {
             scaledPoints.append(scalePoint(points[i]))
         }
-        
-        
-        /*
-        for point in points {
-            scaledPoints.append(scalePoint(point))
-        }
-        */
-        
-        
         scaledPoints.append(scaledEndPoint)
         
         for point in scaledPoints {

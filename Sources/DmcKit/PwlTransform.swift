@@ -29,7 +29,6 @@ public class PwlTransform {
     public var points = [(x: Double, y: Double)]()
     public var scaledPoints = [(x: Double, y: Double)]()
     
-    
     public func scalePoints() {
         guard points.count > 1 else { return }
         points.sort(){$0.x < $1.x}

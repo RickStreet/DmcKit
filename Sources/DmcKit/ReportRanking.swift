@@ -16,7 +16,7 @@ public class ReportRanking {
 
     var model: String {
         let value = controller.model.baseName
-        if let index = value.indexOf(".") {
+        if let index = value.index(of: ".") {
             // return value.substring(to: index)
             return String(value[..<index])
         }

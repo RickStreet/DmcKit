@@ -472,7 +472,7 @@ public class Model {
             let curveType = getCurveType(line)
 
             var texts = [String]()
-            if let firstQuoteIndex = line.indexOf("\"") {
+            if let firstQuoteIndex = line.index(of: "\"") {
                 texts = String(line[firstQuoteIndex...]).quotedWords()
             }
             print("texts: \(texts)")
@@ -522,7 +522,7 @@ public class Model {
 
                 if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
                     // print("Modified Gain")
-                    if let i1 = comment.indexAfter("was "), let i2 = comment.indexBefore(" and"), let i3 = comment.indexAfter(" to") {
+                    if let i1 = comment.index(after: "was "), let i2 = comment.index(before: " and"), let i3 = comment.index(after: " to") {
                         let gainOriginal = String(comment[i1...i2]).doubleValue
                         let gainAdjusted = String(comment[i3...]).doubleValue
                         let updateInd = inds.filter{$0.name.uppercased() == indName.uppercased()}

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import StringKit
+// import StringKit
 import DialogKit
 
 public class DmcController {

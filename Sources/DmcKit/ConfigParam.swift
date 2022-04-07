@@ -79,35 +79,35 @@ public class ConfigParam {
             var tLine = entity.substring(from: 1)
             if !tLine.hasPrefix("\"") {
                 // Has Device
-                if let at = tLine.indexBefore("\"") {
+                if let at = tLine.index(before: "\"") {
                     entityDevice = String(tLine[...at])
                 }
             }
-            if let at = tLine.indexAfter(":") {
+            if let at = tLine.index(after: ":") {
                 tLine = String(tLine[at...])
                 if !tLine.hasPrefix(":") {
                     // Has unit
-                    if let at = tLine.indexBefore(":") {
+                    if let at = tLine.index(before: ":") {
                         entityUnit = String(tLine[...at])
                     }
                 }
             }
             
-            if let at = tLine.indexAfter("\"") {
+            if let at = tLine.index(after: "\"") {
                 tLine = String(tLine[at...])
                 if !tLine.hasPrefix("\"") {
                     // Have DSC Tag
-                    if let at = tLine.indexBefore("\"") {
+                    if let at = tLine.index(before: "\"") {
                         dcsTag =  String(tLine[...at])
                     }
                 }
             }
             
-            if let at = tLine.indexAfter(":") {
+            if let at = tLine.index(after: ":") {
                 tLine = String(tLine[at...])
                 if !tLine.hasPrefix(":") {
                     // Has source
-                    if let at = tLine.indexBefore(":") {
+                    if let at = tLine.index(before: ":") {
                         entitySource = String(tLine[...at])
                     }
                 }
@@ -143,41 +143,41 @@ public class ConfigParam {
         var tLine = entity.substring(from: 1)
         if !tLine.hasPrefix("\"") {
             // Has Device
-            if let at = tLine.indexBefore("\"") {
+            if let at = tLine.index(before: "\"") {
                 device = String(tLine[...at])
             }
         }
-        if let at = tLine.indexAfter(":") {
+        if let at = tLine.index(after: ":") {
             tLine = String(tLine[at...])
             if !tLine.hasPrefix(":") {
                 // Has unit
-                if let at = tLine.indexBefore(":") {
+                if let at = tLine.index(before: ":") {
                     unit = String(tLine[...at])
                 }
             }
         }
         
-        if let at = tLine.indexAfter("\"") {
+        if let at = tLine.index(after: "\"") {
             tLine = String(tLine[at...])
             if !tLine.hasPrefix("\"") {
                 // Have DSC Tag
-                if let at = tLine.indexBefore("\"") {
+                if let at = tLine.index(before: "\"") {
                     dcsTag =  String(tLine[...at])
                 }
             }
         }
         
-        if let at = tLine.indexAfter(":") {
+        if let at = tLine.index(after: ":") {
             tLine = String(tLine[at...])
             if !tLine.hasPrefix(":") {
                 // Has source
-                if let at = tLine.indexBefore(":") {
+                if let at = tLine.index(before: ":") {
                     source = String(tLine[...at])
                 }
             }
         }
         
-        if let at = tLine.indexAfter(":") {
+        if let at = tLine.index(after: ":") {
             tLine = String(tLine[at...])
             if tLine.count > 0 {
                 // Have format code

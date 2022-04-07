@@ -149,7 +149,7 @@ public class PwlTransform {
         for line in lines {
             switch line.left(4) {
             case ".PAR":
-                if let start = line.indexAfter("\"  ") {
+                if let start = line.index(after: "\"  ") {
                     let param = line[start...]
                     // print("param \(param)")
                     if let value = String(param).doubleValue {
@@ -181,11 +181,11 @@ public class PwlTransform {
                 let values = line.quotedWords()
                 let value = values[1]
                 print("value \(value)")
-                if let tagEnd = value.indexBefore(" ") {
+                if let tagEnd = value.index(before: " ") {
                     tagName = String(value[...tagEnd])
                     print("tagName \(tagName)")
                 }
-                if let extStart = value.indexAfter("[") {
+                if let extStart = value.index(after: "[") {
                     tagExt = String(value[extStart ..< value.endIndex.advance(by: -1, for: value)])
                     print("tagExt \(tagExt)")
                 }

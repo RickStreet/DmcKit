@@ -112,12 +112,12 @@ public class Vector {
                     
                 case "FRE":
                     // print("fre:" + line)
-                    if let  pos = line.indexOf("!")?.predecessor(in: line) {
+                    if let  pos = line.index(of: "!")?.predecessor(in: line) {
                         // there is a comment remove it
                         // line = line.substring(to: pos)
                         line = String(line[...pos])
                     }
-                    if let start = line.indexOf(" ") {
+                    if let start = line.index(of: " ") {
                         // line = line.substring(from: start).trim()
                         line = String(line[start...])
                     }

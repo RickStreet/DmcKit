@@ -415,16 +415,16 @@ public class Model {
     // From DMCTuner Modified
     
     func readDPA() {
-        // print("in readDPA()")
+        print("in readDPA()")
         let modelFile = mdlURL.lastPathComponent
         name = modelFile
-        // print("model name \(name)")
+        print("model name \(name)")
         if var dpaFile = modelFile.fileBase() {
             baseName = dpaFile
             dpaFile += ".dpa"
             dpaName = dpaFile
             dpaURL = mdlURL.deletingLastPathComponent().appendingPathComponent(dpaFile)
-            // print("dpaURL \(dpaURL.path)")
+            print("dpaURL \(dpaURL.path)")
         } else {
             print("No model file")
         }
@@ -521,7 +521,7 @@ public class Model {
                 curveSource.depIndex = depNo(name: depName)
 
                 if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
-                    // print("Modified Gain")
+                    print("Modified Gain")
                     if let i1 = comment.index(after: "was "), let i2 = comment.index(before: " and"), let i3 = comment.index(after: " to") {
                         let gainOriginal = String(comment[i1...i2]).doubleValue
                         let gainAdjusted = String(comment[i3...]).doubleValue

@@ -492,7 +492,8 @@ public class Model {
             case ".INDepen":
                 let values = line.components(separatedBy: "  ")
 
-                let longDescrip = values[4]
+                let longDescrip = values[3]
+                let units = values[2]
                 var typicalMove = 0.0
                 if let step = values.last!.doubleValue {
                     typicalMove = step
@@ -502,10 +503,13 @@ public class Model {
                 }
                 inds[indIndex].longDescription = longDescrip
                 inds[indIndex].typicalMove = typicalMove
+                inds[indIndex].units = units
                 indIndex += 1
             case ".DEPende":
                 let longDescrip = texts[2]
+                let units = texts[1]
                 deps[depIndex].longDescription = longDescrip
+                deps[depIndex].units = units
                 depIndex += 1
             case ".CURve  ":
                 curveSources.append(CurveSource())

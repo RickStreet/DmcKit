@@ -501,9 +501,9 @@ public class Model {
                 } else {
                     print("Cannot find typ move")
                 }
-                inds[indIndex].longDescription = longDescrip
+                inds[indIndex].longDescription = longDescrip.trimQuotes()
                 inds[indIndex].typicalMove = typicalMove
-                inds[indIndex].units = units
+                inds[indIndex].units = units.trimQuotes()
                 indIndex += 1
             case ".DEPende":
                 let longDescrip = texts[2]

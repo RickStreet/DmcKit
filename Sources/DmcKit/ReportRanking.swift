@@ -22,6 +22,10 @@ public class ReportRanking {
         }
         return value
     }
+    
+    var controllerName: String {
+        return controller.config.baseName
+    }
 
 
     
@@ -51,7 +55,7 @@ public class ReportRanking {
         }
         rankings.sort(){$0.sortVar < $1.sortVar}
         
-        let contents = NSMutableAttributedString(string: "\(model) Ranking Report\n".capitalized, attributes: titleAttribute)
+        let contents = NSMutableAttributedString(string: "\(controllerName) Ranking Report\n".capitalized, attributes: titleAttribute)
         var rank = 0
         for ranking in rankings {
             if ranking.rank != rank {

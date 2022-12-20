@@ -13,6 +13,7 @@ import DialogKit
 public class DmcController {
     public var config = Config()
     public var model = Model()
+    public var subs = [SubController]()
     
     public var modelURL = URL.init(fileURLWithPath: "")
     public var configURL = URL.init(fileURLWithPath: "")
@@ -44,6 +45,7 @@ public class DmcController {
             print("ccf typmov \(config.inds[i].typmov.doubleValue)")
             ccfTypicalMoves.append(config.inds[i].typmov.doubleValue)
         }
+        subs = getSubControllers()
     }
     
     public func typicalMovesByDPA() {

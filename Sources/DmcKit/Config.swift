@@ -27,6 +27,7 @@ public class Config {
     public var ffs = [Section]()
     public var cvs = [Section]()
     public var subs = [Section]()
+    public var subcontrollers = [SubController]()
     public var calcParams = [ConfigParam]()
     public var calcSection = Section()
     public var configSection = Section()
@@ -54,6 +55,7 @@ public class Config {
         ffs.removeAll()
         cvs.removeAll()
         subs.removeAll()
+        subcontrollers.removeAll()
         gMults.removeAll()
         cvIndex = 0
         mvIndex = 0
@@ -300,6 +302,8 @@ public class Config {
                 ffs.append(ind)
             }
         }
+        
+        
 
          print()
          print("GMults:")

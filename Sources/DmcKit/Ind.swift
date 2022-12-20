@@ -26,6 +26,7 @@ public class Ind {
     public var selected = false // used for ratios
     public var excluded = false // used to exclude from rga
     public var typicalMove = 0.0
+    public var isFF = false
     
     public init(no: Int, name: String, shortDescription: String, units: String) {
         self.index = no

@@ -119,8 +119,21 @@ public class DmcController {
                 var indInices = subController.gains.map{$0.indIndex}
                 indInices = Array(Set(indInices)) // Get ride of duplicate indices
                 indInices.sort{$0 < $1}
+                
+                /*
                 for index in indInices {
                     subController.inds.append(model.inds[index])
+                }
+                */
+                
+                for configInd in config.inds {
+                    let ind = model.inds[configInd.index]
+                    if configInd.isff.intValue == 1 {
+                        ind.isFF = true
+                    } else {
+                        ind.isFF = false
+                    }
+                    subController.inds.append(ind)
                 }
                 subs.append(subController)
             }

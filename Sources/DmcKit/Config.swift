@@ -276,7 +276,7 @@ public class Config {
             // print(cv.name, cv.shortDescription)
         }
         print()
-        print("Getting Gmults...")
+        print("Getting Gmults from Config parsing lines...")
         for ind in inds {
             let mults = ind.params.filter{$0.name.left(5) == "GMULT"}
             print("\(ind.name), gmults \(mults.count)")
@@ -307,6 +307,7 @@ public class Config {
 
          print()
          print("GMults:")
+        print("Gmult count \(gMults.count)")
          for gmult in gMults {
          print(gmult.indIndex, gmult.depIndex, gmult.value)
          }
@@ -324,6 +325,7 @@ public class Config {
          print(ff.name, ff.shortDescription)
          }
          */
+        print("Finished parsing lines.")
     }
     
     public func generateCCFContent () -> String {

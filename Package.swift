@@ -19,7 +19,7 @@ let package = Package(
         ),*/
         .package(url: "https://github.com/RickStreet/StringKit.git", from: "1.0.40"),
         .package(url: "https://github.com/RickStreet/DoubleKit.git", from: "1.0.6"),
-        .package(url: "https://github.com/RickStreet/DialogKit.git", from: "1.0.0")
+        .package(url: "https://github.com/RickStreet/DialogKit.git", from: "2.0.0")
         // .package(url: "https://github.com/RickStreet/FileKit.git", from: "1.2.6")
 
         

@@ -70,6 +70,7 @@ public class Model {
     
     public func readMDL(url: URL) {
         clear()
+        print("model readMDL url \(url)")
         // check if mdl file exists
         let fm = FileManager.default
         if !fm.fileExists(atPath: url.path) {
@@ -205,6 +206,7 @@ public class Model {
         print("reading dpa file")
         readDPA()
         print("Completely done with dpa!")
+        print("model read complete.")
     }
     
     func getNumberArray(_ aString: String) -> [Double] {

@@ -28,11 +28,13 @@ public class DmcController {
     
     public func loadAll(url: URL) {
         configURL = url
-        print("reading config file...")
+        print("LoadAll reading config file...")
         config.readCCF(url: url)
         modelURL = self.configURL.deletingLastPathComponent()
+        print("url last comp deleted \(modelURL.path)")
         modelURL.appendPathComponent(self.config.modelName)
-        print("reading model file \(modelURL.path)...")
+        print("model url \(modelURL)")
+        print("LoadAll reading model file \(modelURL.path)...")
         model.readMDL(url: self.modelURL)
         integrate()
         loaded = true

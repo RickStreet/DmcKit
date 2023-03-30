@@ -260,7 +260,7 @@ public class Config {
         paramCount = paramID
         calcCount = calcIndex
         modelName = configSection.mdlnam.value
-        
+        print("config model name \(modelName)")
         /*
          print()
          print("Subs:")

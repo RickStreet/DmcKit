@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NSStringKit
 import StringKit
 
 /**

@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import NSStringKit
 import StringKit
 
 public class XForm {

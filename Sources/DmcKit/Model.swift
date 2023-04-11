@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import StringKit
+import NSStringKit
 import DoubleKit
 import DialogKit
 

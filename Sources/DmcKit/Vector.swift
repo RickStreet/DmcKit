@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import StringKit
+import NSStringKit
 
 public class Vector {
     public var vectorName = ""

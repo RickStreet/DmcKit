@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import StringKit
+import NSStringKit
 
 class DmcVector {
     

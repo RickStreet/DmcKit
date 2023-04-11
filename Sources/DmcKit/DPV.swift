@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import StringKit
+import NSStringKit
 
 public class DPV {
     public var vectorName = ""

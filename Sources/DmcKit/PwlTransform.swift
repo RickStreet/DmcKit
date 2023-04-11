@@ -8,7 +8,7 @@
 
 import Foundation
 // import FileKit
-import StringKit
+import NSStringKit
 
 public class PwlTransform {
     public var tagName = ""

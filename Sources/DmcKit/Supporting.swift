@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import StringKit
+import NSStringKit
 
 /*
 public let lightYellow = NSColor(red: 255.0/255.0, green: 255.0/255.0, blue: 198.0/255.0, alpha: 1.0)

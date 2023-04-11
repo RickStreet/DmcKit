@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import StringKit
+import NSStringKit
 
 public class CurveSource {
     public var type = ""

@@ -17,7 +17,7 @@ let package = Package(
             url: "https://github.com/RickStreet/StringKit.git",
             .branch("master")
         ),*/
-        .package(url: "https://github.com/RickStreet/StringKit.git", from: "1.0.40"),
+        .package(url: "https://github.com/RickStreet/StringKit.git", from: "1.0.45"),
         .package(url: "https://github.com/RickStreet/DoubleKit.git", from: "1.0.6"),
         .package(url: "https://github.com/RickStreet/DialogKit.git", from: "2.0.0")
         // .package(url: "https://github.com/RickStreet/FileKit.git", from: "1.2.6")

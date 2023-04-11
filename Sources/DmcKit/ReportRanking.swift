@@ -11,7 +11,6 @@ import NSStringKit
 
 public class ReportRanking {
     public var controller = DmcController()
-
     let tabParagraphStyle = NSMutableParagraphStyle()
 
     var model: String {

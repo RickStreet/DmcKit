@@ -67,12 +67,16 @@ public class DmcController {
     func integrate() {
         print("Integrating...")
         model.numberMvs = config.mvs.count
+        print()
+        print("mv count \(config.mvs.count)")
         for i in 0..<config.inds.count {
+            print("ind \(i)")
             model.inds[i].shortDescription = config.inds[i].shortDescription
             config.inds[i].longDescription = model.inds[i].longDescription
         }
-        
+        print("cv count \(config.cvs.count)")
         for i in 0..<config.cvs.count {
+            print("dep \(i)")
             model.deps[i].shortDescription = config.cvs[i].shortDescription
             config.cvs[i].longDescription = model.deps[i].longDescription
         }

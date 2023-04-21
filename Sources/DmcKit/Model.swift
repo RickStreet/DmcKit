@@ -546,7 +546,7 @@ public class Model {
                             if comment.contains("set") {
                                 gain[0].adjustType = .set
                             } else {
-                                gain[0].adjustType = .adjusted
+                                gain[0].adjustType = .calculated
                             }
                         }
                     }
@@ -1092,7 +1092,7 @@ public class Model {
                     }
                 }
             }
-        }
+        } // End for
         sortRga()
     }
     
@@ -1361,12 +1361,17 @@ public class Model {
                         comment = "RGA Original Gain was \(gain.originalGain) and set to \(gain.gain)"
                         // print(comment)
                     }
-                    if gain.adjustType == .adjusted {
+                    if gain.adjustType == .calculated {
                         if comment.count > 2 {
                             comment += "\r"
                         }
                         // print("")
                         comment = "RGA Original Gain was \(gain.originalGain) and adjusted to \(gain.gain.precisionString)"
+                        /*
+                        if let ratio = gain.gainRatio {
+                            comment += " using ratio \(ratio)"
+                        }
+                         */
                         // print(comment)
                     }
                     newDpaContents.append(".CURve        \"\(indName)\"  \"\(depName)\"  \"\(comment)\"\r\n")

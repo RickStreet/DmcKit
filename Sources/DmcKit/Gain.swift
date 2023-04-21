@@ -23,11 +23,31 @@ public class Gain {
     public var originalGain: Double = 0
     public var adjustedGain: Double?
     public var adjustType: GainAdjustType = .none
-    public var gain: Double {
-        if let g = adjustedGain {
-            return g
-        } else {
+    public var isMasterNumerator = false
+    public var masterGain: Gain?
+
+    public var gain: Double  {
+        set {
+            adjustedGain = newValue
+        }
+        get {
+            if let gain = masterGain, let factor = gainRatio {
+                if isMasterNumerator {
+                    return gain.gain * factor
+                } else {
+                    return gain.gain / factor
+                }
+            }
+            if let adjustedGain = adjustedGain {
+                return adjustedGain
+            }
             return originalGain
+        }
+    }
+    
+    public var gainRatio: Double? {
+        didSet {
+            adjustType = .calculated
         }
     }
     public var percentChange: Double {
@@ -59,4 +79,12 @@ public class Gain {
         self.adjustedGain = adjustedGain
         self.adjustType = adjustType
     }
+    
+    public init() {
+        self.indIndex = 0
+        self.depIndex = 0
+        self.originalGain = 1.0
+    
+    }
+
 }

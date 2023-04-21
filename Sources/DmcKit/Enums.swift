@@ -11,7 +11,7 @@ import Foundation
 public enum GainAdjustType: String {
     case none = "None"
     case set = "Set"
-    case adjusted = "Adjust"
+    case calculated = "Adjust"
 }
 
 public enum SortRgaBy {

@@ -8,23 +8,70 @@
 import Foundation
 
 public class Rga {
+    private var _gain11 = Gain()
+    private var _gain12 = Gain()
+    private var _gain21 = Gain()
+    private var _gain22 = Gain()
+    
+    var gain11: Gain {
+        set {
+            _gain11 = newValue
+            _gain11.isMasterNumerator = true
+        }
+        get {
+            return _gain11
+        }
+    }
+    var gain12: Gain {
+        set {
+            _gain12 = newValue
+            _gain12.isMasterNumerator = false
+        }
+        get {
+            return _gain12
+        }
+    }
+    
+    var gain21: Gain {
+        set {
+            _gain21 = newValue
+            _gain21.isMasterNumerator = true
+        }
+        get {
+            return _gain21
+        }
+    }
+    var gain22: Gain {
+        set {
+            _gain22 = newValue
+            _gain22.isMasterNumerator = false
+        }
+        get {
+            return _gain22
+        }
+    }
+
+    
     public var ind1 = 0
     public var ind2 = 0
     public var dep1 = 0
     public var dep2 = 0
-    public var gain11 = 0.0
-    public var gain12 = 0.0
-    public var gain21 = 0.0
-    public var gain22 = 0.0
+    // public var gain11 = 0.0
+    // public var gain12 = 0.0
+    // public var gain21 = 0.0
+    // public var gain22 = 0.0
     
     let zeroTolerence = 9.999999999999999e-13
     
+    var rowGainRatio: Double?
+    var columnGainRatio: Double?
+    
     public var rga11: Double {
-        let denominator = gain11 * gain22 - gain12 * gain21
+        let denominator = gain11.gain * gain22.gain - gain12.gain * gain21.gain
         if abs(denominator) < zeroTolerence {
             return 0.0
         }
-        return gain11 * gain22 / denominator
+        return gain11.gain * gain22.gain / denominator
     }
     
     public var rga: Double {
@@ -37,8 +84,28 @@ public class Rga {
             return 1.0 - rga11
         }
     }
-        
-    public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Double, gain12: Double, gain21: Double, gain22: Double) {
+    
+    var originalRga11: Double {
+        let denominator = gain11.originalGain * gain22.originalGain - gain12.originalGain * gain21.originalGain
+        if abs(denominator) < zeroTolerence {
+            return 0.0
+        }
+        return gain11.originalGain * gain22.originalGain / denominator
+    }
+    
+    public var originalRga: Double {
+        if originalRga11 == 0 {
+            return 0.0
+        }
+        if originalRga11 > 1.0 {
+            return originalRga11
+        } else {
+            return 1.0 - originalRga11
+        }
+    }
+
+    
+    public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {
         self.ind1 = ind1
         self.ind2 = ind2
         self.dep1 = dep1

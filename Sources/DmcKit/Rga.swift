@@ -63,8 +63,8 @@ public class Rga {
     
     let zeroTolerence = 9.999999999999999e-13
     
-    var rowGainRatio: Double?
-    var columnGainRatio: Double?
+    public var rowGainRatio: Double?
+    public var columnGainRatio: Double?
     
     public var rga11: Double {
         let denominator = gain11.gain * gain22.gain - gain12.gain * gain21.gain

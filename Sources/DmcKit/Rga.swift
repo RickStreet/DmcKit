@@ -104,7 +104,7 @@ public class Rga {
         }
     }
 
-    
+    /*
     public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {
         self.ind1 = ind1
         self.ind2 = ind2
@@ -115,6 +115,21 @@ public class Rga {
         self.gain21 = gain21
         self.gain22 = gain22
     }
+     */
+    
+    public init(gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {
+        self.gain11 = gain11
+        self.gain12 = gain12
+        self.gain21 = gain21
+        self.gain22 = gain22
+        print()
+        print("gain11 \(gain11.gain)")
+        print("gain12 \(gain12.gain)")
+        print("gain21 \(gain21.gain)")
+        print("gain22 \(gain22.gain)")
+    }
+    
+
     
     public init() {
         

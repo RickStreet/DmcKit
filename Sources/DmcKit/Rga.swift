@@ -16,7 +16,7 @@ public class Rga {
     public var gain11: Gain {
         set {
             _gain11 = newValue
-            _gain11.isMasterNumerator = true
+            // _gain11.masterIsNumerator = true
         }
         get {
             return _gain11
@@ -25,7 +25,7 @@ public class Rga {
     public var gain12: Gain {
         set {
             _gain12 = newValue
-            _gain12.isMasterNumerator = false
+            // _gain12.masterIsNumerator = false
         }
         get {
             return _gain12
@@ -35,7 +35,7 @@ public class Rga {
     public var gain21: Gain {
         set {
             _gain21 = newValue
-            _gain21.isMasterNumerator = true
+            // _gain21.masterIsNumerator = true
         }
         get {
             return _gain21
@@ -44,7 +44,7 @@ public class Rga {
     public var gain22: Gain {
         set {
             _gain22 = newValue
-            _gain22.isMasterNumerator = false
+            // _gain22.masterIsNumerator = false
         }
         get {
             return _gain22

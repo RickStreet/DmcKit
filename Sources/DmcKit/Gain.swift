@@ -23,7 +23,7 @@ public class Gain {
     public var originalGain: Double = 0
     public var adjustedGain: Double?
     public var adjustType: GainAdjustType = .none
-    public var isMasterNumerator = false
+    public var masterIsNumerator = false
     public var masterGain: Gain?
 
     public var gain: Double  {
@@ -32,7 +32,7 @@ public class Gain {
         }
         get {
             if let gain = masterGain, let factor = gainRatio {
-                if isMasterNumerator {
+                if masterIsNumerator {
                     return gain.gain * factor
                 } else {
                     return gain.gain / factor

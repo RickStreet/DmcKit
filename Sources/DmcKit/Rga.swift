@@ -129,8 +129,6 @@ public class Rga {
         print("gain22 \(gain22.gain)")
     }
     
-
-    
     public init() {
         
     }

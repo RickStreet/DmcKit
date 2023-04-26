@@ -86,5 +86,13 @@ public class Gain {
         self.originalGain = 1.0
     
     }
+    
+    public init (indIndex: Int, depIndex: Int, gain: Double) {
+        self.indIndex = indIndex
+        self.depIndex = depIndex
+        self.originalGain = gain
+    }
+    
+
 
 }

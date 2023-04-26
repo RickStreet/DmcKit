@@ -33,9 +33,9 @@ public class Gain {
         get {
             if let gain = masterGain, let factor = gainRatio {
                 if masterIsNumerator {
-                    return gain.gain * factor
-                } else {
                     return gain.gain / factor
+                } else {
+                    return gain.gain * factor
                 }
             }
             if let adjustedGain = adjustedGain {

@@ -1111,9 +1111,28 @@ public class Model {
         switch sortRgaBy {
         case .rga:
             print("by rga")
-            rgas.sort{$0.rga > $1.rga}
+            rgas.sort{
+                if $0.rga == $1.rga {
+                    if $0.ind1Index == $1.ind1Index{
+                        return $0.dep1Index < $1.dep1Index
+                    }
+                    return $0.ind1Index < $1.ind1Index
+                }
+                return $0.rga > $1.rga
+            }
+            // rgas.sort{$0.rga > $1.rga}
         case .mv:
             print("by ind")
+            rgas.sort{
+                if $0.ind1Index == $1.ind1Index {
+                    if $0.dep1Index == $1.dep1Index {
+                        return $0.rga < $1.rga
+                    }
+                    return $0.dep1Index < $1.dep1Index
+                }
+                return $0.ind1Index < $1.ind1Index
+            }
+            /*
             rgas.sort {
                 if $0.ind1Index != $1.ind1Index {
                     return $0.ind1Index < $1.ind1Index
@@ -1121,8 +1140,20 @@ public class Model {
                     return $0.ind2Index < $1.ind2Index
                 }
             }
+            */
         case .cv:
             print("by dep")
+            rgas.sort{
+                if $0.dep1Index == $1.dep1Index {
+                    if $0.ind1Index == $1.ind1Index {
+                        return $0.rga < $1.rga
+                    }
+                    return $0.ind1Index < $1.ind1Index
+                }
+                return $0.dep1Index < $1.dep1Index
+            }
+            
+            /*
             rgas.sort {
                 if $0.dep1Index != $1.dep1Index {
                     return $0.dep1Index < $1.dep1Index
@@ -1130,6 +1161,7 @@ public class Model {
                     return $0.dep2Index < $1.dep2Index
                 }
             }
+            */
         }
         selectedRgaIndex = nil
         // filterRgas(rgaLimit: rgaLimit)

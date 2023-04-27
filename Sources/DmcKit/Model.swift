@@ -33,7 +33,7 @@ public class Model {
     public var dpaURL = URL.init(fileURLWithPath: "")
     
     // RGA Properties
-    public var cRgas = [Rga]()  // Calculated rga's
+    public var rgaAll = [Rga]()  // Calculated rga's
     public var rgas = [Rga]()   // Filtered rga's
     public var numberMvs = 0
     public var selected1Denominator = true
@@ -1017,7 +1017,7 @@ public class Model {
     }
     
     public func calcRgas() {
-        cRgas.removeAll()
+        rgaAll.removeAll()
         let nonZeroGains = gains.filter{$0.gain != 0.0}
         
         if numberMvs < 2 {
@@ -1097,7 +1097,7 @@ public class Model {
                                           gain22: denseDRow[d])
                             // print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
                             */
-                            cRgas.append(rga)
+                            rgaAll.append(rga)
                         }
                     }
                 }
@@ -1110,9 +1110,11 @@ public class Model {
         print("sorting rgas")
         switch sortRgaBy {
         case .rga:
-            cRgas.sort{$0.rga > $1.rga}
+            print("by rga")
+            rgaAll.sort{$0.rga > $1.rga}
         case .mv:
-            cRgas.sort {
+            print("by ind")
+            rgaAll.sort {
                 if $0.ind1 != $1.ind1 {
                     return $0.ind1 < $1.ind1
                 } else {
@@ -1120,7 +1122,8 @@ public class Model {
                 }
             }
         case .cv:
-            cRgas.sort {
+            print("by dep")
+            rgaAll.sort {
                 if $0.dep1 != $1.dep1 {
                     return $0.dep1 < $1.dep1
                 } else {
@@ -1133,8 +1136,8 @@ public class Model {
     }
     
     public func filterRgas(rgaLimit: Double) {
-        print("filtering with limit \(rgaLimit)")
-        rgas = cRgas.filter{$0.rga >= rgaLimit}
+        print("filtering with rga limit \(rgaLimit)")
+        rgas = rgaAll.filter{$0.rga >= rgaLimit}
         
     }
     

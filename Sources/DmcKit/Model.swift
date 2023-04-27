@@ -1111,10 +1111,10 @@ public class Model {
         switch sortRgaBy {
         case .rga:
             print("by rga")
-            rgaAll.sort{$0.rga > $1.rga}
+            rgas.sort{$0.rga > $1.rga}
         case .mv:
             print("by ind")
-            rgaAll.sort {
+            rgas.sort {
                 if $0.ind1 != $1.ind1 {
                     return $0.ind1 < $1.ind1
                 } else {
@@ -1123,7 +1123,7 @@ public class Model {
             }
         case .cv:
             print("by dep")
-            rgaAll.sort {
+            rgas.sort {
                 if $0.dep1 != $1.dep1 {
                     return $0.dep1 < $1.dep1
                 } else {
@@ -1132,7 +1132,7 @@ public class Model {
             }
         }
         selectedRgaIndex = nil
-        filterRgas(rgaLimit: rgaLimit)
+        // filterRgas(rgaLimit: rgaLimit)
     }
     
     public func filterRgas(rgaLimit: Double) {

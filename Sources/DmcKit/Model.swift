@@ -1017,6 +1017,7 @@ public class Model {
     }
     
     public func calcRgas() {
+        print("model calculating rgas")
         rgaAll.removeAll()
         let nonZeroGains = gains.filter{$0.gain != 0.0}
         
@@ -1103,6 +1104,7 @@ public class Model {
                 }
             }
         } // End for
+        filterRgas(rgaLimit: rgaLimit)
         sortRga()
     }
     

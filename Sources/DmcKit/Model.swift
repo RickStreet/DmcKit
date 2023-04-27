@@ -1107,7 +1107,7 @@ public class Model {
     }
     
     func sortRga() {
-        print("sorting rgas")
+        print("model sorting rgas")
         switch sortRgaBy {
         case .rga:
             print("by rga")
@@ -1168,7 +1168,7 @@ public class Model {
     }
     
     public func filterRgas(rgaLimit: Double) {
-        print("filtering with rga limit \(rgaLimit)")
+        print("model filtering with rga limit \(rgaLimit)")
         rgas = rgaAll.filter{$0.rga >= rgaLimit}
         
     }

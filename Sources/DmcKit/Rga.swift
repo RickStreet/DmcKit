@@ -50,12 +50,21 @@ public class Rga {
             return _gain22
         }
     }
-
     
-    public var ind1 = 0
-    public var ind2 = 0
-    public var dep1 = 0
-    public var dep2 = 0
+    
+    public var ind1Index: Int {
+        gain11.indIndex
+    }
+    public var ind2Index: Int {
+        gain21.indIndex
+    }
+    public var dep1Index: Int {
+        gain11.depIndex
+    }
+    public var dep2Index: Int {
+        gain12.depIndex
+    }
+    
     // public var gain11 = 0.0
     // public var gain12 = 0.0
     // public var gain21 = 0.0

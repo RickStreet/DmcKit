@@ -1115,19 +1115,19 @@ public class Model {
         case .mv:
             print("by ind")
             rgas.sort {
-                if $0.ind1 != $1.ind1 {
-                    return $0.ind1 < $1.ind1
+                if $0.ind1Index != $1.ind1Index {
+                    return $0.ind1Index < $1.ind1Index
                 } else {
-                    return $0.ind2 < $1.ind2
+                    return $0.ind2Index < $1.ind2Index
                 }
             }
         case .cv:
             print("by dep")
             rgas.sort {
-                if $0.dep1 != $1.dep1 {
-                    return $0.dep1 < $1.dep1
+                if $0.dep1Index != $1.dep1Index {
+                    return $0.dep1Index < $1.dep1Index
                 } else {
-                    return $0.dep2 < $1.dep2
+                    return $0.dep2Index < $1.dep2Index
                 }
             }
         }

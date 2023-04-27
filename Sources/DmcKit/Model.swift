@@ -1217,7 +1217,7 @@ public class Model {
             let selectedMvs = inds.filter{$0.selected == true}
             if selectedMvs.count != 2 {
                 // Need 2 selected
-                print("Need 2 MV's to calc ratio")
+                print("Model: Need 2 MV's to calc ratio")
                 return
             } else {
                 let index1 = selectedMvs[0].index
@@ -1279,10 +1279,10 @@ public class Model {
     func sortRatios() {
         switch sortRatioBy {
         case .ratio:
-            print("sort ratios by ratio")
+            print("Model: sort ratios by ratio")
             gainRatios.sort{$0.value < $1.value}
         case .variable:
-            print("sort ratios by var")
+            print("Model: sort ratios by var")
             gainRatios.sort{$0.varIndex < $1.varIndex}
         }
         selectedRatioIndex = nil

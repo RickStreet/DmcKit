@@ -1170,7 +1170,7 @@ public class Model {
     }
     
     public func filterRgas(rgaLimit: Double) {
-        print("model filtering with rga limit \(rgaLimit)")
+        print("model: filtering with rga limit \(rgaLimit)")
         rgas = rgaAll.filter{$0.rga >= rgaLimit}
         
     }

@@ -131,11 +131,11 @@ public class Rga {
         self.gain12 = gain12
         self.gain21 = gain21
         self.gain22 = gain22
-        print()
-        print("gain11 \(gain11.gain)")
-        print("gain12 \(gain12.gain)")
-        print("gain21 \(gain21.gain)")
-        print("gain22 \(gain22.gain)")
+        // print()
+        // print("gain11 \(gain11.gain)")
+        // print("gain12 \(gain12.gain)")
+        // print("gain21 \(gain21.gain)")
+        // print("gain22 \(gain22.gain)")
     }
     
     public init() {

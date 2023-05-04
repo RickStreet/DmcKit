@@ -19,6 +19,9 @@ public class Model {
     public var dpaName = ""
     public var noInds = 0
     public var noDeps = 0
+    
+    public var numberMvs = 0
+    
     public var noCoefs = 0
     public var timeToSS = 0.0
     public var numberCoefLines = 0
@@ -35,7 +38,6 @@ public class Model {
     // RGA Properties
     public var rgaAll = [Rga]()  // Calculated rga's
     public var rgas = [Rga]()   // Filtered rga's
-    public var numberMvs = 0
     public var selected1Denominator = true
     public var selectedRgaIndex: Int?
     public var selected1Name = "" // used for gainRatio Calc

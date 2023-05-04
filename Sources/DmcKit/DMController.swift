@@ -68,7 +68,8 @@ public class DmcController {
         print("Integrating...")
         model.numberMvs = config.mvs.count
         print()
-        print("mv count \(config.mvs.count)")
+        print("ccf mv count \(config.mvs.count)")
+        print("model mv count \(model.numberMvs)")
         for i in 0..<config.inds.count {
             print("ind \(i)")
             model.inds[i].shortDescription = config.inds[i].shortDescription

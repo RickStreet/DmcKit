@@ -8,6 +8,10 @@
 import Foundation
 
 public class Rga {
+    
+    public var isNumeratorRow1 = true
+    public var isNumeratorColumn1 = true
+    
     private var _gain11 = Gain()
     private var _gain12 = Gain()
     private var _gain21 = Gain()
@@ -71,6 +75,38 @@ public class Rga {
     // public var gain22 = 0.0
     
     let zeroTolerence = 9.999999999999999e-13
+    
+    public var row1Ratio: Double {
+        if isNumeratorRow1 {
+            return gain11.gain / gain12.gain
+        } else {
+            return gain12.gain / gain11.gain
+        }
+    }
+    
+    public var row2Ratio: Double {
+        if isNumeratorRow1 {
+            return gain21.gain / gain22.gain
+        } else {
+            return gain22.gain / gain21.gain
+        }
+    }
+    
+    public var column1Ratio: Double {
+        if isNumeratorColumn1 {
+            return gain11.gain / gain21.gain
+        } else {
+            return gain21.gain / gain11.gain
+        }
+    }
+    
+    public var column2Ratio: Double {
+        if isNumeratorColumn1 {
+            return gain12.gain / gain22.gain
+        } else {
+            return gain22.gain / gain12.gain
+        }
+    }
     
     public var rowGainRatio: Double?
     public var columnGainRatio: Double?

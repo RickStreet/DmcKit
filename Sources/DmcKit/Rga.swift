@@ -108,6 +108,39 @@ public class Rga {
         }
     }
     
+    public var oRow1Ratio: Double {
+        if isNumeratorRow1 {
+            return gain11.originalGain / gain12.originalGain
+        } else {
+            return gain12.originalGain / gain11.originalGain
+        }
+    }
+    
+    public var oRow2Ratio: Double {
+        if isNumeratorRow1 {
+            return gain21.originalGain / gain22.originalGain
+        } else {
+            return gain22.originalGain / gain21.originalGain
+        }
+    }
+    
+    public var oColumn1Ratio: Double {
+        if isNumeratorColumn1 {
+            return gain11.originalGain / gain21.originalGain
+        } else {
+            return gain21.originalGain / gain11.originalGain
+        }
+    }
+    
+    public var oColumn2Ratio: Double {
+        if isNumeratorColumn1 {
+            return gain12.originalGain / gain22.originalGain
+        } else {
+            return gain22.originalGain / gain12.originalGain
+        }
+    }
+
+    
     public var rowGainRatio: Double?
     public var columnGainRatio: Double?
     

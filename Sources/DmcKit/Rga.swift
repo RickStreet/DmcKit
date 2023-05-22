@@ -17,6 +17,9 @@ public class Rga {
     private var _gain21 = Gain()
     private var _gain22 = Gain()
     
+    private var _rowGainRatio: Double?
+    private var _columnGainRatio: Double?
+    
     public var gain11: Gain {
         set {
             _gain11 = newValue
@@ -139,76 +142,107 @@ public class Rga {
             return gain22.originalGain / gain12.originalGain
         }
     }
-
     
-    public var rowGainRatio: Double?
-    public var columnGainRatio: Double?
     
-    public var rga11: Double {
-        let denominator = gain11.gain * gain22.gain - gain12.gain * gain21.gain
-        if abs(denominator) < zeroTolerence {
-            return 0.0
+    public var rowGainRatio: Double? {
+        set {
+            _rowGainRatio = newValue
         }
-        return gain11.gain * gain22.gain / denominator
-    }
-    
-    public var rga: Double {
-        if rga11 == 0 {
-            return 0.0
-        }
-        if rga11 > 1.0 {
-            return rga11
-        } else {
-            return 1.0 - rga11
+        get {
+            if let value = _rowGainRatio {
+                if isNumeratorRow1 {
+                    return value
+                } else {
+                    return 1/value
+                }
+            }
+            return nil
         }
     }
-    
-    var originalRga11: Double {
-        let denominator = gain11.originalGain * gain22.originalGain - gain12.originalGain * gain21.originalGain
-        if abs(denominator) < zeroTolerence {
-            return 0.0
+        
+        
+        
+    public var columnGainRatio: Double? {
+        set {
+            _columnGainRatio = newValue
         }
-        return gain11.originalGain * gain22.originalGain / denominator
-    }
-    
-    public var originalRga: Double {
-        if originalRga11 == 0 {
-            return 0.0
-        }
-        if originalRga11 > 1.0 {
-            return originalRga11
-        } else {
-            return 1.0 - originalRga11
+        get {
+            if let value = _columnGainRatio {
+                if isNumeratorColumn1 {
+                    return value
+                } else {
+                    return 1/value
+                }
+            }
+            return nil
         }
     }
-
-    /*
-    public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {
-        self.ind1 = ind1
-        self.ind2 = ind2
-        self.dep1 = dep1
-        self.dep2 = dep2
-        self.gain11 = gain11
-        self.gain12 = gain12
-        self.gain21 = gain21
-        self.gain22 = gain22
-    }
-     */
-    
-    public init(gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {
-        self.gain11 = gain11
-        self.gain12 = gain12
-        self.gain21 = gain21
-        self.gain22 = gain22
-        // print()
-        // print("gain11 \(gain11.gain)")
-        // print("gain12 \(gain12.gain)")
-        // print("gain21 \(gain21.gain)")
-        // print("gain22 \(gain22.gain)")
-    }
-    
-    public init() {
+        
+        public var rga11: Double {
+            let denominator = gain11.gain * gain22.gain - gain12.gain * gain21.gain
+            if abs(denominator) < zeroTolerence {
+                return 0.0
+            }
+            return gain11.gain * gain22.gain / denominator
+        }
+        
+        public var rga: Double {
+            if rga11 == 0 {
+                return 0.0
+            }
+            if rga11 > 1.0 {
+                return rga11
+            } else {
+                return 1.0 - rga11
+            }
+        }
+        
+        var originalRga11: Double {
+            let denominator = gain11.originalGain * gain22.originalGain - gain12.originalGain * gain21.originalGain
+            if abs(denominator) < zeroTolerence {
+                return 0.0
+            }
+            return gain11.originalGain * gain22.originalGain / denominator
+        }
+        
+        public var originalRga: Double {
+            if originalRga11 == 0 {
+                return 0.0
+            }
+            if originalRga11 > 1.0 {
+                return originalRga11
+            } else {
+                return 1.0 - originalRga11
+            }
+        }
+        
+        /*
+         public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {
+         self.ind1 = ind1
+         self.ind2 = ind2
+         self.dep1 = dep1
+         self.dep2 = dep2
+         self.gain11 = gain11
+         self.gain12 = gain12
+         self.gain21 = gain21
+         self.gain22 = gain22
+         }
+         */
+        
+        public init(gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {
+            self.gain11 = gain11
+            self.gain12 = gain12
+            self.gain21 = gain21
+            self.gain22 = gain22
+            // print()
+            // print("gain11 \(gain11.gain)")
+            // print("gain12 \(gain12.gain)")
+            // print("gain21 \(gain21.gain)")
+            // print("gain22 \(gain22.gain)")
+        }
+        
+        public init() {
+            
+        }
         
     }
-    
-}

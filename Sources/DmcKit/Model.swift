@@ -161,9 +161,9 @@ public class Model {
             lineNumber += 11
             for ind in inds {
                 // let tInd = lines[lineNo].substring(with: 0..<13)
-                let textGain = lines[lineNumber].substring(with: 46..<69)
-                // print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")
-                var originalGain = textGain.doubleValue!
+                let textGain = String(lines[lineNumber].substring(with: 46..<69)).trim()
+                print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")
+                let originalGain = textGain.doubleValue!
                 var curveCoefs = [Double]()
                 var dynamicCurve = false
                 // scan coeficents

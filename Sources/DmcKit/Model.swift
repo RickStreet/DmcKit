@@ -158,7 +158,7 @@ public class Model {
         // print("getting gains")
         for dep in deps {
             // let tDep = lines[lineNo].substring(with: 0..<13)
-            lineNumber += 10
+            lineNumber += 11
             print("start inds\(lines[lineNumber])")
             for ind in inds {
                 print("ind\(lines[lineNumber])")

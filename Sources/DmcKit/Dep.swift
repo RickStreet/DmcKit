@@ -28,6 +28,8 @@ public class Dep {
     public var excluded = false // used to exclude from rga
     public var longDescription = ""
     public var gainWindow = 0.0
+    public var maxAbsGain = 0.0
+
     
     public init(no: Int, name: String, shortDescription: String, units: String, ramp: Int) {
         self.index = no

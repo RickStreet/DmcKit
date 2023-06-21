@@ -29,6 +29,8 @@ public class Model {
     public var inds = [Ind]()
     public var gains = [Gain]()
     public var curveSources = [CurveSource]()
+    public var curves = [ModelCurve]()
+
     var dpaContents = [String]()
     public var dpaLoaded = false
     
@@ -95,24 +97,24 @@ public class Model {
         
         let lines = contents.components(separatedBy: "\r\n")
         
-        var lineNo = 2
-        if let no = lines[lineNo].integerValue {
+        var lineNumber = 2
+        if let no = lines[lineNumber].integerValue {
             noInds = no
         }
         
-        lineNo = 3
-        if let no = lines[lineNo].integerValue {
+        lineNumber = 3
+        if let no = lines[lineNumber].integerValue {
             noDeps = no
         }
         
         
-        lineNo = 4
-        if let no = lines[lineNo].integerValue {
+        lineNumber = 4
+        if let no = lines[lineNumber].integerValue {
             noCoefs = no
         }
         
-        lineNo = 6
-        if let no = lines[lineNo].doubleValue {
+        lineNumber = 6
+        if let no = lines[lineNumber].doubleValue {
             timeToSS = no
         }
         // print("no min to SS from Model \(timeToSS)")
@@ -121,30 +123,30 @@ public class Model {
         // print("Coef lines   \(NumberCoefLines)")
         
         
-        lineNo = 8
+        lineNumber = 8
         // Get Inds
         var indNo = 0
-        while lines[lineNo].substring(with: 5..<10) == "-999." {
+        while lines[lineNumber].substring(with: 5..<10) == "-999." {
             // print("Ind Tags")
-            let tag = lines[lineNo].substring(with: 36..<49).trim()
-            let units = lines[lineNo].substring(with: 49..<61).trim()
+            let tag = lines[lineNumber].substring(with: 36..<49).trim()
+            let units = lines[lineNumber].substring(with: 49..<61).trim()
             inds.append(Ind(no: indNo, name: tag, shortDescription: "", units: units))
             // inds.append((indNo, tag, units))
             // print("\(indNo) Ind: \(tag)  \(units)")
-            lineNo += 1
+            lineNumber += 1
             indNo += 1
         }
         // print(inds)
         
         // Get Deps
         var depNo = 0
-        while lines[lineNo].substring(with: 8..<16) == "0.000000" {
-            let tag = lines[lineNo].substring(with: 36..<49).trim()
-            let units = lines[lineNo].substring(with: 49..<61).trim()
-            let rampIndex =  lines[lineNo].substring(with: 66..<67).integerValue ?? 0
+        while lines[lineNumber].substring(with: 8..<16) == "0.000000" {
+            let tag = lines[lineNumber].substring(with: 36..<49).trim()
+            let units = lines[lineNumber].substring(with: 49..<61).trim()
+            let rampIndex =  lines[lineNumber].substring(with: 66..<67).integerValue ?? 0
             // print("ramp: \(ramp)")
             deps.append(Dep(no: depNo, name: tag, shortDescription: "", units: units, ramp: rampIndex))
-            lineNo += 1
+            lineNumber += 1
             depNo += 1
             // print("Dep: \(tag) \(units)")
         }
@@ -155,25 +157,25 @@ public class Model {
         // print("getting gains")
         for dep in deps {
             // let tDep = lines[lineNo].substring(with: 0..<13)
-            lineNo += 11
+            lineNumber += 11
             for ind in inds {
                 // let tInd = lines[lineNo].substring(with: 0..<13)
-                let textGain = lines[lineNo].substring(with: 46..<69)
+                let textGain = lines[lineNumber].substring(with: 46..<69)
                 // print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")
                 var originalGain = textGain.doubleValue!
                 
                 // If SS gain is not 0, append gain
                 if originalGain != 0.0 {
-                    lineNo += NumberCoefLines + 1
+                    lineNumber += NumberCoefLines + 1
                     // print("number Gain: \(numberGain)")
                     gains.append(Gain(indNo: ind.index, depNo: dep.index, originalGain: originalGain))
                     // print("Dep: \(tDep)  Ind: \(tInd) textGain: \(textGain)")
                 } else {
                     // scan coefs to check for dynamic curve
-                    lineNo += 1  // at first line of coefs
+                    lineNumber += 1  // at first line of coefs
                     var dynamicCurve = false
                     for _ in 1 ... NumberCoefLines {
-                        let numbers = getNumberArray(lines[lineNo])
+                        let numbers = getNumberArray(lines[lineNumber])
                         // print("\(numbers)")
                         for number in numbers {
                             if number != 0.0 {
@@ -181,7 +183,7 @@ public class Model {
                                 // print("Dynamic Curve")
                             }
                         }
-                        lineNo += 1
+                        lineNumber += 1
                     }
                     // lineNo++
                     if dynamicCurve {
@@ -193,6 +195,69 @@ public class Model {
                     }
                 }
             }
+            // Get Curves
+            // lineNumber += 1 // Get to dep line for gains
+            print("getting gains")
+            for dep in deps {
+                // let tDep = lines[lineNo].substring(with: 0..<13)
+                lineNumber += 11
+                print()
+                print(lines[lineNumber])
+                print()
+                for ind in inds {
+                    // let tInd = lines[lineNo].substring(with: 0..<13)
+                    let textGain = lines[lineNumber].substring(with: 46..<69)
+                    print("Dep: \(dep.index) Ind: \(ind.index) textGain: \(textGain)")
+                    let numberGain = textGain.doubleValue!
+                    var curveCoefs = [Double]()
+                    // scan coefs to check for dynamic curve
+                    lineNumber += 1  // at first line of coefs
+                    var dynamicCurve = false
+                    for _ in 1 ... NumberCoefLines {
+                        let numbers = getNumberArray(lines[lineNumber])
+                        curveCoefs += numbers
+                        print("\(numbers)")
+                        for number in numbers {
+                            // print()
+                            if number != 0.0 {
+                                dynamicCurve = true
+                                // print("Dynamic Curve")
+                            }
+                        }
+                        lineNumber += 1
+                    }
+                    // lineNo++
+                    if dynamicCurve || numberGain != 0.0 {
+                        print()
+                        print("appending curve \(curves.count)")
+                        let curve = ModelCurve()
+                        curve.indName = ind.name
+                        curve.indIndex = ind.index
+                        curve.depName = dep.name
+                        curve.depIndex = dep.index
+                        curve.gain = numberGain
+                        curve.coefficients = curveCoefs
+                        // print(curveCoefs)
+                        if dep.ramp > 0 {
+                            curve.isRamp = true
+                        } else {
+                            curve.isRamp = false
+                        }
+                        let absMax = curve.maxAbsCoefficient
+                        if absMax > dep.maxAbsGain {
+                            dep.maxAbsGain = absMax
+                        }
+                        print("abs Max", dep.maxAbsGain)
+                        curves.append(curve)
+                        // print("number Gain: \(numberGain)")
+                        // gains.append(Gain(depNo: dep.no, indNo: ind.no, gain: 0.0))
+                        // print("Dynamic Dep: \(dep.no)  Ind: \(ind.no) textGain: \(textGain)")
+                        
+                    }
+                    
+                }
+            } // Get Curves
+
         } // Finished reading mdl
         
         

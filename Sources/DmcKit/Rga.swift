@@ -10,7 +10,13 @@ import Foundation
 public class Rga {
     
     public var isNumeratorRow1 = true
-    public var isNumeratorColumn1 = true
+    public var isNumeratorColumn1 = true {
+        didSet {
+            if let gainRatio = columnGainRatio {
+                columnGainRatio = 1/gainRatio
+            }
+        }
+    }
     
     private var _gain11 = Gain()
     private var _gain12 = Gain()
@@ -168,11 +174,7 @@ public class Rga {
         }
         get {
             if let value = _columnGainRatio {
-                if isNumeratorColumn1 {
-                    return value
-                } else {
-                    return 1/value
-                }
+                   return value
             }
             return nil
         }

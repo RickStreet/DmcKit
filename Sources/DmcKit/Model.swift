@@ -168,6 +168,7 @@ public class Model {
                 let originalGain = textGain.doubleValue!
                 var curveCoefs = [Double]()
                 var dynamicCurve = false
+                lineNumber += 1
                 // scan coeficents
                 for _ in 1 ... NumberCoefLines {
                     let numbers = getNumberArray(lines[lineNumber])

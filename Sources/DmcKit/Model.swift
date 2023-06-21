@@ -161,17 +161,19 @@ public class Model {
             lineNumber += 11
             print("start inds\(lines[lineNumber])")
             for ind in inds {
-                print("ind\(lines[lineNumber])")
+                print("ind \(lines[lineNumber])")
                 // let tInd = lines[lineNo].substring(with: 0..<13)
                 let textGain = String(lines[lineNumber].substring(with: 46..<69)).trim()
-                print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")
+                print("Dep: \(dep.index) Ind: \(ind.index) textGain: \(textGain)")
                 let originalGain = textGain.doubleValue!
                 var curveCoefs = [Double]()
                 var dynamicCurve = false
                 // scan coeficents
                 for _ in 1 ... NumberCoefLines {
                     let numbers = getNumberArray(lines[lineNumber])
+                    print("numbers \(numbers)")
                     if numbers.min() != 0.0 || numbers.max() != 0.0 {
+                        print("dynamic numbers \(numbers)")
                         dynamicCurve = true
                     }
                     curveCoefs += numbers

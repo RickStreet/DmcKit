@@ -168,17 +168,16 @@ public class Model {
                 let originalGain = textGain.doubleValue!
                 var curveCoefs = [Double]()
                 var dynamicCurve = false
-                lineNumber += 1
                 // scan coeficents
                 for _ in 1 ... NumberCoefLines {
+                    lineNumber += 1
                     let numbers = getNumberArray(lines[lineNumber])
                     print("numbers \(numbers)")
-                    if numbers.min() != 0.0 || numbers.max() != 0.0 {
+                    if (numbers.min() != 0.0 || numbers.max() != 0.0) && !dynamicCurve {
                         print("dynamic numbers \(numbers)")
                         dynamicCurve = true
                     }
                     curveCoefs += numbers
-                    lineNumber += 1
                     print("\(numbers)")
                 }
                 if dynamicCurve {

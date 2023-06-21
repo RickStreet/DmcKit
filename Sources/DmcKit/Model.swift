@@ -30,7 +30,7 @@ public class Model {
     public var gains = [Gain]()
     public var curveSources = [CurveSource]()
     public var modelCurves = [ModelCurve]()
-
+    
     var dpaContents = [String]()
     public var dpaLoaded = false
     
@@ -176,6 +176,7 @@ public class Model {
                     print("\(numbers)")
                 }
                 if dynamicCurve {
+                    gains.append(Gain(indIndex: ind.index, depIndex: dep.index, gain: originalGain))
                     // Append curve coefs to modelCurve
                     print()
                     print("appending curve \(curveCoefs.count)")
@@ -199,75 +200,9 @@ public class Model {
                     print("abs Max", dep.maxAbsGain)
                     modelCurves.append(modelCurve)
                 }
-
-                // If SS gain is not 0, append gain
-                if originalGain != 0.0 {
-                    lineNumber += NumberCoefLines + 1
-                    // print("number Gain: \(numberGain)")
-                    gains.append(Gain(indNo: ind.index, depNo: dep.index, originalGain: originalGain))
-                    // print("Dep: \(tDep)  Ind: \(tInd) textGain: \(textGain)")
-                } else {
-                    // scan coefs to check for dynamic curve
-                    lineNumber += 1  // at first line of coefs
-                    var dynamicCurve = false
-                    for _ in 1 ... NumberCoefLines {
-                        let numbers = getNumberArray(lines[lineNumber])
-                        curveCoefs += numbers
-                        print("\(numbers)")
-                        for number in numbers {
-                            // print()
-                            if number != 0.0 {
-                                dynamicCurve = true
-                                // print("Dynamic Curve")
-                            }
-                        }
-
-                        // print("\(numbers)")
-                        lineNumber += 1
-                    }
-                    // lineNo++
-                    if dynamicCurve {
-                        originalGain = 0.0
-                        // print("number Gain: \(numberGain)")
-                        gains.append(Gain(indNo: ind.index, depNo: dep.index, originalGain: 0.0))
-                        // print("Dynamic Dep: \(dep.no)  Ind: \(ind.no) textGain: \(textGain)")
-                        
-                    }
-                    if dynamicCurve || originalGain != 0.0 {
-                        print()
-                        print("appending curve \(curveCoefs.count)")
-                        let modelCurve = ModelCurve()
-                        modelCurve.indName = ind.name
-                        modelCurve.indIndex = ind.index
-                        modelCurve.depName = dep.name
-                        modelCurve.depIndex = dep.index
-                        modelCurve.gain = originalGain
-                        modelCurve.coefficients = curveCoefs
-                        // print(curveCoefs)
-                        if dep.ramp > 0 {
-                            modelCurve.isRamp = true
-                        } else {
-                            modelCurve.isRamp = false
-                        }
-                        let absMax = modelCurve.maxAbsCoefficient
-                        if absMax > dep.maxAbsGain {
-                            dep.maxAbsGain = absMax
-                        }
-                        print("abs Max", dep.maxAbsGain)
-                        modelCurves.append(modelCurve)
-                        print("number Gain: \(numberGain)")
-                        gains.append(Gain(depNo: dep.no, indNo: ind.no, gain: 0.0))
-                        print("Dynamic Dep: \(dep.no)  Ind: \(ind.no) textGain: \(textGain)")
-                        
-                    }
-
-                }
-            }
-
-        } // Finished reading mdl
-        
-        
-        
+                lineNumber += 1
+            }  // End inds
+        } // End deps
         print("noInds \(noInds)")
         print("noDeps \(noDeps)")
         print("noCoefs \(noCoefs)")
@@ -278,7 +213,7 @@ public class Model {
         
         print("reading dpa file")
         readDPA()
-        print("Completely done with dpa!")
+        print("Completely done with mdl!")
         print("model read complete.")
     }
     
@@ -538,14 +473,14 @@ public class Model {
         var depIndex = 0
         var curveSource = CurveSource()
         curveSources.removeAll()
-
+        
         for line in dpaContents {
             if line.hasPrefix("!") {
                 print("comment")
                 continue
             }
             let curveType = getCurveType(line)
-
+            
             var texts = [String]()
             if let firstQuoteIndex = line.index(of: "\"") {
                 texts = String(line[firstQuoteIndex...]).quotedWords()
@@ -566,7 +501,7 @@ public class Model {
                 break
             case ".INDepen":
                 let values = line.components(separatedBy: "  ")
-
+                
                 let longDescrip = values[3]
                 let units = values[2]
                 var typicalMove = 0.0
@@ -593,12 +528,12 @@ public class Model {
                 let indName = tags[0]
                 let depName = tags[1]
                 let comment = tags[2]
-               curveSource.indName = indName
+                curveSource.indName = indName
                 curveSource.depName = depName
                 curveSource.note = comment
                 curveSource.indIndex = indNo(name: indName)
                 curveSource.depIndex = depNo(name: depName)
-
+                
                 if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
                     print("Modified Gain")
                     if let i1 = comment.index(after: "was "), let i2 = comment.index(before: " and"), let i3 = comment.index(after: " to") {
@@ -624,7 +559,7 @@ public class Model {
                         }
                     }
                 }
-    
+                
             case ".UNIty  ":
                 curveSource.type = "UNI"
                 curveSource.sourceCase = "Unity Curve"
@@ -642,8 +577,8 @@ public class Model {
                 curveSource.sourceInd = values[2]
                 curveSource.sourceDep = values[3]
                 curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
-            // print(".REP")
-            
+                // print(".REP")
+                
             case "    .FIR":
                 curveSource.type = "FIR"
                 let curve = line.substring(from: 16).components(separatedBy: " ")
@@ -654,8 +589,8 @@ public class Model {
                     curveSource.gain = gain
                     curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
                 }
-            // print(".FIR")
-            
+                // print(".FIR")
+                
             case "    .SEC":
                 curveSource.type = "SEC"
                 // print(dpaContents[lineNo].substring(from: 17))
@@ -681,212 +616,212 @@ public class Model {
                 curveSource.sourceDep = curve[5]
                 curveSource.convoluteIndName = curve[6]
                 curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
-            // print(".CON")
-
-
+                // print(".CON")
+                
+                
             default:
                 break
                 
             }
         }
-
+        
         /*
-        var lineNo = 0
-        // print("parsing dpa file lines...")
-        // print(dpaContents)
-        // get long descriptions and step size for Ind
-        lineNo = 6
-        let line = dpaContents[lineNo].substring(from: 6)
-        let texts = line.quotedWords()
-        if texts.count > 2 {
-            modelNotes = texts[2]
-            modelNotes = modelNotes.replace("!~", with: "\n")
-        }
-        
-        lineNo = 7
-        // print("updating inds")
-        for ind in inds {
-            let texts = dpaContents[lineNo].components(separatedBy: "  ")
-            let longDescrip = texts[texts.count - 2].replace("\"", with: "")
-            var typicalMove = 0.0
-            if let step = texts.last!.doubleValue {
-                typicalMove = step
-            }
-            // let typicalMove = doubleValue(texts.lastt!)
-            ind.longDescription = longDescrip
-            ind.typicalMove = typicalMove
-            
-            // print("\(ind.name), typMove: \(ind.typicalMove)")
-            // indInfo.append(IndInfo(no: ind.no, name: ind.name, description: longDescrip, typicalMove: typicalMove))
-            // print("lDescrip \(indInfo.last?.description)")
-            
-            
-            // print("\((ind.no, ind.tag, longDescrip, typicalMove))")
-            lineNo += 1
-        }
-        // get longDescrips for Dep
-        // print("updating deps")
-        for dep in deps {
-            let texts = dpaContents[lineNo].components(separatedBy: "  ")
-            let longDescrip = texts[texts.count - 2].replace("\"", with: "")
-            // depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
-            dep.longDescription = longDescrip
-            // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
-            // print("lDescrip \(depInfo.last?.description)")
-            
-            lineNo += 1
-        }
-        
-        
-        lineNo += 1
-        // Get Curve Sources
-        curveSources.removeAll()
-        // print("getting curve sources:")
-        // print("line count", dpaContents.count)
-        // print("line", lineNo)
-        // print(dpaContents[lineNo])
-        while lineNo < dpaContents.count {
-            // print()
-            // print("line \(lineNo)")
-            if dpaContents[lineNo].hasPrefix(".CUR") {
-                curveSources.append(CurveSource())
-                let curveSource = curveSources.last!
-                let tags = dpaContents[lineNo].substring(from: 14).quotedWords()
-                let indName = tags[0]
-                let depName = tags[1]
-                if tags.count > 2 {
-                    curveSource.note = tags[2]
-                }
-                curveSource.indName = indName
-                curveSource.depName = depName
-                let comment = tags[2]
-                
-                if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
-                    // print("Modified Gain")
-                    if let i1 = comment.indexAfter("was "), let i2 = comment.indexBefore(" and"), let i3 = comment.indexAfter(" to") {
-                        let gainOriginal = String(comment[i1...i2]).doubleValue
-                        let gainAdjusted = String(comment[i3...]).doubleValue
-                        let updateInd = inds.filter{$0.name.uppercased() == indName.uppercased()}
-                        let indNo = updateInd[0].index
-                        let updateDep = deps.filter{$0.name.uppercased() == depName.uppercased()}
-                        let depNo = updateDep[0].index
-                        let gain = gains.filter{$0.indIndex == indNo && $0.depIndex == depNo}
-                        if gain.count > 0 {
-                            if let gOriginal = gainOriginal {
-                                gain[0].originalGain = gOriginal
-                            }
-                            if let gAdjusted = gainAdjusted {
-                                gain[0].adjustedGain = gAdjusted
-                            }
-                            if comment.contains("set") {
-                                gain[0].adjustType = .set
-                            } else {
-                                gain[0].adjustType = .adjusted
-                            }
-                        }
-                    }
-                }
-                
-                
-                
-                
-                
-                curveSource.indIndex = indNo(name: tags[0])
-                curveSource.depIndex = depNo(name: tags[1])
-                // print("Curve", tags[0], tags[1])
-                if lineNo < dpaContents.count - 1 {
-                    lineNo += 1
-                }
-                // print("line after CUR", lineNo)
-                // print(dpaContents[lineNo])
-                
-                while !dpaContents[lineNo].hasPrefix(".CUR") && lineNo < dpaContents.count{
-                    // print()
-                    // print("line \(lineNo)")
-                    let curveType = getCurveType(dpaContents[lineNo])
-                    // print("get curve type", curveType.trim())
-                    switch curveType {
-                    case ".UNIty  ":
-                        curveSource.type = "UNI"
-                        curveSource.sourceCase = "Unity Curve"
-                        curveSource.sources.append(.unity)
-                    // print(".UNI")
-                    case ".ZERo   ":
-                        curveSource.type = "ZER"
-                        curveSource.sourceCase = "Zero Curve"
-                        curveSource.sources.append(.zero)
-                    // print(".ZER")
-                    
-                    case "    .REP":
-                        let values = dpaContents[lineNo].substring(from: 10).quotedWords()
-                        curveSource.type = "REP"
-                        curveSource.sourceCase = values[0]
-                        curveSource.sourceCurve = values[1]
-                        curveSource.sourceInd = values[2]
-                        curveSource.sourceDep = values[3]
-                        curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
-                    // print(".REP")
-                    
-                    case "    .FIR":
-                        curveSource.type = "FIR"
-                        let curve = dpaContents[lineNo].substring(from: 16).components(separatedBy: " ")
-                        // print(curve)
-                        if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let gain =  curve[2].doubleValue{
-                            curveSource.deadtime = deadtime / 60.0
-                            curveSource.tau = tau / 60.0
-                            curveSource.gain = gain
-                            curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
-                        }
-                    // print(".FIR")
-                    
-                    case "    .SEC":
-                        curveSource.type = "SEC"
-                        // print(dpaContents[lineNo].substring(from: 17))
-                        let curve = dpaContents[lineNo].substring(from: 17).components(separatedBy: " ")
-                        // print(curve)
-                        if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let damp = curve[2].doubleValue, let gain = curve[3].doubleValue {
-                            curveSource.deadtime = deadtime / 60.0
-                            curveSource.tau = tau / 60.0
-                            curveSource.damp = damp
-                            curveSource.gain = gain
-                            curveSource.sources.append(.second(deadtime: deadtime / 60.0, tau: tau / 60.0, damp: damp, gain: gain))
-                            // print(".SEC")
-                        }
-                        
-                    case "    .CON":
-                        let curve = dpaContents[lineNo].substring(from: 15).quotedWords()
-                        curveSource.type = "CON"
-                        curveSource.sourceCase = curve[0]
-                        curveSource.sourceCurve = curve[1]
-                        curveSource.convoluteCase = curve[2]
-                        curveSource.convoluteCurve = curve[3]
-                        curveSource.sourceInd = curve[4]
-                        curveSource.sourceDep = curve[5]
-                        curveSource.convoluteIndName = curve[6]
-                        curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
-                    // print(".CON")
-                    
-                    default:
-                        break
-                    }
-                    lineNo += 1
-                    if lineNo == dpaContents.count {
-                        break
-                    }
-                    // print("line end curve while", lineNo)
-                    if lineNo < dpaContents.count {
-                        // print(dpaContents[lineNo])
-                    }
-                    // print()
-                    // print("Exit inner while")
-                }
-            }
-            // lineNo += 1
-            // print("line end file while", lineNo)
-            // print(dpaContents[lineNo])
-        }
-        // print("done getting curvesources")
-        print()
+         var lineNo = 0
+         // print("parsing dpa file lines...")
+         // print(dpaContents)
+         // get long descriptions and step size for Ind
+         lineNo = 6
+         let line = dpaContents[lineNo].substring(from: 6)
+         let texts = line.quotedWords()
+         if texts.count > 2 {
+         modelNotes = texts[2]
+         modelNotes = modelNotes.replace("!~", with: "\n")
+         }
+         
+         lineNo = 7
+         // print("updating inds")
+         for ind in inds {
+         let texts = dpaContents[lineNo].components(separatedBy: "  ")
+         let longDescrip = texts[texts.count - 2].replace("\"", with: "")
+         var typicalMove = 0.0
+         if let step = texts.last!.doubleValue {
+         typicalMove = step
+         }
+         // let typicalMove = doubleValue(texts.lastt!)
+         ind.longDescription = longDescrip
+         ind.typicalMove = typicalMove
+         
+         // print("\(ind.name), typMove: \(ind.typicalMove)")
+         // indInfo.append(IndInfo(no: ind.no, name: ind.name, description: longDescrip, typicalMove: typicalMove))
+         // print("lDescrip \(indInfo.last?.description)")
+         
+         
+         // print("\((ind.no, ind.tag, longDescrip, typicalMove))")
+         lineNo += 1
+         }
+         // get longDescrips for Dep
+         // print("updating deps")
+         for dep in deps {
+         let texts = dpaContents[lineNo].components(separatedBy: "  ")
+         let longDescrip = texts[texts.count - 2].replace("\"", with: "")
+         // depInfo.append(DepInfo(no: dep.no, name: dep.name, description: longDescrip, ramp: dep.ramp))
+         dep.longDescription = longDescrip
+         // print("\((dep.no, dep.name, longDescrip, dep.ramp))")
+         // print("lDescrip \(depInfo.last?.description)")
+         
+         lineNo += 1
+         }
+         
+         
+         lineNo += 1
+         // Get Curve Sources
+         curveSources.removeAll()
+         // print("getting curve sources:")
+         // print("line count", dpaContents.count)
+         // print("line", lineNo)
+         // print(dpaContents[lineNo])
+         while lineNo < dpaContents.count {
+         // print()
+         // print("line \(lineNo)")
+         if dpaContents[lineNo].hasPrefix(".CUR") {
+         curveSources.append(CurveSource())
+         let curveSource = curveSources.last!
+         let tags = dpaContents[lineNo].substring(from: 14).quotedWords()
+         let indName = tags[0]
+         let depName = tags[1]
+         if tags.count > 2 {
+         curveSource.note = tags[2]
+         }
+         curveSource.indName = indName
+         curveSource.depName = depName
+         let comment = tags[2]
+         
+         if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
+         // print("Modified Gain")
+         if let i1 = comment.indexAfter("was "), let i2 = comment.indexBefore(" and"), let i3 = comment.indexAfter(" to") {
+         let gainOriginal = String(comment[i1...i2]).doubleValue
+         let gainAdjusted = String(comment[i3...]).doubleValue
+         let updateInd = inds.filter{$0.name.uppercased() == indName.uppercased()}
+         let indNo = updateInd[0].index
+         let updateDep = deps.filter{$0.name.uppercased() == depName.uppercased()}
+         let depNo = updateDep[0].index
+         let gain = gains.filter{$0.indIndex == indNo && $0.depIndex == depNo}
+         if gain.count > 0 {
+         if let gOriginal = gainOriginal {
+         gain[0].originalGain = gOriginal
+         }
+         if let gAdjusted = gainAdjusted {
+         gain[0].adjustedGain = gAdjusted
+         }
+         if comment.contains("set") {
+         gain[0].adjustType = .set
+         } else {
+         gain[0].adjustType = .adjusted
+         }
+         }
+         }
+         }
+         
+         
+         
+         
+         
+         curveSource.indIndex = indNo(name: tags[0])
+         curveSource.depIndex = depNo(name: tags[1])
+         // print("Curve", tags[0], tags[1])
+         if lineNo < dpaContents.count - 1 {
+         lineNo += 1
+         }
+         // print("line after CUR", lineNo)
+         // print(dpaContents[lineNo])
+         
+         while !dpaContents[lineNo].hasPrefix(".CUR") && lineNo < dpaContents.count{
+         // print()
+         // print("line \(lineNo)")
+         let curveType = getCurveType(dpaContents[lineNo])
+         // print("get curve type", curveType.trim())
+         switch curveType {
+         case ".UNIty  ":
+         curveSource.type = "UNI"
+         curveSource.sourceCase = "Unity Curve"
+         curveSource.sources.append(.unity)
+         // print(".UNI")
+         case ".ZERo   ":
+         curveSource.type = "ZER"
+         curveSource.sourceCase = "Zero Curve"
+         curveSource.sources.append(.zero)
+         // print(".ZER")
+         
+         case "    .REP":
+         let values = dpaContents[lineNo].substring(from: 10).quotedWords()
+         curveSource.type = "REP"
+         curveSource.sourceCase = values[0]
+         curveSource.sourceCurve = values[1]
+         curveSource.sourceInd = values[2]
+         curveSource.sourceDep = values[3]
+         curveSource.sources.append(.replace(ind: values[2], dep: values[3], sourceCase: values[0], sourceCurve: values[1]))
+         // print(".REP")
+         
+         case "    .FIR":
+         curveSource.type = "FIR"
+         let curve = dpaContents[lineNo].substring(from: 16).components(separatedBy: " ")
+         // print(curve)
+         if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let gain =  curve[2].doubleValue{
+         curveSource.deadtime = deadtime / 60.0
+         curveSource.tau = tau / 60.0
+         curveSource.gain = gain
+         curveSource.sources.append(.first(deadtime: deadtime / 60.0, tau: tau / 60.0, gain: gain))
+         }
+         // print(".FIR")
+         
+         case "    .SEC":
+         curveSource.type = "SEC"
+         // print(dpaContents[lineNo].substring(from: 17))
+         let curve = dpaContents[lineNo].substring(from: 17).components(separatedBy: " ")
+         // print(curve)
+         if let deadtime = curve[1].doubleValue, let tau = curve[1].doubleValue, let damp = curve[2].doubleValue, let gain = curve[3].doubleValue {
+         curveSource.deadtime = deadtime / 60.0
+         curveSource.tau = tau / 60.0
+         curveSource.damp = damp
+         curveSource.gain = gain
+         curveSource.sources.append(.second(deadtime: deadtime / 60.0, tau: tau / 60.0, damp: damp, gain: gain))
+         // print(".SEC")
+         }
+         
+         case "    .CON":
+         let curve = dpaContents[lineNo].substring(from: 15).quotedWords()
+         curveSource.type = "CON"
+         curveSource.sourceCase = curve[0]
+         curveSource.sourceCurve = curve[1]
+         curveSource.convoluteCase = curve[2]
+         curveSource.convoluteCurve = curve[3]
+         curveSource.sourceInd = curve[4]
+         curveSource.sourceDep = curve[5]
+         curveSource.convoluteIndName = curve[6]
+         curveSource.sources.append(.convolute(model: curve[0] + "   " + curve[1], ind: curve[4], interModel: curve[2] + "   " + curve[3], dep: curve[5], interInd: curve[6]))
+         // print(".CON")
+         
+         default:
+         break
+         }
+         lineNo += 1
+         if lineNo == dpaContents.count {
+         break
+         }
+         // print("line end curve while", lineNo)
+         if lineNo < dpaContents.count {
+         // print(dpaContents[lineNo])
+         }
+         // print()
+         // print("Exit inner while")
+         }
+         }
+         // lineNo += 1
+         // print("line end file while", lineNo)
+         // print(dpaContents[lineNo])
+         }
+         // print("done getting curvesources")
+         print()
          */
         dpaLoaded = true
         getGainWindows()
@@ -987,51 +922,51 @@ public class Model {
      }
      }
      /*
-     let index1 = comment.lastIndexOf("was")
-     let index2 = comment.indexOf("and")
-     let index3 = comment.lastIndexOf("to")
-     if let i1 = index1, let i2 = index2, let i3 = index3 {
-     // let gainOriginal = comment.substring(with: i1 ..< i2).doubleValue
-     let gainOriginal = String(comment[i1 ..< i2]).doubleValue
-     // print("oGain: \(gainOriginal)")
-     // let gainAdjusted = comment.substring(from: i3).doubleValue
-     let gainAdjusted = String(comment[i3...]).doubleValue
-     // print("aGain: \(gainAdjusted)")
-     let updateInd = inds.filter{$0.name == indName}
-     let indNo = updateInd[0].no
-     let updateDep = deps.filter{$0.name == depName}
-     let depNo = updateDep[0].no
-     var gain = gains.filter{$0.indNo == indNo && $0.depNo == depNo}
-     if gain.count > 0 {
-     if let gOriginal = gainOriginal {
-     gain[0].originalGain = gOriginal
-     }
-     if let gAdjusted = gainAdjusted {
-     gain[0].adjustedGain = gAdjusted
-     }
-     if comment.contains("set") {
-     gain[0].adjustType = .set
-     } else {
-     gain[0].adjustType = .adjusted
-     }
-     }
-     }
-     */
+      let index1 = comment.lastIndexOf("was")
+      let index2 = comment.indexOf("and")
+      let index3 = comment.lastIndexOf("to")
+      if let i1 = index1, let i2 = index2, let i3 = index3 {
+      // let gainOriginal = comment.substring(with: i1 ..< i2).doubleValue
+      let gainOriginal = String(comment[i1 ..< i2]).doubleValue
+      // print("oGain: \(gainOriginal)")
+      // let gainAdjusted = comment.substring(from: i3).doubleValue
+      let gainAdjusted = String(comment[i3...]).doubleValue
+      // print("aGain: \(gainAdjusted)")
+      let updateInd = inds.filter{$0.name == indName}
+      let indNo = updateInd[0].no
+      let updateDep = deps.filter{$0.name == depName}
+      let depNo = updateDep[0].no
+      var gain = gains.filter{$0.indNo == indNo && $0.depNo == depNo}
+      if gain.count > 0 {
+      if let gOriginal = gainOriginal {
+      gain[0].originalGain = gOriginal
+      }
+      if let gAdjusted = gainAdjusted {
+      gain[0].adjustedGain = gAdjusted
+      }
+      if comment.contains("set") {
+      gain[0].adjustType = .set
+      } else {
+      gain[0].adjustType = .adjusted
+      }
+      }
+      }
+      */
      }
      }
      }
      
      
      /*
-     for (index, value) in deps.enumerated() {
-     depDict[value.no] = index
-     }
-     
-     
-     for (index, value) in inds.enumerated() {
-     indDict[value.no] = index
-     }
-     */
+      for (index, value) in deps.enumerated() {
+      depDict[value.no] = index
+      }
+      
+      
+      for (index, value) in inds.enumerated() {
+      indDict[value.no] = index
+      }
+      */
      
      dpaLoaded = true
      getGainWindows()
@@ -1161,16 +1096,16 @@ public class Model {
                             
                             let rga = Rga(gain11: denseCRow[c], gain12: denseCRow[d], gain21: denseDRow[c], gain22: denseDRow[d])
                             /*
-                            let rga = Rga(ind1: denseCRow[c].indIndex,
-                                          ind2: denseDRow[d].indIndex,
-                                          dep1: denseCRow[c].depIndex,
-                                          dep2: denseCRow[d].depIndex,
-                                          gain11: denseCRow[c],
-                                          gain12: denseCRow[d],
-                                          gain21: denseDRow[c],
-                                          gain22: denseDRow[d])
-                            // print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
-                            */
+                             let rga = Rga(ind1: denseCRow[c].indIndex,
+                             ind2: denseDRow[d].indIndex,
+                             dep1: denseCRow[c].depIndex,
+                             dep2: denseCRow[d].depIndex,
+                             gain11: denseCRow[c],
+                             gain12: denseCRow[d],
+                             gain21: denseDRow[c],
+                             gain22: denseDRow[d])
+                             // print(rga.ind1, rga.ind2, rga.dep1, rga.dep2, rga.rga)
+                             */
                             rgaAll.append(rga)
                         }
                     }
@@ -1208,14 +1143,14 @@ public class Model {
                 return $0.ind1Index < $1.ind1Index
             }
             /*
-            rgas.sort {
-                if $0.ind1Index != $1.ind1Index {
-                    return $0.ind1Index < $1.ind1Index
-                } else {
-                    return $0.ind2Index < $1.ind2Index
-                }
-            }
-            */
+             rgas.sort {
+             if $0.ind1Index != $1.ind1Index {
+             return $0.ind1Index < $1.ind1Index
+             } else {
+             return $0.ind2Index < $1.ind2Index
+             }
+             }
+             */
         case .cv:
             print("by dep")
             rgas.sort{
@@ -1229,14 +1164,14 @@ public class Model {
             }
             
             /*
-            rgas.sort {
-                if $0.dep1Index != $1.dep1Index {
-                    return $0.dep1Index < $1.dep1Index
-                } else {
-                    return $0.dep2Index < $1.dep2Index
-                }
-            }
-            */
+             rgas.sort {
+             if $0.dep1Index != $1.dep1Index {
+             return $0.dep1Index < $1.dep1Index
+             } else {
+             return $0.dep2Index < $1.dep2Index
+             }
+             }
+             */
         }
         selectedRgaIndex = nil
         // filterRgas(rgaLimit: rgaLimit)
@@ -1459,7 +1394,7 @@ public class Model {
                             newDpaContents.append("    .GSCale   \(newGain.precisionString)\r\n")
                         }
                     }
-                }                
+                }
                 let params = line.substring(from: 14).quotedWords()
                 // print(params)
                 if params.count > 2 {
@@ -1488,9 +1423,9 @@ public class Model {
                         // print("")
                         comment = "RGA Original Gain was \(gain.originalGain) and adjusted to \(gain.gain.precisionString)"
                         /*
-                        if let ratio = gain.gainRatio {
-                            comment += " using ratio \(ratio)"
-                        }
+                         if let ratio = gain.gainRatio {
+                         comment += " using ratio \(ratio)"
+                         }
                          */
                         // print(comment)
                     }

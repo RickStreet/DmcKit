@@ -175,6 +175,7 @@ public class Model {
                         dynamicCurve = true
                     }
                     curveCoefs += numbers
+                    lineNumber += 1
                     print("\(numbers)")
                 }
                 if dynamicCurve {
@@ -202,7 +203,7 @@ public class Model {
                     print("abs Max", dep.maxAbsGain)
                     modelCurves.append(modelCurve)
                 }
-                lineNumber += 1
+                // lineNumber += 1
             }  // End inds
         } // End deps
         print("noInds \(noInds)")

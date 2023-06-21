@@ -158,7 +158,7 @@ public class Model {
         // print("getting gains")
         for dep in deps {
             // let tDep = lines[lineNo].substring(with: 0..<13)
-            lineNumber += 11
+            lineNumber += 10
             for ind in inds {
                 // let tInd = lines[lineNo].substring(with: 0..<13)
                 let textGain = String(lines[lineNumber].substring(with: 46..<69)).trim()

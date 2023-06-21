@@ -29,7 +29,7 @@ public class Model {
     public var inds = [Ind]()
     public var gains = [Gain]()
     public var curveSources = [CurveSource]()
-    public var curves = [ModelCurve]()
+    public var modelCurves = [ModelCurve]()
 
     var dpaContents = [String]()
     public var dpaLoaded = false
@@ -126,6 +126,7 @@ public class Model {
         lineNumber = 8
         // Get Inds
         var indNo = 0
+        // Inds start with -999
         while lines[lineNumber].substring(with: 5..<10) == "-999." {
             // print("Ind Tags")
             let tag = lines[lineNumber].substring(with: 36..<49).trim()
@@ -163,7 +164,42 @@ public class Model {
                 let textGain = lines[lineNumber].substring(with: 46..<69)
                 // print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")
                 var originalGain = textGain.doubleValue!
-                
+                var curveCoefs = [Double]()
+                var dynamicCurve = false
+                // scan coeficents
+                for _ in 1 ... NumberCoefLines {
+                    let numbers = getNumberArray(lines[lineNumber])
+                    if numbers.min() != 0.0 || numbers.max() != 0.0 {
+                        dynamicCurve = true
+                    }
+                    curveCoefs += numbers
+                    print("\(numbers)")
+                }
+                if dynamicCurve {
+                    // Append curve coefs to modelCurve
+                    print()
+                    print("appending curve \(curveCoefs.count)")
+                    let modelCurve = ModelCurve()
+                    modelCurve.indName = ind.name
+                    modelCurve.indIndex = ind.index
+                    modelCurve.depName = dep.name
+                    modelCurve.depIndex = dep.index
+                    modelCurve.gain = originalGain
+                    modelCurve.coefficients = curveCoefs
+                    // print(curveCoefs)
+                    if dep.ramp > 0 {
+                        modelCurve.isRamp = true
+                    } else {
+                        modelCurve.isRamp = false
+                    }
+                    let absMax = modelCurve.maxAbsCoefficient
+                    if absMax > dep.maxAbsGain {
+                        dep.maxAbsGain = absMax
+                    }
+                    print("abs Max", dep.maxAbsGain)
+                    modelCurves.append(modelCurve)
+                }
+
                 // If SS gain is not 0, append gain
                 if originalGain != 0.0 {
                     lineNumber += NumberCoefLines + 1
@@ -171,45 +207,6 @@ public class Model {
                     gains.append(Gain(indNo: ind.index, depNo: dep.index, originalGain: originalGain))
                     // print("Dep: \(tDep)  Ind: \(tInd) textGain: \(textGain)")
                 } else {
-                    // scan coefs to check for dynamic curve
-                    lineNumber += 1  // at first line of coefs
-                    var dynamicCurve = false
-                    for _ in 1 ... NumberCoefLines {
-                        let numbers = getNumberArray(lines[lineNumber])
-                        // print("\(numbers)")
-                        for number in numbers {
-                            if number != 0.0 {
-                                dynamicCurve = true
-                                // print("Dynamic Curve")
-                            }
-                        }
-                        lineNumber += 1
-                    }
-                    // lineNo++
-                    if dynamicCurve {
-                        originalGain = 0.0
-                        // print("number Gain: \(numberGain)")
-                        gains.append(Gain(indNo: ind.index, depNo: dep.index, originalGain: 0.0))
-                        // print("Dynamic Dep: \(dep.no)  Ind: \(ind.no) textGain: \(textGain)")
-                        
-                    }
-                }
-            }
-            // Get Curves
-            // lineNumber += 1 // Get to dep line for gains
-            print("getting gains")
-            for dep in deps {
-                // let tDep = lines[lineNo].substring(with: 0..<13)
-                lineNumber += 11
-                print()
-                print(lines[lineNumber])
-                print()
-                for ind in inds {
-                    // let tInd = lines[lineNo].substring(with: 0..<13)
-                    let textGain = lines[lineNumber].substring(with: 46..<69)
-                    print("Dep: \(dep.index) Ind: \(ind.index) textGain: \(textGain)")
-                    let numberGain = textGain.doubleValue!
-                    var curveCoefs = [Double]()
                     // scan coefs to check for dynamic curve
                     lineNumber += 1  // at first line of coefs
                     var dynamicCurve = false
@@ -224,39 +221,48 @@ public class Model {
                                 // print("Dynamic Curve")
                             }
                         }
+
+                        // print("\(numbers)")
                         lineNumber += 1
                     }
                     // lineNo++
-                    if dynamicCurve || numberGain != 0.0 {
+                    if dynamicCurve {
+                        originalGain = 0.0
+                        // print("number Gain: \(numberGain)")
+                        gains.append(Gain(indNo: ind.index, depNo: dep.index, originalGain: 0.0))
+                        // print("Dynamic Dep: \(dep.no)  Ind: \(ind.no) textGain: \(textGain)")
+                        
+                    }
+                    if dynamicCurve || originalGain != 0.0 {
                         print()
-                        print("appending curve \(curves.count)")
-                        let curve = ModelCurve()
-                        curve.indName = ind.name
-                        curve.indIndex = ind.index
-                        curve.depName = dep.name
-                        curve.depIndex = dep.index
-                        curve.gain = numberGain
-                        curve.coefficients = curveCoefs
+                        print("appending curve \(curveCoefs.count)")
+                        let modelCurve = ModelCurve()
+                        modelCurve.indName = ind.name
+                        modelCurve.indIndex = ind.index
+                        modelCurve.depName = dep.name
+                        modelCurve.depIndex = dep.index
+                        modelCurve.gain = originalGain
+                        modelCurve.coefficients = curveCoefs
                         // print(curveCoefs)
                         if dep.ramp > 0 {
-                            curve.isRamp = true
+                            modelCurve.isRamp = true
                         } else {
-                            curve.isRamp = false
+                            modelCurve.isRamp = false
                         }
-                        let absMax = curve.maxAbsCoefficient
+                        let absMax = modelCurve.maxAbsCoefficient
                         if absMax > dep.maxAbsGain {
                             dep.maxAbsGain = absMax
                         }
                         print("abs Max", dep.maxAbsGain)
-                        curves.append(curve)
-                        // print("number Gain: \(numberGain)")
-                        // gains.append(Gain(depNo: dep.no, indNo: ind.no, gain: 0.0))
-                        // print("Dynamic Dep: \(dep.no)  Ind: \(ind.no) textGain: \(textGain)")
+                        modelCurves.append(modelCurve)
+                        print("number Gain: \(numberGain)")
+                        gains.append(Gain(depNo: dep.no, indNo: ind.no, gain: 0.0))
+                        print("Dynamic Dep: \(dep.no)  Ind: \(ind.no) textGain: \(textGain)")
                         
                     }
-                    
+
                 }
-            } // Get Curves
+            }
 
         } // Finished reading mdl
         

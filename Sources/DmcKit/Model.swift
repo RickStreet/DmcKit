@@ -203,7 +203,7 @@ public class Model {
                     print("abs Max", dep.maxAbsGain)
                     modelCurves.append(modelCurve)
                 }
-                // lineNumber += 1
+                lineNumber += 1
             }  // End inds
         } // End deps
         print("noInds \(noInds)")

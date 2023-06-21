@@ -137,7 +137,7 @@ public class Model {
             lineNumber += 1
             indNo += 1
         }
-        // print(inds)
+        print(inds)
         
         // Get Deps
         var depNo = 0
@@ -151,7 +151,7 @@ public class Model {
             depNo += 1
             // print("Dep: \(tag) \(units)")
         }
-        // print(deps)
+        print(deps)
         
         // Get Gains
         // lineNo += 1 // Get to dep line for gains
@@ -159,7 +159,9 @@ public class Model {
         for dep in deps {
             // let tDep = lines[lineNo].substring(with: 0..<13)
             lineNumber += 10
+            print("start inds\(lines[lineNumber])")
             for ind in inds {
+                print("ind\(lines[lineNumber])")
                 // let tInd = lines[lineNo].substring(with: 0..<13)
                 let textGain = String(lines[lineNumber].substring(with: 46..<69)).trim()
                 print("Dep: \(dep.index) \(ind.index) textGain: \(textGain)")

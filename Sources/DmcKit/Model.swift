@@ -72,7 +72,7 @@ public class Model {
         dpaContents.removeAll()
     }
     
-    public func readMDL(url: URL) {
+    public func readMDL(url: URL) -> Bool {
         clear()
         print("model readMDL url \(url)")
         // check if mdl file exists
@@ -80,7 +80,7 @@ public class Model {
         if !fm.fileExists(atPath: url.path) {
             let result = dialogOK("Missing Model File (*.mdl).", info: "Please make sure it is in the same directory as the controller ccf file")
             print(result)
-            return
+            return false
         }
         mdlURL = url
         
@@ -91,7 +91,7 @@ public class Model {
             contents = try String(contentsOf: url, encoding: .ascii)
         } catch let error as NSError {
             print("Failed reading from URL: \(url.path), Error: " + error.localizedDescription)
-            return
+            return false
         }
         // print(contents)
         
@@ -220,6 +220,7 @@ public class Model {
         readDPA()
         print("Completely done with mdl!")
         print("model read complete.")
+        return true
     }
     
     func getNumberArray(_ aString: String) -> [Double] {
@@ -429,7 +430,7 @@ public class Model {
     
     // From DMCTuner Modified
     
-    func readDPA() {
+    func readDPA() -> Bool {
         print("in readDPA()")
         let modelFile = mdlURL.lastPathComponent
         name = modelFile
@@ -450,7 +451,7 @@ public class Model {
             let answer = dialogOK("Missing dpa file (*.dpa).", info: "Please make sure it is in the same directory as the controller ccf file")
             print(answer)
             dpaLoaded = false
-            return
+            return false
         }
         var contents = ""
         do {
@@ -830,6 +831,7 @@ public class Model {
          */
         dpaLoaded = true
         getGainWindows()
+        return true
     }
     
     

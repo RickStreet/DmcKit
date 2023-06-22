@@ -66,7 +66,7 @@ public class Config {
         
     }
     
-    public func readCCF(url: URL) {
+    public func readCCF(url: URL) -> Bool {
         clear()
         directoryUrl = url.deletingLastPathComponent()
         do {
@@ -74,7 +74,7 @@ public class Config {
             contents = try String(contentsOf: url, encoding: .ascii)
         } catch let error as NSError {
             print("Failed reading from URL: \(url.path), Error: " + error.localizedDescription)
-            return
+            return false
         }
         // print(url.path)
         configURL = url
@@ -86,6 +86,7 @@ public class Config {
         // print(contents)
         assembleLines()
         parseLines()
+        return true
     }
     
     func assembleLines() {

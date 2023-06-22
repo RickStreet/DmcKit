@@ -26,16 +26,18 @@ public class DmcController {
     var excelURLs = [URL]()
     
     
-    public func loadAll(url: URL) {
+    public func loadAll(url: URL) -> Bool {
+        
         configURL = url
         print("LoadAll reading config file...")
-        config.readCCF(url: url)
+        let configResult = config.readCCF(url: url)
         modelURL = self.configURL.deletingLastPathComponent()
         print("url last comp deleted \(modelURL.path)")
         modelURL.appendPathComponent(self.config.modelName)
         print("model url \(modelURL)")
         print("LoadAll reading model file \(modelURL.path)...")
-        model.readMDL(url: self.modelURL)
+        let modelResult = model.readMDL(url: self.modelURL)
+        let dpaResult = model.readDPA()
         integrate()
         loaded = true
         print("load complete!")
@@ -48,6 +50,11 @@ public class DmcController {
             ccfTypicalMoves.append(config.inds[i].typmov.doubleValue)
         }
         subs = getSubControllers()
+        if configResult && modelResult && dpaResult {
+            return true
+        } else {
+            return false
+        }
     }
     
     public func typicalMovesByDPA() {

@@ -33,6 +33,7 @@ public class Config {
     public var configSection = Section()
     public var generalSection = Section()
     public var etSection = Section()
+    public var cssSection = Section()
     public var gMults = [GMult]()
     public var modelName = ""
     public var configURL = URL.init(fileURLWithPath: "")
@@ -204,6 +205,11 @@ public class Config {
                     // print("ET section added")
                     section.name = "ET"
                     etSection = section
+                case "[CSS]":
+                    // CLP
+                    print("CSS section added")
+                    section.name = "CSS"
+                    cssSection = section
                 case "[CAL":
                     section.name = getSectionName(sectionText: line)
                     calcSection = section
@@ -346,8 +352,9 @@ public class Config {
         contents += getSectionCCFLines(etSection)
         
         // CSS
-        contents += "[CSS]\r\n"
-        
+        contents += "\(cssSection.sectionName)\r\n"
+        contents += getSectionCCFLines(cssSection)
+
         // Inds
         for ind in inds {
             contents += "[IND:\(ind.name)]\r\n"

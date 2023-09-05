@@ -217,7 +217,7 @@ public class Model {
         print()
         
         print("reading dpa file")
-        readDPA()
+        _ = readDPA()
         print("Completely done with mdl!")
         print("model read complete.")
         return true

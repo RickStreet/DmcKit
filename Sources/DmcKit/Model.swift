@@ -495,7 +495,7 @@ public class Model {
             
             switch curveType {
             case ".MODel  ":
-                if texts.count > 1 {
+                if texts.count > 2 {
                     // Has Model notes
                     modelNotes = texts[2]
                     print("notes: \(modelNotes)")

@@ -482,7 +482,7 @@ public class Model {
         
         for line in dpaContents {
             if line.hasPrefix("!") {
-                print("comment")
+                print("comment: \(line)")
                 continue
             }
             let curveType = getCurveType(line)
@@ -496,7 +496,9 @@ public class Model {
             switch curveType {
             case ".MODel  ":
                 if texts.count > 1 {
+                    // Has Model notes
                     modelNotes = texts[2]
+                    print("notes: \(modelNotes)")
                     modelNotes = modelNotes.replace("!~", with: "\n")
                 }
             case ".NCOeff ":

@@ -14,6 +14,10 @@ class DmcParam: Codable, Equatable {
         return lhs.name == rhs.name
     }
     
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+    
     var name = ""
     var description = ""
     var section = ConfigSection.none

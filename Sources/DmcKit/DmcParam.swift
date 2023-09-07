@@ -9,7 +9,7 @@
 
 import Foundation
 
-class DmcParam: Codable, Equatable {
+class DmcParam: Codable, Equatable, Hashable {
     static func == (lhs: DmcParam, rhs: DmcParam) -> Bool {
         return lhs.name == rhs.name
     }

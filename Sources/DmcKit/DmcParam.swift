@@ -9,31 +9,31 @@
 
 import Foundation
 
-public class DmcParam: Codable, Equatable {
-    public static func == (lhs: DmcParam, rhs: DmcParam) -> Bool {
+class DmcParam: Codable, Equatable {
+    static func == (lhs: DmcParam, rhs: DmcParam) -> Bool {
         return lhs.name == rhs.name
     }
     
-    
-    public var name = ""
-    public var description = ""
-    public var type = ""
-    public var cat = ""
-    public var tune = false
-    public var limit = false
-    public var hide = false
-    public var notes = ""
+    var name = ""
+    var description = ""
+    var section = ConfigSection.none
+    var dataType = ""
+    var tune = false
+    var limit = false
+    var hide = false
+    var notes = ""
     
     enum CodingKeys: String, CodingKey {
         case name = "name"
         case description = "description"
-        case type = "type"
-        case cat = "cat"
+        case dataType = "data_type"
+        case section = "section"
         case tune = "tune"
         case limit = "limit"
         case hide = "hide"
         case notes = "notes"
     }
-    
-    public init() {}
+
+
+
 }

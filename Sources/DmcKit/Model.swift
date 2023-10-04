@@ -464,8 +464,8 @@ public class Model {
         
         
         
-        contents = contents.replace("\r\n", with: "\n")
-        
+        // contents = contents.replace("\r\n", with: "\n")
+        contents.stripCarriageReturns()
         
         
         

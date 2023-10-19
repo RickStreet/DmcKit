@@ -27,12 +27,18 @@ public class PwlTransform {
     var bias = 0.0
     
     public var points = [(x: Double, y: Double)]()
-    public var scaledPoints = [(x: Double, y: Double)]()
     
-    public func scalePoints() {
-        guard points.count > 1 else { return }
-        points.sort(){$0.x < $1.x}
-        scaledPoints.removeAll()
+    public var unscaledPoints: [(x: Double, y: Double)] {
+        return points.sorted(){$0.0 < $1.0}
+    }
+
+    
+    public var scaledPoints:  [(x: Double, y: Double)] {
+        var sPoints = [(x: Double, y: Double)]()
+        guard sPoints.count > 1 else {
+            return sPoints
+        }
+        let points = unscaledPoints
         let n = points.count - 1
         
         // extrapulate to y0
@@ -42,46 +48,30 @@ public class PwlTransform {
         // let ymin = points[0].y - slopeLow * (points[0].x - xLo)
         let startPoint = (x: xLo, y: points[0].y - slopeLow * (points[0].x - xLo))
         print("startPoint \(startPoint)")
-        
+
+        // extrapulate y to xHi
         let slopeHigh = (points[n].y - points[n - 1].y) / (points[n].x - points[n - 1].x)
         print("slopeHigh \(slopeHigh)")
         let endPoint = (x: xHi, y: points[n].y + slopeHigh * (xHi - points[n].x))
         print("endPoint \(endPoint)")
-        // bias = 0.0 - factor * y0
         print("delta y hi \(points[n].y - points[n - 1].y)")
-        
         
         let deltaY = endPoint.y - startPoint.y
         factor = 100.0 / deltaY
         bias = startPoint.y - y0
         print("deltaY \(deltaY)  factor \(factor)")
-        
+
+
         let scaledStartPoint = scalePoint(startPoint)
         let scaledEndPoint = scalePoint(endPoint)
 
-        scaledPoints.append(scaledStartPoint)
+        sPoints.append(scaledStartPoint)
         for i in 1 ..< points.count - 1 {
-            scaledPoints.append(scalePoint(points[i]))
+            sPoints.append(scalePoint(points[i]))
         }
-        scaledPoints.append(scaledEndPoint)
-        
-        for point in scaledPoints {
-            print("\(point.x), \(point.y)")
-        }
-    }
+        sPoints.append(scaledEndPoint)
 
-    public func unScalePoints() {
-        print("unscaling...")
-        print("factor \(factor)")
-        // print("bias \(bias)")
-        scaledPoints.sort(){$0.x < $1.x}
-        points.removeAll()
-        for point in scaledPoints {
-            points.append(unScalePoint(point))
-        }
-        for point in points {
-            print("\(point.x), \(point.y)")
-        }
+        return sPoints
     }
     
     
@@ -89,12 +79,7 @@ public class PwlTransform {
         let scaledPoint = (point.x, (point.y - bias) * factor)
         return scaledPoint
     }
-    
-    public func unScalePoint(_ point: (x: Double, y: Double)) -> (x: Double, y: Double) {
-        let scaledPoint = (point.x, (point.y + bias) / factor)
-        return scaledPoint
-    }
-    
+        
     
     public func saveVector(url: URL) {
         var contents = "!#=====DMCplus===DMCplus===DMCplus===DMCplus===DMCplus===DMCplus===DMCplus=====#" + "\r\n"
@@ -113,7 +98,7 @@ public class PwlTransform {
                 contents += ".PARameter   \"Y\(i+1):\"  " + String(format: "%.3f", point.y) + "\r\n"
             }
         } else {
-            for (i, point) in points.enumerated() {
+            for (i, point) in unscaledPoints.enumerated() {
                 j += 1
                 contents += ".PARameter   \"X\(i+1):\"  " + String(format: "%.3f", point.x) + "\r\n"
                 contents += ".PARameter   \"Y\(i+1):\"  " + String(format: "%.3f", point.y) + "\r\n"
@@ -132,8 +117,9 @@ public class PwlTransform {
         }
     }
     
-    public
-    func readVector(url: URL) {
+    /// Load dpv Vector
+    /// - Parameter url: dpv vector url
+    public func readVector(url: URL) {
         var fileContents = ""
         do {
             fileContents = try String(contentsOfFile: url.path , encoding: .ascii)
@@ -199,6 +185,11 @@ public class PwlTransform {
             print(point)
         }
     }
+    
+    public init(points: [(x: Double, y: Double)]) {
+        self.points = points
+    }
+
     
     public init(){}
 }

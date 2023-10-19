@@ -88,7 +88,7 @@ public class PwlTransform {
         }
         configParam.name = "xform"
         configParam.keyWord = "XFORM"
-        configParam.type = "CH(\(points.count))"
+        configParam.type = "CH(\(pwlValue.count))"
         configParam.value = pwlValue
         
         return configParam

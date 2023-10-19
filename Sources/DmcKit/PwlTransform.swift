@@ -74,6 +74,26 @@ public class PwlTransform {
         return sPoints
     }
     
+    public var pwlConfigParam: ConfigParam {
+        let configParam = ConfigParam()
+        var pwlValue = "PWLN \(points.count)"
+        if scaled {
+            for point in scaledPoints {
+                pwlValue += " \(point.x) \(point.y)"
+            }
+        } else {
+            for point in unscaledPoints {
+                pwlValue += " \(point.x) \(point.y)"
+            }
+        }
+        configParam.name = "xform"
+        configParam.keyWord = "XFORM"
+        configParam.type = "CH(\(points.count))"
+        configParam.value = pwlValue
+        
+        return configParam
+    }
+    
     
     public func scalePoint(_ point: (x: Double, y: Double)) -> (x: Double, y: Double) {
         let scaledPoint = (point.x, (point.y - bias) * factor)

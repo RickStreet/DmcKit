@@ -25,6 +25,9 @@ public class Vector {
         }
     }
     public var date: Date?
+    public var count: Int {
+        return values.count
+    }
     // var fileName: String?
     var filePath: String?
     var fileURL: URL?
@@ -208,6 +211,24 @@ public class Vector {
             
             i += 1
         }
+    }
+    
+    public func clear() {
+        vectorName = ""
+        fileName = ""
+        ext = ""
+        units = ""
+        descrip = ""
+        version = ""
+        remark = ""
+        length = 0 // Total Samples
+        frequency = 0 // Seconds
+        startDate = ""
+        values.removeAll()
+        filePath = nil
+        fileURL = nil
+        fileContents = nil
+        dmcVariable = ""
     }
 
     

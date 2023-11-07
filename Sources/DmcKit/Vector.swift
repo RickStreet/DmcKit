@@ -19,13 +19,21 @@ public class Vector {
     public var remark = ""
     public var length = 0 // Total Samples
     public var frequency = 0 // Seconds
-    public var startDate = ""
+    public var startDate: String = "" {
+        didSet {
+            date = dateFormatter.date(from: startDate)
+        }
+    }
+    public var date: Date?
     // var fileName: String?
     var filePath: String?
     var fileURL: URL?
     var fileContents: String?
     var dmcVariable: String = ""
     public var values = [Double]()
+    let vectorDateFormat = "dd-MMM-yyyy HH:mm:ss"
+    let dateFormatter = DateFormatter()
+
 
     
     public func readVector(url: URL) {
@@ -211,6 +219,7 @@ public class Vector {
     
     public init() {
         // Empty
+        dateFormatter.dateFormat = vectorDateFormat
         
     }
 

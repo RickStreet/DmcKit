@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/RickStreet/DialogKit.git",
         "state": {
           "branch": null,
-          "revision": "fa7b38eca28cec2b9f2cfda32310618e4822ec60",
-          "version": "2.0.0"
+          "revision": "eee3c0e4f570eac3904bdf50014bf570849226ef",
+          "version": "2.0.1"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/RickStreet/NSStringKit.git",
         "state": {
           "branch": null,
-          "revision": "3fe06d4290cc20203634112a7302faeae2d73e9d",
-          "version": "1.0.11"
+          "revision": "33df8b175671b7fde47a1929a442295641140ff7",
+          "version": "1.0.12"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/RickStreet/StringKit.git",
         "state": {
           "branch": null,
-          "revision": "947b0018c4c15012ec1854349fdc1114596bdd88",
-          "version": "1.0.50"
+          "revision": "521db727f11e98f6e3427ef3202fbf11a9850589",
+          "version": "1.0.51"
         }
       }
     ]

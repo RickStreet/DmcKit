@@ -17,8 +17,7 @@ import Foundation
  
  data from mdl file
  */
-public class Gain: Equatable {
-    
+public class GainOld {
     public var depIndex: Int = 0
     public var indIndex: Int = 0
     public var originalGain: Double = 0
@@ -26,7 +25,6 @@ public class Gain: Equatable {
     public var adjustType: GainAdjustType = .none
     public var masterIsNumerator = false
     public var masterGain: Gain?
-    public var gainRatio: Double?
 
     public var gain: Double  {
         set {
@@ -37,7 +35,7 @@ public class Gain: Equatable {
                 if masterIsNumerator {
                     return gain.gain / factor
                 } else {
-                  return gain.gain * factor
+                    return gain.gain * factor
                 }
             }
             if let adjustedGain = adjustedGain {
@@ -47,6 +45,11 @@ public class Gain: Equatable {
         }
     }
     
+    public var gainRatio: Double? {
+        didSet {
+            adjustType = .calculated
+        }
+    }
     public var percentChange: Double {
         if let aValue = adjustedGain {
             return abs((aValue - originalGain) * 100 / originalGain)
@@ -54,26 +57,9 @@ public class Gain: Equatable {
         return 0.0
     }
     
-    public static func == (lhs: Gain, rhs: Gain) -> Bool {
-        if lhs.depIndex == rhs.depIndex && lhs.indIndex == rhs.indIndex {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    public func setMasterAndRatio(gain: Gain, ratio: Double, isNumerator: Bool) {
-        masterGain = gain
-        gainRatio = ratio
-        masterIsNumerator = isNumerator
-        adjustType = .calculated
-    }
-
-    
     public func revert() {
         adjustType = .none
         adjustedGain = nil
-        masterGain = nil
     }
     
     public var index: Int {

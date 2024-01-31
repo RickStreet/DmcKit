@@ -6,20 +6,25 @@
 //
 
 import Foundation
-// import DmcKit
 
-public class Rga {
+public class RgaOld {
     
     public var isNumeratorRow1 = true
-    public var isNumeratorColumn1 = true
-
+    public var isNumeratorColumn1 = true {
+        didSet {
+            if let gainRatio = columnGainRatio {
+                columnGainRatio = 1/gainRatio
+            }
+        }
+    }
+    
     private var _gain11 = Gain()
     private var _gain12 = Gain()
     private var _gain21 = Gain()
     private var _gain22 = Gain()
     
-    
- 
+    private var _rowGainRatio: Double?
+    private var _columnGainRatio: Double?
     
     public var gain11: Gain {
         set {
@@ -80,141 +85,35 @@ public class Rga {
     
     let zeroTolerence = 9.999999999999999e-13
     
-    private var _setRowGainRatio: Double?
-    private var _setColumnGainRatio: Double?
-
-    var setRowGainRatio: Double? {
-        set {
-            // print("setRowGainRatio")
-            if let value = newValue {
-                if isNumeratorRow1 {
-                    _setRowGainRatio = value
-                    // print("storing value in _setRatio")
-                } else {
-                    _setRowGainRatio = 1/value
-                    // print("storing 1/value in _setRatio")
-                }
-            } else {
-                // print("storing nil to _setRatio")
-                _setRowGainRatio = newValue
-            }
-        }
-        get {
-            // print("get setRowGainRatio")
-            if let value = _setRowGainRatio {
-                if isNumeratorRow1 {
-                    // print("isNum return _setRatio")
-                   return value
-                } else {
-                    // print("notNum return 1/_setRatio")
-                    return 1/value
-                }
-            } else {
-                // print("return nil")
-                return _setRowGainRatio // will be nil
-            }
-        }
-    }
-    
-    
-    var setColumnGainRatio: Double? {
-        set {
-            // print("set setColumnGainRatio")
-            if let value = newValue {
-                if isNumeratorColumn1 {
-                    _setColumnGainRatio = value
-                    // print("storing value in _setRatio")
-                } else {
-                    _setColumnGainRatio = 1/value
-                    // print("storing 1/value in _setRatio")
-                }
-            } else {
-                // print("storing nil to _setRatio")
-                _setColumnGainRatio = newValue
-            }
-        }
-        get {
-            // print("get setColumnGainRatio")
-            if let value = _setColumnGainRatio {
-                if isNumeratorColumn1 {
-                    // print("isNum return _setRatio")
-                   return value
-                } else {
-                    // print("notNum return 1/_setRatio")
-                    return 1/value
-                }
-            } else {
-                // print("return nil")
-                return _setColumnGainRatio // will be nil
-            }
-        }
-    }
-
     public var row1Ratio: Double {
-        set {
-            setRowGainRatio = newValue
-        }
-        get {
-            if let value = setRowGainRatio {
-                return value
-            } else {
-                if isNumeratorRow1 {
-                    return gain11.gain/gain12.gain
-                } else {
-                    return gain12.gain/gain11.gain
-                }
-            }
+        if isNumeratorRow1 {
+            return gain11.gain / gain12.gain
+        } else {
+            return gain12.gain / gain11.gain
         }
     }
     
     public var row2Ratio: Double {
-        set {
-            setRowGainRatio = newValue
-        }
-        get {
-            if let value = setRowGainRatio {
-                return value
-            } else {
-                if isNumeratorRow1 {
-                    return gain21.gain/gain22.gain
-                } else {
-                    return gain22.gain/gain12.gain
-                }
-            }
+        if isNumeratorRow1 {
+            return gain21.gain / gain22.gain
+        } else {
+            return gain22.gain / gain21.gain
         }
     }
     
     public var column1Ratio: Double {
-        set {
-            setColumnGainRatio = newValue
-        }
-        get {
-            if let value = setColumnGainRatio {
-                return value
-            } else {
-                if isNumeratorColumn1 {
-                    return gain11.gain/gain21.gain
-                } else {
-                    return gain21.gain/gain11.gain
-                }
-            }
+        if isNumeratorColumn1 {
+            return gain11.gain / gain21.gain
+        } else {
+            return gain21.gain / gain11.gain
         }
     }
     
     public var column2Ratio: Double {
-        set {
-            setColumnGainRatio = newValue
-        }
-        get {
-            if let value = setColumnGainRatio {
-                return value
-            } else {
-                if isNumeratorColumn1 {
-                    return gain12.gain/gain22.gain
-                } else {
-                    return gain22.gain/gain12.gain
-                }
-            }
+        if isNumeratorColumn1 {
+            return gain12.gain / gain22.gain
+        } else {
+            return gain22.gain / gain12.gain
         }
     }
     
@@ -251,7 +150,36 @@ public class Rga {
     }
     
     
-
+    public var rowGainRatio: Double? {
+        set {
+            _rowGainRatio = newValue
+        }
+        get {
+            if let value = _rowGainRatio {
+                if isNumeratorRow1 {
+                    return value
+                } else {
+                    return 1/value
+                }
+            }
+            return nil
+        }
+    }
+        
+        
+        
+    public var columnGainRatio: Double? {
+        set {
+            _columnGainRatio = newValue
+        }
+        get {
+            if let value = _columnGainRatio {
+                   return value
+            }
+            return nil
+        }
+    }
+        
         public var rga11: Double {
             let denominator = gain11.gain * gain22.gain - gain12.gain * gain21.gain
             if abs(denominator) < zeroTolerence {
@@ -289,7 +217,6 @@ public class Rga {
                 return 1.0 - originalRga11
             }
         }
-    
         
         /*
          public init(ind1: Int, ind2: Int, dep1: Int, dep2: Int, gain11: Gain, gain12: Gain, gain21: Gain, gain22: Gain) {

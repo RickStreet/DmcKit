@@ -97,6 +97,17 @@ public class DmcController {
          print("\(dep.name),   \(dep.longDescription),   \(dep.shortDescription),   \(dep.gainWindow)")
          }
          */
+        
+        for gain in model.gains {
+            let gMults = config.gMults.filter{$0.depIndex == gain.depIndex && $0.indIndex == gain.indIndex}
+            var gainValue = gain.gain
+            if gMults.count > 0 {
+                gainValue *= gMults[0].value
+            }
+            let typicalMove = model.inds[gain.indIndex].typicalMove
+            // let percentGain = gainValue * typicalMove * 100.0 / model.deps[gain.depIndex].gainWindow
+            gain.percentGain = gainValue * typicalMove * 100.0 / model.deps[gain.depIndex].gainWindow
+        }
         print("Done integrating.")
     }
     

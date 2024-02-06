@@ -27,6 +27,7 @@ public class Gain: Equatable {
     public var masterIsNumerator = false
     public var masterGain: Gain?
     public var gainRatio: Double?
+    public var percentGain = 0.0
 
     public var gain: Double  {
         set {

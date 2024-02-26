@@ -13,13 +13,15 @@ public class Rga {
     public var isNumeratorRow1 = true
     public var isNumeratorColumn1 = true
 
+
+    // Allows modification with variables own setter
     private var _gain11 = Gain()
     private var _gain12 = Gain()
     private var _gain21 = Gain()
     private var _gain22 = Gain()
-    
-    
- 
+    private var _setRowGainRatio: Double?
+    private var _setColumnGainRatio: Double?
+
     
     public var gain11: Gain {
         set {
@@ -80,10 +82,7 @@ public class Rga {
     
     let zeroTolerence = 9.999999999999999e-13
     
-    private var _setRowGainRatio: Double?
-    private var _setColumnGainRatio: Double?
-
-    var setRowGainRatio: Double? {
+    public var setRowGainRatio: Double? {
         set {
             // print("setRowGainRatio")
             if let value = newValue {
@@ -117,7 +116,7 @@ public class Rga {
     }
     
     
-    var setColumnGainRatio: Double? {
+    public var setColumnGainRatio: Double? {
         set {
             // print("set setColumnGainRatio")
             if let value = newValue {
@@ -271,7 +270,7 @@ public class Rga {
             }
         }
         
-        var originalRga11: Double {
+        public var originalRga11: Double {
             let denominator = gain11.originalGain * gain22.originalGain - gain12.originalGain * gain21.originalGain
             if abs(denominator) < zeroTolerence {
                 return 0.0

@@ -532,7 +532,7 @@ public class Model {
             case ".CURve  ":
                 curveSources.append(CurveSource())
                 curveSource = curveSources.last!
-                var gain = Gain()
+                let gain = Gain()
                 let tags = line.substring(from: 14).quotedWords()
                 let indName = tags[0]
                 let depName = tags[1]

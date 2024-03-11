@@ -151,7 +151,7 @@ public class Model {
             depNo += 1
             // print("Dep: \(tag) \(units)")
         }
-        print(deps)
+        // print(deps)
         
         // Get Gains
         // lineNo += 1 // Get to dep line for gains
@@ -159,12 +159,12 @@ public class Model {
         for dep in deps {
             // let tDep = lines[lineNo].substring(with: 0..<13)
             lineNumber += 11
-            print("start inds\(lines[lineNumber])")
+            // print("start inds\(lines[lineNumber])")
             for ind in inds {
-                print("ind \(lines[lineNumber])")
+                // print("ind \(lines[lineNumber])")
                 // let tInd = lines[lineNo].substring(with: 0..<13)
                 let textGain = String(lines[lineNumber].substring(with: 46..<69)).trim()
-                print("Dep: \(dep.index) Ind: \(ind.index) textGain: \(textGain)")
+                // print("Dep: \(dep.index) Ind: \(ind.index) textGain: \(textGain)")
                 let originalGain = textGain.doubleValue!
                 var curveCoefs = [Double]()
                 var dynamicCurve = false
@@ -172,19 +172,19 @@ public class Model {
                 for _ in 1 ... NumberCoefLines {
                     lineNumber += 1
                     let numbers = getNumberArray(lines[lineNumber])
-                    print("numbers \(numbers)")
+                    // print("numbers \(numbers)")
                     if (numbers.min() != 0.0 || numbers.max() != 0.0) && !dynamicCurve {
-                        print("dynamic numbers \(numbers)")
+                        // print("dynamic numbers \(numbers)")
                         dynamicCurve = true
                     }
                     curveCoefs += numbers
-                    print("\(numbers)")
+                    // print("\(numbers)")
                 }
                 if dynamicCurve {
                     gains.append(Gain(indIndex: ind.index, depIndex: dep.index, gain: originalGain))
                     // Append curve coefs to modelCurve
-                    print()
-                    print("appending curve \(curveCoefs.count)")
+                    // print()
+                    // print("appending curve \(curveCoefs.count)")
                     let modelCurve = ModelCurve()
                     modelCurve.indName = ind.name
                     modelCurve.indIndex = ind.index
@@ -202,7 +202,7 @@ public class Model {
                     if absMax > dep.maxAbsGain {
                         dep.maxAbsGain = absMax
                     }
-                    print("abs Max", dep.maxAbsGain)
+                    // print("abs Max", dep.maxAbsGain)
                     modelCurves.append(modelCurve)
                 }
                 lineNumber += 1

@@ -74,7 +74,7 @@ public class Model {
     
     public func readMDL(url: URL) -> Bool {
         clear()
-        print("model readMDL url \(url)")
+        print("from model: readMDL url \(url)...")
         // check if mdl file exists
         let fm = FileManager.default
         if !fm.fileExists(atPath: url.path) {
@@ -82,10 +82,13 @@ public class Model {
             print(result)
             return false
         }
+        print("model file exists!")
         mdlURL = url
+        print("got model url \(mdlURL.path)")
         
         
         var contents = ""
+        print("reading content...")
         do {
             // Read the file contents
             contents = try String(contentsOf: url, encoding: .ascii)
@@ -93,6 +96,7 @@ public class Model {
             print("Failed reading from URL: \(url.path), Error: " + error.localizedDescription)
             return false
         }
+        print("got contents!")
         print(contents)
         
         let lines = contents.components(separatedBy: "\r\n")

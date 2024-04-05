@@ -93,7 +93,7 @@ public class Model {
             print("Failed reading from URL: \(url.path), Error: " + error.localizedDescription)
             return false
         }
-        // print(contents)
+        print(contents)
         
         let lines = contents.components(separatedBy: "\r\n")
         
@@ -117,7 +117,7 @@ public class Model {
         if let no = lines[lineNumber].doubleValue {
             timeToSS = no
         }
-        // print("no min to SS from Model \(timeToSS)")
+        print("no min to SS from Model \(timeToSS)")
         
         let NumberCoefLines = noCoefs / 5 + noCoefs % 5 // Number of lines for dynamic curve
         // print("Coef lines   \(NumberCoefLines)")

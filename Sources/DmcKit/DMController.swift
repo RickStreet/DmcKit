@@ -111,8 +111,10 @@ public class DmcController {
         print("Done integrating.")
     }
     
+    /// Get Subcontrollers for pGains
+    /// - Returns: Array of Subcontrollers
     public func getSubControllers() -> [SubController] {
-        
+        print("getSubControllers()...")
         var subs = [SubController]()
         let mainController = SubController()
         mainController.name = model.baseName
@@ -134,12 +136,18 @@ public class DmcController {
             for sub in config.subs {
                 let subController = SubController()
                 subController.name = sub.name
-                let subCvNames = allCvSubNames.filter{$0.1 == sub.name}.map{$0.0}  // list od dep names in sub
+                let subCvNames = allCvSubNames.filter{$0.1 == sub.name}.map{$0.0}  // list of dep names in sub
                 for cvName in subCvNames {
                     subController.deps.append(contentsOf: model.deps.filter{$0.name == cvName})
                 }
+                print()
+                print("Sub deps:")
                 for dep in subController.deps {
-                    subController.gains += model.gains.filter{$0.depIndex == dep.index}
+                    print("\(dep.name), \(dep.shortDescription)")
+                }
+                print()
+                for dep in subController.deps {
+                    subController.gains += model.gains.filter{$0.depIndex == dep.index} // get all gains for each dep
                 }
                 var indInices = subController.gains.map{$0.indIndex}
                 indInices = Array(Set(indInices)) // Get ride of duplicate indices
@@ -151,6 +159,21 @@ public class DmcController {
                 }
                 */
                 
+                print("sub inds:")
+                for indexInd in indInices {
+                    let ind = model.inds[indexInd]
+                    let configInd = config.inds[indexInd]
+                    if configInd.isff.intValue == 1 {
+                        ind.isFF = true
+                    } else {
+                        ind.isFF = false
+                    }
+                    print("\(ind.name), \(ind.shortDescription)")
+                    subController.inds.append(ind)
+                }
+                print()
+                
+                /*
                 for configInd in config.inds {
                     let ind = model.inds[configInd.index]
                     if configInd.isff.intValue == 1 {
@@ -160,6 +183,8 @@ public class DmcController {
                     }
                     subController.inds.append(ind)
                 }
+                */
+                
                 subs.append(subController)
             }
         }

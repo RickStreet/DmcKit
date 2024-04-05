@@ -76,8 +76,11 @@ public class Model {
         clear()
         print("from model: readMDL url \(url)...")
         // check if mdl file exists
+        print("check if model file exists...")
         let fm = FileManager.default
+        print("got default FileManager!")
         if !fm.fileExists(atPath: url.path) {
+            print("Modeo file does not exist!")
             let result = dialogOK("Missing Model File (*.mdl).", info: "Please make sure it is in the same directory as the controller ccf file")
             print(result)
             return false

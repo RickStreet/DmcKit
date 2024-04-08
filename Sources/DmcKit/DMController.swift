@@ -39,7 +39,7 @@ public class DmcController {
         let modelResult = model.readMDL(url: self.modelURL)
         print("modelResult \(modelResult)")
         if !modelResult {
-            _ = dialogOK("Missing Model File (*.mdl).", info: "Please make sure it is in the same directory as the controller ccf file")
+            // _ = dialogOK("Missing Model File (*.mdl).", info: "Please make sure it is in the same directory as the controller ccf file")
             return false
         }
         let dpaResult = model.readDPA()

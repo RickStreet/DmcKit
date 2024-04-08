@@ -6,7 +6,7 @@
 //  Copyright © 2019 Richard Street. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 // import StringKit
 import DialogKit
 

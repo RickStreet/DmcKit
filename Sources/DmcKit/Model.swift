@@ -6,7 +6,7 @@
 //  Copyright © 2019 Richard Street. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 import NSStringKit
 import DoubleKit
 import DialogKit
@@ -100,7 +100,7 @@ public class Model {
             return false
         }
         print("got contents!")
-        print(contents)
+        // print(contents)
         
         let lines = contents.components(separatedBy: "\r\n")
         

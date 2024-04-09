@@ -134,7 +134,7 @@ public class Model {
         // Inds start with -999
         while lines[lineNumber].substring(with: 5..<10) == "-999." {
             // print("Ind Tags")
-            let tag = lines[lineNumber].substring(with: 36..<49).trim()
+            let tag = lines[lineNumber].substring(with: 36..<49).trim().uppercased()
             let units = lines[lineNumber].substring(with: 49..<61).trim()
             inds.append(Ind(no: indNo, name: tag, shortDescription: "", units: units))
             // inds.append((indNo, tag, units))
@@ -147,7 +147,7 @@ public class Model {
         // Get Deps
         var depNo = 0
         while lines[lineNumber].substring(with: 8..<16) == "0.000000" {
-            let tag = lines[lineNumber].substring(with: 36..<49).trim()
+            let tag = lines[lineNumber].substring(with: 36..<49).trim().uppercased()
             let units = lines[lineNumber].substring(with: 49..<61).trim()
             let rampIndex =  lines[lineNumber].substring(with: 66..<67).integerValue ?? 0
             // print("ramp: \(ramp)")

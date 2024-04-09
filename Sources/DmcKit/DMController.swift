@@ -136,7 +136,7 @@ public class DmcController {
                 let cvSubNames = cv.cvinsb.value.components(separatedBy: "&")
                 print("\(cv.name)  cvSubNames \(cvSubNames)")
                 for sub in cvSubNames {
-                    allCvSubNames.append((cv.name, sub))
+                    allCvSubNames.append((cv.name.uppercased(), sub.uppercased()))
                 }
             }
             

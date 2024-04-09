@@ -145,6 +145,11 @@ public class DmcController {
                 subController.name = sub.name
                 print()
                 print()
+                print("Model deps")
+                for dep in model.deps {
+                    print("\(dep.name)")
+                }
+                print()
                 print("sub: \(subController.name)")
                 let subCvNames = allCvSubNames.filter{$0.sub == sub.name}.map{$0.cv}  // list of dep names in sub
                 for cvName in subCvNames {

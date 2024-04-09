@@ -148,7 +148,7 @@ public class Config {
     }
     
     func getVarName(sectionText: String) -> String {
-        return sectionText.substring(with: 5..<(sectionText.count - 1))
+        return sectionText.substring(with: 5..<(sectionText.count - 1)).uppercased()
     }
     
     func getSectionName(sectionText: String) -> String {

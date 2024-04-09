@@ -139,14 +139,16 @@ public class DmcController {
                     allCvSubNames.append((cv.name, sub))
                 }
             }
+            
             for sub in config.subs {
                 let subController = SubController()
                 subController.name = sub.name
                 print()
                 print()
                 print("sub: \(subController.name)")
-                let subCvNames = allCvSubNames.filter{$0.1 == sub.name}.map{$0.0}  // list of dep names in sub
+                let subCvNames = allCvSubNames.filter{$0.sub == sub.name}.map{$0.cv}  // list of dep names in sub
                 for cvName in subCvNames {
+                    print("adding cv to sub \(cvName)")
                     subController.deps.append(contentsOf: model.deps.filter{$0.name == cvName})
                 }
                 print()

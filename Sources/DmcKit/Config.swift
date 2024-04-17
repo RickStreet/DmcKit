@@ -207,7 +207,7 @@ public class Config {
                     etSection = section
                 case "[CSS]":
                     // CLP
-                    print("CSS section added")
+                    // print("CSS section added")
                     section.name = "CSS"
                     cssSection = section
                 case "[CAL":
@@ -267,7 +267,7 @@ public class Config {
         paramCount = paramID
         calcCount = calcIndex
         modelName = configSection.mdlnam.value
-        print("config model name \(modelName)")
+        // print("config model name \(modelName)")
         /*
          print()
          print("Subs:")
@@ -282,11 +282,11 @@ public class Config {
             cv.shortDescription = cv.descdep.value
             // print(cv.name, cv.shortDescription)
         }
-        print()
-        print("Getting Gmults from Config parsing lines...")
+        // print()
+        // print("Getting Gmults from Config parsing lines...")
         for ind in inds {
             let mults = ind.params.filter{$0.name.left(5) == "GMULT"}
-            print("\(ind.name), gmults \(mults.count)")
+            // print("\(ind.name), gmults \(mults.count)")
             for mult in mults {
                 if var depIndex = mult.name.substring(from: 5).integerValue {
                     if depIndex <= cvs.count {
@@ -295,7 +295,7 @@ public class Config {
                         let gmult = GMult(indIndex: ind.index, depIndex: depIndex, value: mult.doubleValue)
                         gMults.append(gmult)
                     } else {
-                        print("Gmult dep index \(depIndex - 1) out of range.")
+                        // print("Gmult dep index \(depIndex - 1) out of range.")
                     }
                 }
                 // print(mult.name.substring(from: 5), mult.doubleValue)
@@ -311,7 +311,7 @@ public class Config {
         }
         
         
-
+        /*
          print()
          print("GMults:")
         print("Gmult count \(gMults.count)")
@@ -319,7 +319,9 @@ public class Config {
          print(gmult.indIndex, gmult.depIndex, gmult.value)
          }
          print()
-
+         */
+        
+        
         /*
          print()
          print("Mvs:")
@@ -332,7 +334,7 @@ public class Config {
          print(ff.name, ff.shortDescription)
          }
          */
-        print("Finished parsing lines.")
+        // print("Finished parsing lines.")
     }
     
     public func generateCCFContent () -> String {

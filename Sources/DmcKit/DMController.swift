@@ -83,13 +83,13 @@ public class DmcController {
         print("ccf mv count \(config.mvs.count)")
         print("model mv count \(model.numberMvs)")
         for i in 0..<config.inds.count {
-            print("ind \(i)")
+            // print("ind \(i)")
             model.inds[i].shortDescription = config.inds[i].shortDescription
             config.inds[i].longDescription = model.inds[i].longDescription
         }
         print("cv count \(config.cvs.count)")
         for i in 0..<config.cvs.count {
-            print("dep \(i)")
+            // print("dep \(i)")
             model.deps[i].shortDescription = config.cvs[i].shortDescription
             config.cvs[i].longDescription = model.deps[i].longDescription
         }
@@ -134,7 +134,7 @@ public class DmcController {
             
             for cv in config.cvs {
                 let cvSubNames = cv.cvinsb.value.components(separatedBy: "&")
-                print("\(cv.name)  cvSubNames \(cvSubNames)")
+                // print("\(cv.name)  cvSubNames \(cvSubNames)")
                 for sub in cvSubNames {
                     allCvSubNames.append((cv.name.uppercased(), sub.uppercased()))
                 }
@@ -143,6 +143,8 @@ public class DmcController {
             for sub in config.subs {
                 let subController = SubController()
                 subController.name = sub.name
+                
+                /*
                 print()
                 print()
                 print("Model deps")
@@ -151,17 +153,22 @@ public class DmcController {
                 }
                 print()
                 print("sub: \(subController.name)")
+                */
+                
                 let subCvNames = allCvSubNames.filter{$0.sub == sub.name}.map{$0.cv}  // list of dep names in sub
                 for cvName in subCvNames {
-                    print("adding cv to sub \(cvName)")
+                    // print("adding cv to sub \(cvName)")
                     subController.deps.append(contentsOf: model.deps.filter{$0.name == cvName})
                 }
-                print()
-                print("Sub deps:")
+                // print()
+                // print("Sub deps:")
+                
+                /*
                 for dep in subController.deps {
                     print("\(dep.name), \(dep.shortDescription)")
                 }
                 print()
+                */
                 for dep in subController.deps {
                     subController.gains += model.gains.filter{$0.depIndex == dep.index} // get all gains for each dep
                 }
@@ -175,7 +182,7 @@ public class DmcController {
                 }
                 */
                 
-                print("sub inds:")
+                // print("sub inds:")
                 for indexInd in indInices {
                     let ind = model.inds[indexInd]
                     let configInd = config.inds[indexInd]
@@ -184,10 +191,10 @@ public class DmcController {
                     } else {
                         ind.isFF = false
                     }
-                    print("\(ind.name), \(ind.shortDescription)")
+                    // print("\(ind.name), \(ind.shortDescription)")
                     subController.inds.append(ind)
                 }
-                print()
+                // print()
                 
                 /*
                 for configInd in config.inds {
@@ -211,9 +218,11 @@ public class DmcController {
     /// - Parameter url: file location to write to
     public func wrireDpaFile(url: URL) {
         
+        /*
         for i in 0..<model.inds.count {
             print("\(i), \(model.inds[i].name), \(config.inds[i].name)")
         }
+        */
         
         // let modelURL = url.deletingPathExtension()
         // let newModelName = modelURL.lastPathComponent
@@ -224,35 +233,35 @@ public class DmcController {
             var tag = ""
             switch operation {
             case ".IND":
-                print("IND \(line)")
-                print()
+                // print("IND \(line)")
+                // print()
                 params = line.components(separatedBy: "  ")
-                print("params")
-                print(params)
-                print()
+                // print("params")
+                //print(params)
+                // print()
                 if params.count > 1 {
                     tag = params[1].trimQuotes()
-                    print("tag \(tag)")
+                    // print("tag \(tag)")
                 }
                 let inds = config.inds.filter{$0.name.uppercased() == tag.uppercased()}
                 if !inds.isEmpty {
                     let ind = inds[0]
                     let newLine = "\(params[0])  \"\(tag)\"  \(params[2])  \"\(ind.shortDescription)\"  \(ind.typmov.doubleValue)"
-                    print(newLine)
+                    // print(newLine)
                     newDpaContents += newLine + "\r\n"
                 } else {
                     print("Cannot get ind \(tag) from config")
                 }
             case ".DEP":
-                print("DEP \(line)")
-                print()
+                // print("DEP \(line)")
+                // print()
                 params = line.components(separatedBy: "  ")
-                print("params")
-                print(params)
-                print()
+                // print("params")
+                // print(params)
+                // print()
                 if params.count > 1 {
                     tag = params[2].trimQuotes()
-                    print("tag \(tag)")
+                    // print("tag \(tag)")
                 }
 
                 let deps = config.cvs.filter{$0.name.uppercased() == tag.uppercased()}
@@ -261,7 +270,7 @@ public class DmcController {
                     let newLine = "\(params[0])    \"\(tag)\"  \(params[3])  \"\(dep.shortDescription)\"  \(params[5])"
                     newDpaContents += newLine + "\r\n"
 
-                    print(newLine)
+                    // print(newLine)
                 } else {
                     print("Cannot get dep \(tag) from config")
                 }

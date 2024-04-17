@@ -74,22 +74,22 @@ public class Model {
     
     public func readMDL(url: URL) -> Bool {
         clear()
-        print("from model: readMDL url \(url)...")
+        // print("from model: readMDL url \(url)...")
         // check if mdl file exists
-        print("check if model file exists...")
+        // print("check if model file exists...")
         let fm = FileManager.default
-        print("got default FileManager!")
+        // print("got default FileManager!")
         if !fm.fileExists(atPath: url.path) {
             print("Model file does not exist!")
             return false
         }
-        print("model file exists!")
+        // print("model file exists!")
         mdlURL = url
-        print("got model url \(mdlURL.path)")
+        // print("got model url \(mdlURL.path)")
         
         
         var contents = ""
-        print("reading content...")
+        // print("reading content...")
         do {
             // Read the file contents
             contents = try String(contentsOf: url, encoding: .ascii)
@@ -97,7 +97,7 @@ public class Model {
             print("Failed reading from URL: \(url.path), Error: " + error.localizedDescription)
             return false
         }
-        print("got contents!")
+        // print("got contents!")
         // print(contents)
         
         let lines = contents.components(separatedBy: "\r\n")
@@ -122,7 +122,7 @@ public class Model {
         if let no = lines[lineNumber].doubleValue {
             timeToSS = no
         }
-        print("no min to SS from Model \(timeToSS)")
+        // print("no min to SS from Model \(timeToSS)")
         
         let NumberCoefLines = noCoefs / 5 + noCoefs % 5 // Number of lines for dynamic curve
         // print("Coef lines   \(NumberCoefLines)")
@@ -142,7 +142,7 @@ public class Model {
             lineNumber += 1
             indNo += 1
         }
-        print(inds)
+        // print(inds)
         
         // Get Deps
         var depNo = 0
@@ -213,18 +213,18 @@ public class Model {
                 lineNumber += 1
             }  // End inds
         } // End deps
-        print("noInds \(noInds)")
-        print("noDeps \(noDeps)")
-        print("noCoefs \(noCoefs)")
-        print("timeToSS \(timeToSS)")
-        print("numberCoefLines \(numberCoefLines)")
-        print("noCurves \(gains.count)")
-        print()
+        // print("noInds \(noInds)")
+        // print("noDeps \(noDeps)")
+        // print("noCoefs \(noCoefs)")
+        // print("timeToSS \(timeToSS)")
+        // print("numberCoefLines \(numberCoefLines)")
+        // print("noCurves \(gains.count)")
+        // print()
         
-        print("reading dpa file")
+        // print("reading dpa file")
         _ = readDPA()
-        print("Completely done with mdl!")
-        print("model read complete.")
+        // print("Completely done with mdl!")
+        // print("model read complete.")
         return true
     }
     
@@ -436,16 +436,16 @@ public class Model {
     // From DMCTuner Modified
     
     func readDPA() -> Bool {
-        print("in readDPA()")
+        // print("in readDPA()")
         let modelFile = mdlURL.lastPathComponent
         name = modelFile
-        print("model name \(name)")
+        // print("model name \(name)")
         if var dpaFile = modelFile.fileBase() {
             baseName = dpaFile
             dpaFile += ".dpa"
             dpaName = dpaFile
             dpaURL = mdlURL.deletingLastPathComponent().appendingPathComponent(dpaFile)
-            print("dpaURL \(dpaURL.path)")
+            // print("dpaURL \(dpaURL.path)")
         } else {
             print("No model file")
         }
@@ -453,8 +453,8 @@ public class Model {
         let fm = FileManager.default
         
         if !fm.fileExists(atPath: dpaURL.path) {
-            let answer = dialogOK("Missing dpa file (*.dpa).", info: "Please make sure it is in the same directory as the controller ccf file")
-            print(answer)
+            // let answer = dialogOK("Missing dpa file (*.dpa).", info: "Please make sure it is in the same directory as the controller ccf file")
+            // print(answer)
             dpaLoaded = false
             return false
         }
@@ -487,7 +487,7 @@ public class Model {
         
         for line in dpaContents {
             if line.hasPrefix("!") {
-                print("comment: \(line)")
+                // print("comment: \(line)")
                 continue
             }
             let curveType = getCurveType(line)
@@ -496,14 +496,14 @@ public class Model {
             if let firstQuoteIndex = line.index(of: "\"") {
                 texts = String(line[firstQuoteIndex...]).quotedWords()
             }
-            print("texts: \(texts)")
+            // print("texts: \(texts)")
             
             switch curveType {
             case ".MODel  ":
                 if texts.count > 2 {
                     // Has Model notes
                     modelNotes = texts[2]
-                    print("notes: \(modelNotes)")
+                    // print("notes: \(modelNotes)")
                     modelNotes = modelNotes.replace("!~", with: "\n")
                 }
             case ".NCOeff ":
@@ -520,7 +520,7 @@ public class Model {
                 var typicalMove = 0.0
                 if let step = values.last!.doubleValue {
                     typicalMove = step
-                    print("Typ Move \(step)")
+                    // print("Typ Move \(step)")
                 } else {
                     print("Cannot find typ move")
                 }
@@ -549,7 +549,7 @@ public class Model {
                 curveSource.depIndex = depNo(name: depName)
                 
                 if comment.uppercased().contains("RGA ORIGINAL GAIN WAS") {
-                    print("Modified Gain")
+                    // print("Modified Gain")
                     if let i1 = comment.index(after: "was "), let i2 = comment.index(before: " and"), let i3 = comment.index(after: " to") {
                         let gainOriginal = String(comment[i1...i2]).doubleValue
                         let gainAdjusted = String(comment[i3...]).doubleValue
@@ -573,9 +573,9 @@ public class Model {
                         }
                     }
                     let components = comment.components(separatedBy: " ")
-                    print()
-                    print()
-                    print("componets \(components.count)")
+                    // print()
+                    // print()
+                    // print("componets \(components.count)")
                     if components.count == 14 {
                         // print("masterGain and gainRatio for \(gain.depIndex)")
                         var masterGainIndIndex = 0
@@ -596,7 +596,7 @@ public class Model {
                         }
                         if let value = Double(components[13]) {
                             gainRatio = value
-                            print("got gainRatio \(value)")
+                            // print("got gainRatio \(value)")
                         }
                         if components[13] == "/" {
                             isNumerator = true
@@ -606,7 +606,7 @@ public class Model {
                         let masterGains = gains.filter{$0.indIndex == masterGainIndIndex && $0.depIndex == masterGainDepIndex}
                         if masterGains.count > 0 {
                             masterGain = masterGains[0]
-                            print("got masterGain \(masterGain.gain)")
+                            // print("got masterGain \(masterGain.gain)")
                         }
                         gain.masterGain = masterGain
                         gain.gainRatio = gainRatio
@@ -881,7 +881,7 @@ public class Model {
         }
         
         public func calcRgas() {
-            print("model calculating rgas")
+            // print("model calculating rgas")
             rgaAll.removeAll()
             let nonZeroGains = gains.filter{$0.gain != 0.0}
             
@@ -973,10 +973,10 @@ public class Model {
         }
         
         func sortRga() {
-            print("model sorting rgas")
+            // print("model sorting rgas")
             switch sortRgaBy {
             case .rga:
-                print("by rga")
+                // print("by rga")
                 rgas.sort{
                     if $0.rga == $1.rga {
                         if $0.ind1Index == $1.ind1Index{
@@ -988,7 +988,7 @@ public class Model {
                 }
                 // rgas.sort{$0.rga > $1.rga}
             case .mv:
-                print("by ind")
+                // print("by ind")
                 rgas.sort{
                     if $0.ind1Index == $1.ind1Index {
                         if $0.dep1Index == $1.dep1Index {
@@ -1008,7 +1008,7 @@ public class Model {
                  }
                  */
             case .cv:
-                print("by dep")
+                // print("by dep")
                 rgas.sort{
                     if $0.dep1Index == $1.dep1Index {
                         if $0.ind1Index == $1.ind1Index {
@@ -1034,7 +1034,7 @@ public class Model {
         }
         
         public func filterRgas(rgaLimit: Double) {
-            print("model: filtering with rga limit \(rgaLimit)")
+            // print("model: filtering with rga limit \(rgaLimit)")
             rgas = rgaAll.filter{$0.rga >= rgaLimit}
             
         }
@@ -1081,7 +1081,7 @@ public class Model {
                 let selectedMvs = inds.filter{$0.selected == true}
                 if selectedMvs.count != 2 {
                     // Need 2 selected
-                    print("Model: Need 2 MV's to calc ratio")
+                    // print("Model: Need 2 MV's to calc ratio")
                     return
                 } else {
                     let index1 = selectedMvs[0].index
@@ -1143,10 +1143,10 @@ public class Model {
         func sortRatios() {
             switch sortRatioBy {
             case .ratio:
-                print("Model: sort ratios by ratio")
+                // print("Model: sort ratios by ratio")
                 gainRatios.sort{$0.value < $1.value}
             case .variable:
-                print("Model: sort ratios by var")
+                // print("Model: sort ratios by var")
                 gainRatios.sort{$0.varIndex < $1.varIndex}
             }
             selectedRatioIndex = nil
@@ -1165,11 +1165,11 @@ public class Model {
                 let operation = line.trim().left(4).uppercased()
                 switch operation {
                 case ".IND":
-                    print("indIndex \(indIndex) of \(inds.count)")
+                    // print("indIndex \(indIndex) of \(inds.count)")
                     newLine = ".INDependent  \"\(inds[indIndex].name)\"  \"\(inds[indIndex].units)\"  \"\(inds[indIndex].shortDescription)\"  \(inds[indIndex].typicalMove)"
                     indIndex += 1
                 case ".DEP":
-                    print("depIndex \(depIndex) of \(deps.count)")
+                    // print("depIndex \(depIndex) of \(deps.count)")
                     var rampText = ""
                     switch deps[depIndex].ramp {
                     case 1:
@@ -1289,7 +1289,7 @@ public class Model {
                                 comment += "\(ratio)"
                             }
                             
-                            print(comment)
+                            // print(comment)
                         }
                         newDpaContents.append(".CURve        \"\(indName)\"  \"\(depName)\"  \"\(comment)\"\r\n")
                     }

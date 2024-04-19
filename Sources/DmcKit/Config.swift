@@ -9,7 +9,7 @@
 import Foundation
 // import StringKit
 
-
+// test commit
 /// DMCplus configuration
 public class Config {
     

@@ -17,6 +17,7 @@ public class ReportCurveSource {
     
     public let contents = NSMutableAttributedString()
     
+    @available(macOS 11.0, *)
     public func getContents() {
         
         curveSources = controller.model.curveSources
@@ -50,23 +51,23 @@ public class ReportCurveSource {
          //convParagraphStyle.lineSpacing = 2.5
          */
         
-        let titleAttribute = [ NSAttributedString.Key.foregroundColor: navy,
+        let titleAttribute = [ NSAttributedString.Key.foregroundColor: dynamicNavy,
                                NSAttributedString.Key.font: NSFont(name: "HelveticaNeue-BoldItalic", size: 20.0)!]
         
-        let headerAttribute = [ NSAttributedString.Key.foregroundColor: navy,
+        let headerAttribute = [ NSAttributedString.Key.foregroundColor: dynamicNavy,
                                 NSAttributedString.Key.font: NSFont(name: "HelveticaNeue-Italic", size: 12.0)!,
                                 .paragraphStyle: headerParagraphStyle]
         
-        let normalAttribute = [ NSAttributedString.Key.foregroundColor: black,
+        let normalAttribute = [ NSAttributedString.Key.foregroundColor: NSColor.textColor,
                                 NSAttributedString.Key.font: NSFont(name: "HelveticaNeue", size: 10.0)!,
                                 .paragraphStyle: normalParagraphStyle]
         /*
-         let convAttributes = [ NSAttributedString.Key.foregroundColor: black,
+         let convAttributes = [ NSAttributedString.Key.foregroundColor: NSColot.textColor,
          NSAttributedString.Key.font: NSFont(name: "HelveticaNeue", size: 10.0)!,
          .paragraphStyle: convParagraphStyle]
          */
         
-        // let smallAttribute = [ NSAttributedStringKey.foregroundColor: navy, NSAttributedStringKey.font: NSFont(name: "HelveticaNeue", size: 6.0)!]
+        // let smallAttribute = [ NSAttributedStringKey.foregroundColor: dynamicNavy, NSAttributedStringKey.font: NSFont(name: "HelveticaNeue", size: 6.0)!]
         
         let blankLine = NSMutableAttributedString(string: "\n")
         
@@ -304,6 +305,7 @@ public class ReportCurveSource {
            
     }
  
+    @available(macOS 11.0, *)
     public func write(){
         getContents()
         let documentAttributes: [NSAttributedString.DocumentAttributeKey: Any] = [.documentType: NSAttributedString.DocumentType.rtf]

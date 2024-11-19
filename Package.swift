@@ -13,9 +13,9 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/RickStreet/NSStringKit.git", from: "1.0.20"),
-        .package(url: "https://github.com/RickStreet/DoubleKit.git", from: "1.0.6"),
-        .package(url: "https://github.com/RickStreet/DialogKit.git", from: "2.0.0")
+        .package(url: "https://github.com/RickStreet/NSStringKit.git", from: "1.0.22"),
+        .package(url: "https://github.com/RickStreet/DoubleKit.git", from: "1.0.8"),
+        .package(url: "https://github.com/RickStreet/DialogKit.git", from: "2.0.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
